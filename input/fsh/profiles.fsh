@@ -164,7 +164,7 @@ Profile: CGMSummaryTimesInRanges
 Parent: Observation
 Id: cgm-summary-times-in-ranges
 Title: "CGM Summary Times in Ranges"
-Description: "An observation representing the times in various ranges from a continuous glucose monitoring (CGM) summary."
+Description: "An observation representing the times in various ranges from a continuous glucose monitoring (CGM) summary. Value: Percent of time, with at least two decimal places of precision."
 * insert CGMSummaryBase
 * code = CGMSummaryCodesTemporary#times-in-ranges
   * ^short = "Code for Times in Ranges observation"
