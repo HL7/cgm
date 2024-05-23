@@ -281,20 +281,22 @@ Profile: CGMDevice
 Parent: Device
 Id: cgm-device
 Title: "CGM Device"
-Description: "A continuous glucose monitoring (CGM) device."
+Description: "A continuous glucose monitoring (CGM) sensor device. This corresponds to the CGM sensor, not a reader or app used to capture or transmit the data."
+* deviceName 1..* MS
+  * ^short = "Name of the CGM device (including manufacturer and model)"
 * deviceName ^slicing.rules = #open
 * deviceName ^slicing.discriminator.type = #value
 * deviceName ^slicing.discriminator.path = "type"
 * deviceName contains
-    cgmDeviceName 1..* MS
+    cgmDeviceName 1..1 MS
 * deviceName[cgmDeviceName].name 1..1 MS
-  * ^short = "User-friendly name of the CGM device"
+  * ^short = "Device name including manufacturer and model"
 * deviceName[cgmDeviceName].type = #user-friendly-name
-  * ^short = "Type indicating a user-friendlyname"
-* serialNumber 1..1 MS
-  * ^short = "Serial number of the CGM device"
+  * ^short = "User-friendly name"
 * identifier 1..* MS
-  * ^short = "Identifiers for the CGM device"
+  * ^short = "Identifier for the CGM sensor device"
+* serialNumber 0..1 MS
+  * ^short = "Serial number of the CGM sensor device"
 
 CodeSystem: CGMCodes
 Id: cgm
