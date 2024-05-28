@@ -22,7 +22,7 @@ jobs:
         run: |
           docker run \
             -v $(pwd):/home/publisher/ig \
-            hl7fhir/ig-publisher-base \
+            ghcr.io/fhir/ig-publisher-localdev \
             sh -c "yes | _updatePublisher.sh && _genonce.sh"
 
       - name: Upload Artifacts
