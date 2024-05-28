@@ -1,0 +1,42 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup QEMU
+        run: sudo apt update && sudo apt install --yes binfmt-support qemu-user-static
+
+      - name: Update Publisher and Generate Output
+        uses: docker://ghcr.io/fhir/ig-publisher-localdev:latest
+        with:
+          args: _updatePublisher.sh -y
+
+      - name: Update Publisher and Generate Output
+        uses: docker://ghcr.io/fhir/ig-publisher-localdev:latest
+        with:
+          args: _genonce.sh"
+
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./output
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
