@@ -23,7 +23,7 @@ jobs:
           docker run \
             -v $(pwd):/home/publisher/ig \
             hl7fhir/ig-publisher-base \
-            sh -c "yes | ./scripts/_updatePublisher.sh && ./scripts/_genonce.sh"
+            sh -c "yes | _updatePublisher.sh && _genonce.sh"
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v1
