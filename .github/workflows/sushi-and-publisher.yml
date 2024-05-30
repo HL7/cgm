@@ -20,12 +20,8 @@ jobs:
 
       - name: Build Implementation Guide
         run: |
-          docker run \
-            -u 1000 \
-            -v $(pwd):/home/publisher/ig \
-            ghcr.io/fhir/ig-publisher-localdev \
+          docker run -v $(pwd):/home/publisher/ig ghcr.io/fhir/ig-publisher-gh \
             sh -c "yes | _updatePublisher.sh && _genonce.sh" \
-            chmod uga+rx -R output
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v1
