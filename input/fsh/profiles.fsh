@@ -82,8 +82,7 @@ Id: cgm-summary
 Title: "CGM Summary Observation"
 Description: "An observation representing a summary of continuous glucose monitoring (CGM) data."
 * insert ObservationLabBase
-* code = CGMSummaryCodesTemporary#cgm-summary
-  * ^short = "Code for Times in Ranges observation"
+* code = CGMSummaryWithLoinc
 * effectivePeriod 1..1 MS
   * ^short = "Reporting period for the CGM summary"
   * start 1..1 MS
@@ -329,6 +328,8 @@ Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
 * group[=].target = $LNC
 * group[=].element[+]
   * code = #cgm-summary
+  * target[+].code = #104643-2
+  * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #mean-glucose-mass-per-volume
   * target[+].code = #97507-8
@@ -371,6 +372,12 @@ Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
   * code = #sensor-active-percentage
   * target[+].code = #104637-4
   * target[=].equivalence = #equivalent
+
+Instance: CGMSummaryWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#cgm-summary
+* coding[+] =  $LNC#104643-2
 
 Instance: MeanGlucoseMassPerVolumeWithLoinc
 InstanceOf: CodeableConcept
