@@ -91,7 +91,7 @@ Description: "An observation representing a summary of continuous glucose monito
   * end 1..1 MS
     * ^short = "End date of the reporting period (YYYY-MM-DD)"
 * hasMember ^slicing.discriminator.type = #value
-  * ^short = "Slicing based on the profile of the referenced resource"
+  * ^short = "Slicing based on the typ[e] of the referenced resource"
 * hasMember ^slicing.discriminator.path = "resolve().code"
   * ^short = "Path used to identify the slices"
 * hasMember ^slicing.rules = #open
@@ -180,27 +180,21 @@ Description: "An observation representing the times in various ranges from a con
     timeInVeryHigh 1..1 MS
   * ^short = "Components representing times in different ranges"
 * component[timeInVeryLow]
-  * code = CGMSummaryCodesTemporary#time-in-very-low
+  * code = TimeInVeryLowWithLoinc
   * insert QuantityPercent
 * component[timeInLow]  
-  * code = CGMSummaryCodesTemporary#time-in-low
+  * code = TimeInLowWithLoinc
   * insert QuantityPercent
 * component[timeInTarget]
-  * code ^patternCodeableConcept.coding[0] = CGMSummaryCodesTemporary#time-in-target
-  * code ^patternCodeableConcept.coding[1] = $LNC#97510-2
+  * code = TimeInTargetWithLoinc
   * insert QuantityPercent
 * component[timeInHigh]
-  * code = CGMSummaryCodesTemporary#time-in-high    
+  * code = TimeInHighWithLoinc
   * insert QuantityPercent
 * component[timeInVeryHigh]
-  * code = CGMSummaryCodesTemporary#time-in-very-high
+  * code = TimeInVeryHighWithLoinc
   * insert QuantityPercent
  
-Instance: MeanGlucoseMassPerVolumeWithLoinc
-InstanceOf: CodeableConcept
-Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#mean-glucose-mass-per-volume
-* coding[+] =  $LNC#97507-8
 
 Profile: CGMSummaryMeanGlucoseMassPerVolume
 Parent: Observation
@@ -229,12 +223,6 @@ RuleSet: QuantityPercent
 * valueQuantity = '%' "%"
   * ^short = "Value as a percentage"
 
-Instance: GMIWithLoinc
-InstanceOf: CodeableConcept
-Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#gmi
-* coding[+] = $LNC#97506-0
-
 Profile: CGMSummaryGMI
 Parent: Observation
 Id: cgm-summary-gmi
@@ -251,7 +239,7 @@ Id: cgm-summary-coefficient-of-variation
 Title: "Coefficient of Variation (CV)"
 Description: "The Coefficient of Variation (CV) value from a continuous glucose monitoring (CGM) summary."
 * insert CGMSummaryBase
-* code = CGMSummaryCodesTemporary#cv
+* code = CVWithLoinc
   * ^short = "Code for Coefficient of Variation (CV) observation"
 * insert QuantityPercent
 
@@ -261,7 +249,7 @@ Id: cgm-summary-days-of-wear
 Title: "Days of Wear"
 Description: "The number of days the continuous glucose monitoring (CGM) device was worn during the reporting period."
 * insert CGMSummaryBase
-* code = CGMSummaryCodesTemporary#days-of-wear
+* code = DaysOfWearWithLoinc
   * ^short = "Code for Days of Wear observation"
 * valueQuantity 1..1 MS
 * valueQuantity = 'd' "days"
@@ -273,7 +261,7 @@ Id: cgm-summary-sensor-active-percentage
 Title: "Sensor Active Percentage"
 Description: "The percentage of time the continuous glucose monitoring (CGM) sensor was active during the reporting period."
 * insert CGMSummaryBase
-* code = CGMSummaryCodesTemporary#sensor-active-percentage
+* code = SensorActivePercentageWithLoinc
   * ^short = "Code for Sensor Active Percentage observation"
 * insert QuantityPercent
 
@@ -315,7 +303,7 @@ Description: "Temporary code system for CGM summary observations."
 * ^caseSensitive = true
 * ^experimental = false
 * ^status = #active
-* #cgm-summary "CGM Summary"
+* #cgm-summary "CGM Summary Report"
 * #mean-glucose-mass-per-volume "Mean Glucose (Mass per Volume)"
 * #mean-glucose-moles-per-volume "Mean Glucose (Moles per Volume)"
 * #times-in-ranges "Times in Glucose Ranges"
@@ -340,6 +328,8 @@ Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
 * group[+].source = Canonical(CGMSummaryCodesTemporary)
 * group[=].target = $LNC
 * group[=].element[+]
+  * code = #cgm-summary
+* group[=].element[+]
   * code = #mean-glucose-mass-per-volume
   * target[+].code = #97507-8
   * target[=].equivalence = #equivalent
@@ -347,26 +337,100 @@ Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
   * code = #mean-glucose-moles-per-volume
 * group[=].element[+]
   * code = #time-in-very-low
+  * target[+].code = #104642-4
+  * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #time-in-low
+  * target[+].code = #104641-6
+  * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #time-in-target
   * target[+].code = #97510-2
   * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #time-in-high
+  * target[+].code = #104640-8
+  * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #time-in-very-high
+  * target[+].code = #104639-0
+  * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #gmi
   * target[+].code = #97506-0
   * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #cv
+  * target[+].code = #104638-2
+  * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #days-of-wear
+  * target[+].code = #104636-6
+  * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #sensor-active-percentage
+  * target[+].code = #104637-4
+  * target[=].equivalence = #equivalent
+
+Instance: MeanGlucoseMassPerVolumeWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#mean-glucose-mass-per-volume
+* coding[+] =  $LNC#97507-8
+
+Instance: GMIWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#gmi
+* coding[+] = $LNC#97506-0
+
+Instance: TimeInVeryLowWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#time-in-very-low
+* coding[+] = $LNC#104642-4
+
+Instance: TimeInLowWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#time-in-low
+* coding[+] = $LNC#104641-6
+
+Instance: TimeInTargetWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#time-in-target
+* coding[+] = $LNC#97510-2
+
+Instance: TimeInHighWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#time-in-high
+* coding[+] = $LNC#104640-8
+
+Instance: TimeInVeryHighWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#time-in-very-high
+* coding[+] = $LNC#104639-0
+
+Instance: CVWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#cv
+* coding[+] = $LNC#104638-2
+
+Instance: DaysOfWearWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#days-of-wear
+* coding[+] = $LNC#104636-6
+
+Instance: SensorActivePercentageWithLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#sensor-active-percentage
+* coding[+] = $LNC#104637-4
 
 
 Profile: CGMDataSubmissionBundle
