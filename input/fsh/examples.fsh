@@ -113,7 +113,6 @@ Usage: #example
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-31"
 * hasMember[meanGlucoseMassPerVolume] = Reference(cgmSummaryMeanGlucoseMassPerVolumeExample)
-* hasMember[meanGlucoseMolesPerVolume] = Reference(cgmSummaryMeanGlucoseMolesPerVolumeExample)  
 * hasMember[timesInRanges] = Reference(cgmSummaryTimesInRangesExample)
 * hasMember[gmi] = Reference(cgmSummaryGMIExample)
 * hasMember[cv] = Reference(cgmSummaryCoefficientOfVariationExample)
