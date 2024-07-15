@@ -213,3 +213,7 @@ WHERE
 {% for row in mappingCodes -%}
 | {{ row["Temporary Code"] }} | {{ row["LOINC Code"] }} |
 {% endfor %}
+
+### Package Downloads
+
+{% include cross-version-analysis.xhtml %}
