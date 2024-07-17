@@ -120,6 +120,8 @@ Examples include but are not limited to:
   * Each entry in the `batch-response` bundle SHALL provide a status code indicating whether the submission was accepted 
   * Accepted entries SHOULD be available for read/search immediately after submission, but MAY be subjected to additional ingestion workflow steps
 
+CGM Data Receivers MAY respond with HTTP status code 429 (Too Many Requests) if a client is submitting data too frequently. When using this response, Receivers MAY include a `Retry-After` header specifying a time duration in seconds. For example: `Retry-After: 3600` suggests waiting one hour before the next submission attempt. This approach is complementary to, not a replacement for, pre-arranged submission schedules.
+
 ### CGM Data Submission: Standing Orders
 
 **☛ See [Example Order ("Send a summary every two weeks")](ServiceRequest-cgmDataSubmissionStandingOrderExample.json.html#root)**
