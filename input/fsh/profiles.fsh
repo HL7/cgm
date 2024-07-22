@@ -212,7 +212,7 @@ Id: cgm-summary-mean-glucose-moles-per-volume
 Title: "Mean Glucose (Molar)"
 Description: "The mean glucose value from a continuous glucose monitoring (CGM) summary, represented in molar units."
 * insert CGMSummaryBase
-* code = CGMSummaryCodesTemporary#mean-glucose-moles-per-volume
+* code = MeanGlucoseMolar
   * ^short = "Code for Mean Glucose observation"
 * insert GlucoseMolesPerVolume
 
@@ -336,6 +336,8 @@ Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
   * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #mean-glucose-moles-per-volume
+  * target[+].code = #105273-7
+  * target[=].equivalence = #equivalent
 * group[=].element[+]
   * code = #time-in-very-low
   * target[+].code = #104642-4
@@ -408,6 +410,12 @@ InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#time-in-target
 * coding[+] = $LNC#97510-2
+
+Instance: MeanGlucoseMolar
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = CGMSummaryCodesTemporary#mean-glucose-moles-per-volume
+* coding[+] = $LNC#105273-7
 
 Instance: TimeInHighWithLoinc
 InstanceOf: CodeableConcept
