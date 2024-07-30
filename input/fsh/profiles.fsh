@@ -552,7 +552,7 @@ This profile uses the DataSubmissionSchedule extension to capture detailed submi
 Profile: CGMDataSubmissionStandingOrder
 Parent: DataSubmissionStandingOrder
 Id: cgm-data-submission-standing-order
-Title: "Data Submission Standing Order"
+Title: "CGM Data Submission Standing Order"
 Description: """
 The Data Receiver can expose a standing order indicating:
 
@@ -582,10 +582,10 @@ It's important to note that submissions can also be **manually triggered by a pa
 * code = CGMCodes#cgm-data-submission-standing-order
   * ^short = "Code for CGM submission standing order"
 * subject 1..1
-  * ^short = "Patient for the submission order"
+  * ^short = "Patient for the CGM submission order"
 * extension contains 
     DataSubmissionSchedule named dataSubmissionSchedule 0..*
-  * ^short = "Schedules for data submission"
+  * ^short = "Schedules for CGM data submission"
 
 Extension: DataSubmissionSchedule
 Id: data-submission-schedule
