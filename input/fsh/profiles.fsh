@@ -522,9 +522,35 @@ The Bundle `entry` array includes any combination of
 * entry[observation][cgmSensorReadingMassPerVolume].resource only CGMSensorReadingMassPerVolume
 * entry[observation][cgmSensorReadingMolesPerVolume].resource only CGMSensorReadingMolesPerVolume
 
-  
+Profile: DataSubmissionStandingOrder
+Parent: ServiceRequest
+Id: data-submission-standing-order
+Title: "Data Submission Standing Order"
+Description: """
+A base profile for standing orders that indicate data submission requirements. This profile can be used as-is for general data submissions or inherited by more specific data submission profiles.
+
+Key aspects of this profile:
+* Specifies what data should be included in each submission
+* Defines how often data should be submitted
+* Indicates the lookback period each submission should cover
+
+This profile uses the DataSubmissionSchedule extension to capture detailed submission requirements.
+"""
+* intent = #order
+* code 1..1 MS
+  * ^short = "Code identifying the type of data submission standing order"
+  * ^definition = "A code that specifies the type of data submission this standing order represents. This should be populated with a value that clearly identifies the nature of the data being submitted."
+* subject 1..1 MS
+  * ^short = "Patient for the submission order"
+  * ^definition = "Reference to the patient for whom this data submission standing order applies. This is required to ensure that submitted data is associated with the correct patient."
+* extension contains 
+    DataSubmissionSchedule named dataSubmissionSchedule 0..*
+  * ^short = "Schedules for data submission"
+  * ^definition = "Contains one or more DataSubmissionSchedule extensions, each defining a specific schedule and type of data to be submitted."
+
+
 Profile: CGMDataSubmissionStandingOrder
-Parent: ServiceRequest // http://hl7.org/fhir/us/core/StructureDefinition/us-core-servicerequest
+Parent: DataSubmissionStandingOrder
 Id: cgm-data-submission-standing-order
 Title: "Data Submission Standing Order"
 Description: """
