@@ -20,8 +20,8 @@ jobs:
 
       - name: Build Implementation Guide
         run: |
-          docker run -v $(pwd):/home/publisher/ig ghcr.io/fhir/ig-publisher-gh \
-            sh -c "yes | _updatePublisher.sh && _genonce.sh" \
+          wget https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar
+          docker run -v $(pwd):/home/publisher/ig ghcr.io/fhir/ig-publisher-gh java -jar publisher.jar -ig .
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v1

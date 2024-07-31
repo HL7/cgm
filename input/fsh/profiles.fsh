@@ -545,8 +545,10 @@ This profile uses the DataSubmissionSchedule extension to capture detailed submi
   * ^definition = "Reference to the patient for whom this data submission standing order applies. This is required to ensure that submitted data is associated with the correct patient."
 * extension contains 
     DataSubmissionSchedule named dataSubmissionSchedule 0..*
-  * ^short = "Schedules for data submission"
   * ^definition = "Contains one or more DataSubmissionSchedule extensions, each defining a specific schedule and type of data to be submitted."
+  * ^short = "DataSubmissionSchedule extensions"
+* extension[DataSubmissionSchedule]
+  * ^short = "Schedules for CGM data submission"
 
 
 Profile: CGMDataSubmissionStandingOrder
@@ -583,9 +585,9 @@ It's important to note that submissions can also be **manually triggered by a pa
   * ^short = "Code for CGM submission standing order"
 * subject 1..1
   * ^short = "Patient for the CGM submission order"
-* extension contains 
-    DataSubmissionSchedule named dataSubmissionSchedule 0..*
+* extension[DataSubmissionSchedule]
   * ^short = "Schedules for CGM data submission"
+
 
 Extension: DataSubmissionSchedule
 Id: data-submission-schedule
