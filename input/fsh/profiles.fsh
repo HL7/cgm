@@ -537,6 +537,7 @@ Key aspects of this profile:
 This profile uses the DataSubmissionSchedule extension to capture detailed submission requirements.
 """
 * intent = #order
+  * ^short = "Intent is #order"
 * code 1..1 MS
   * ^short = "Code identifying the type of data submission standing order"
   * ^definition = "A code that specifies the type of data submission this standing order represents. This should be populated with a value that clearly identifies the nature of the data being submitted."
@@ -547,8 +548,8 @@ This profile uses the DataSubmissionSchedule extension to capture detailed submi
     DataSubmissionSchedule named dataSubmissionSchedule 0..*
   * ^definition = "Contains one or more DataSubmissionSchedule extensions, each defining a specific schedule and type of data to be submitted."
   * ^short = "DataSubmissionSchedule extensions"
-* extension[DataSubmissionSchedule]
-  * ^short = "Schedules for CGM data submission"
+* extension[dataSubmissionSchedule]
+  * ^short = "Schedules for data submission"
 
 
 Profile: CGMDataSubmissionStandingOrder
@@ -581,13 +582,13 @@ It's important to note that submissions can also be **manually triggered by a pa
 
 """
 * intent = #order
+  * ^short = "Intent for CGM is #order"
 * code = CGMCodes#cgm-data-submission-standing-order
   * ^short = "Code for CGM submission standing order"
 * subject 1..1
   * ^short = "Patient for the CGM submission order"
-* extension[DataSubmissionSchedule]
+* extension[dataSubmissionSchedule]
   * ^short = "Schedules for CGM data submission"
-
 
 Extension: DataSubmissionSchedule
 Id: data-submission-schedule
