@@ -330,50 +330,62 @@ Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
   * code = #cgm-summary
   * target[+].code = #104643-2
   * target[=].equivalence = #equivalent
+  * target[=].comment = "Expected publication date February 2025"
 * group[=].element[+]
   * code = #mean-glucose-mass-per-volume
   * target[+].code = #97507-8
   * target[=].equivalence = #equivalent
+  * target[=].comment = "published"
 * group[=].element[+]
   * code = #mean-glucose-moles-per-volume
   * target[+].code = #105273-7
   * target[=].equivalence = #equivalent
+  * target[=].comment = "Expected publication date February 2025"
 * group[=].element[+]
   * code = #time-in-very-low
   * target[+].code = #104642-4
   * target[=].equivalence = #equivalent
+  * target[=].comment = "Expected publication date February 2025"
 * group[=].element[+]
   * code = #time-in-low
   * target[+].code = #104641-6
   * target[=].equivalence = #equivalent
+  * target[=].comment = "Expected publication date February 2025"
 * group[=].element[+]
   * code = #time-in-target
   * target[+].code = #97510-2
   * target[=].equivalence = #equivalent
+  * target[=].comment = "published"
 * group[=].element[+]
   * code = #time-in-high
   * target[+].code = #104640-8
   * target[=].equivalence = #equivalent
+  * target[=].comment = "Expected publication date February 2025"
 * group[=].element[+]
   * code = #time-in-very-high
   * target[+].code = #104639-0
   * target[=].equivalence = #equivalent
+  * target[=].comment = "Expected publication date February 2025"
 * group[=].element[+]
   * code = #gmi
   * target[+].code = #97506-0
   * target[=].equivalence = #equivalent
+  * target[=].comment = "published"
 * group[=].element[+]
   * code = #cv
   * target[+].code = #104638-2
   * target[=].equivalence = #equivalent
+  * target[=].comment = "published"
 * group[=].element[+]
   * code = #days-of-wear
   * target[+].code = #104636-6
   * target[=].equivalence = #equivalent
+  * target[=].comment = "Expected publication date February 2025"
 * group[=].element[+]
   * code = #sensor-active-percentage
   * target[+].code = #104637-4
   * target[=].equivalence = #equivalent
+  * target[=].comment = "Expected publication date February 2025"
 
 Instance: CGMSummaryWithLoinc
 InstanceOf: CodeableConcept

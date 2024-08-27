@@ -177,6 +177,8 @@ This IG aims to use LOINC codes for all Observations and DiagnosticReports. Howe
 * **Deprecation Planning:** We will deprecate this CodeSystem when LOINC support exists for the required concepts.
 
 #### Overview of LOINC Mappings
+<!-- {% raw %} 
+Since the comment field does not exist in ConceptMappings this SQL cannot be used right now so just manuaully construct the table
 
 {% sqlToData mappingCodes SELECT
   c.code as "Temporary Code",
@@ -213,8 +215,28 @@ WHERE
 | Temporary Code | LOINC Code |
 |----------------|------------|
 {% for row in mappingCodes -%}
-| {{ row["Temporary Code"] }} | {{ row["LOINC Code"] }} |
+| {{ row["Temporary Code"] }} | {{ row["LOINC Code"] }} | {{ row["LOINC Comment"] }} |
 {% endfor %}
+
+{% endraw %} -->
+
+
+|Temporary Code|LOINC Code|Expected LOINC Publication Date
+|---|---|---|
+|cgm-summary|104643-2|February 2025|
+|mean-glucose-mass-per-volume|97507-8|Published|
+|mean-glucose-moles-per-volume|105273-7|February 2025|
+|times-in-ranges|No LOINC Available|LOINC submission pending. Expected publication date unknown
+|time-in-very-low|104642-4|February 2025|
+|time-in-low|104641-6|February 2025|
+|time-in-target|97510-2|Published|
+|time-in-high|104640-8|February 2025|
+|time-in-very-high|104639-0|February 2025|
+|gmi|97506-0|Published|
+|cv|104638-2|Published|
+|days-of-wear|104636-6|February 2025|
+|sensor-active-percentage|104637-4|February 2025|
+{:.grid}
 
 ### Package Downloads
 
