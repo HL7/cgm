@@ -391,7 +391,7 @@ Instance: CGMSummaryWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#cgm-summary
-* coding[+] =  $LNC#104643-2
+// * coding[+] =  $LNC#104643-2
 
 Instance: MeanGlucoseMassPerVolumeWithLoinc
 InstanceOf: CodeableConcept
@@ -409,13 +409,13 @@ Instance: TimeInVeryLowWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#time-in-very-low
-* coding[+] = $LNC#104642-4
+// * coding[+] = $LNC#104642-4
 
 Instance: TimeInLowWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#time-in-low
-* coding[+] = $LNC#104641-6
+// * coding[+] = $LNC#104641-6
 
 Instance: TimeInTargetWithLoinc
 InstanceOf: CodeableConcept
@@ -427,19 +427,19 @@ Instance: MeanGlucoseMolar
 InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#mean-glucose-moles-per-volume
-* coding[+] = $LNC#105273-7
+// * coding[+] = $LNC#105273-7
 
 Instance: TimeInHighWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#time-in-high
-* coding[+] = $LNC#104640-8
+// * coding[+] = $LNC#104640-8
 
 Instance: TimeInVeryHighWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#time-in-very-high
-* coding[+] = $LNC#104639-0
+// * coding[+] = $LNC#104639-0
 
 Instance: CVWithLoinc
 InstanceOf: CodeableConcept
@@ -451,13 +451,13 @@ Instance: DaysOfWearWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#days-of-wear
-* coding[+] = $LNC#104636-6
+// * coding[+] = $LNC#104636-6
 
 Instance: SensorActivePercentageWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#sensor-active-percentage
-* coding[+] = $LNC#104637-4
+// * coding[+] = $LNC#104637-4
 
 
 Profile: CGMDataSubmissionBundle
