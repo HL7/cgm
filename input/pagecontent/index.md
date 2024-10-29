@@ -74,7 +74,7 @@ In this workflow, a patient-facing app connects directly to the EHR using the SM
   * Data Scopes:
     * `patient/Patient.r`: it may still be desirable to cross-reference patient demographics, e.g. to confirm a match
     * `patient/ServiceRequest.rs?code=cgm-data-submission-standing-order`: helps app learn the EHR's data submission preferences
-    * `patient/DiagnosticReport.cu?category=laboratory`: submit a summary report
+    * `patient/DiagnosticReport.cu?category=LAB`: submit a summary report
     * `patient/Observation.cu?category=laboratory`: submit a summary observation or sensor reading
     * `patient/Device.cu`: submit device details associated with a sensor reading
 
