@@ -52,7 +52,14 @@ This IG also refers to Data Receivers as "**EHRs**".
 
 5. **Prepare FHIR Bundle**: When a submission is triggered (either scheduled or manual), the Data Submitter prepares a FHIR Bundle containing the relevant CGM data, conforming to the specified profiles and requirements.
 
-6. **POST Bundle to EHR**: The Data Submitter issues a POST request to send the prepared FHIR Bundle to the EHR's FHIR Base URL.
+6. **Submit CGM Bundle**: The Data Submitter calls the `$submit-cgm-bundle` operation on the EHR's FHIR server, passing the prepared Bundle as input. The operation returns either:
+   - A batch-response Bundle containing:
+     - Success/failure status for each submitted resource
+     - Resource locations for successfully created resources
+     - Entry-specific error details when needed
+   - An OperationOutcome for overall operation failures
+
+The batch-response Bundle maintains the same order as the submission Bundle, allowing the Data Submitter to correlate results with the original submissions and handle any necessary error recovery or retry logic.
 
 This workflow ensures that the Data Submitter is properly authorized, respects the EHR's submission preferences, and securely transmits CGM data in a standardized format. The combination of scheduled submissions and manual triggers provides flexibility and ensures that the EHR receives up-to-date CGM data as needed.
 

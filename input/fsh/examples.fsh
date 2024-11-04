@@ -137,45 +137,46 @@ Instance: cgmDataSubmissionBundle
 InstanceOf: CGMDataSubmissionBundle
 Title: "CGM Data Submission Bundle Example"
 Usage: #example
-* meta.tag[cgmSubmissionBundle] = CGMCodes#cgm-data-submission-bundle
-* type = #batch
+* type = #collection
 * timestamp = "2024-05-02T14:30:00Z" 
 * entry[+].resource = cgmSummaryPDFExample
 * entry[=].fullUrl = "https://example.org/DiagnosticReport/cgmSummaryPDFExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "DiagnosticReport"
 * entry[+].resource = cgmSummaryExample
 * entry[=].fullUrl = "https://example.org/Observation/cgmSummaryExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "Observation"
 * entry[+].resource = cgmSummaryMeanGlucoseMassPerVolumeExample
 * entry[=].fullUrl = "https://example.org/Observation/cgmSummaryMeanGlucoseMassPerVolumeExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "Observation"
 * entry[+].resource = cgmSummaryTimesInRangesExample
 * entry[=].fullUrl = "https://example.org/Observation/cgmSummaryTimesInRangesExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "Observation"
 * entry[+].resource = cgmSummaryGMIExample
 * entry[=].fullUrl = "https://example.org/Observation/cgmSummaryGMIExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "Observation"
 * entry[+].resource = cgmSummaryCoefficientOfVariationExample
 * entry[=].fullUrl = "https://example.org/Observation/cgmSummaryCoefficientOfVariationExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "Observation"
 * entry[+].resource = cgmSummaryDaysOfWearExample
 * entry[=].fullUrl = "https://example.org/Observation/cgmSummaryDaysOfWearExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "Observation"
 * entry[+].resource = cgmSummarySensorActivePercentageExample
 * entry[=].fullUrl = "https://example.org/Observation/cgmSummarySensorActivePercentageExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "Observation"
 * entry[+].resource = cgmSensorReadingMassPerVolumeExample
 * entry[=].fullUrl = "https://example.org/Observation/cgmSensorReadingMassPerVolumeExample"
-* entry[=].request.method = #POST
-* entry[=].request.url = "Observation"
+
+Instance: dataSubmissionStandingOrderExample
+InstanceOf: DataSubmissionStandingOrder
+Usage: #example
+Title: "Example Data Submission Standing Order"
+Description: """
+This example represents a standing order for continuous glucose monitoring (CGM) data submission.
+It specifies an order to submit data about Patient 123 once every two weeks, with each data submission including
+a summary of the CGM data and a PDF report of the CGM summary. This ensures the patient's CGM data is routinely
+available for clinical review.
+"""
+* status = #active
+* intent = #order
+* code = CGMCodes#cgm-data-submission-standing-order
+* subject = Reference(Patient/example)
+* extension[dataSubmissionSchedule].extension[submissionPeriod].valueQuantity.value = 2
+* extension[dataSubmissionSchedule].extension[submissionPeriod].valueQuantity = 'wk' "week"
+* extension[dataSubmissionSchedule].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSummaryObservation)
+* extension[dataSubmissionSchedule].extension[submissionDataProfile][+].valueCanonical = Canonical(CGMSummaryPDF) 
+
 
 Instance: cgmDataSubmissionStandingOrderExample
 InstanceOf: CGMDataSubmissionStandingOrder

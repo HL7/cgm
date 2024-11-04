@@ -465,8 +465,7 @@ Parent: Bundle
 Id: cgm-data-submission-bundle
 Title: "CGM Data Submission Bundle"
 Description: """
-Once a Data Submitter is connected to the EHR, it can write data by submitting a `batch` Bundle to the EHR FHIR sever's `/` submission endpoint.
-The submission bundle includes a `Bundle.meta.tag` value of `cgm-data-submission-bundle` to support ingestion workflows on servers with limited data ingestion capabilities. The tag has no impact on the meaning of the bundle, and can safely be ignored by servers that offer a general-purpose `POST /` endpoint.
+Once a Data Submitter is connected to the EHR, it can write data by submitting a `collection` Bundle to the EHR FHIR server's `$submit-cgm-bundle` operation endpoint.
 
 The Bundle `entry` array includes any combination of 
 
@@ -483,14 +482,6 @@ The Bundle `entry` array includes any combination of
 * CGM Sensor Readings (Mass per Volume) ([Profile](StructureDefinition-cgm-sensor-reading-mass-per-volume.html#profile), [Example](Observation-cgmSensorReadingMassPerVolumeExample.json.html#root))
 * CGM Sensor Readings (Moles per Volume) ([Profile](StructureDefinition-cgm-sensor-reading-moles-per-volume.html#profile), [Example](Observation-cgmSensorReadingMolesPerVolumeExample.json.html#root))
 """
-
-* meta.tag
-  * ^slicing.discriminator.path = "$this"
-  * ^slicing.discriminator.type = #value
-  * ^slicing.rules = #open
-* meta.tag contains cgmSubmissionBundle 1..1 MS
-* meta.tag[cgmSubmissionBundle] = CGMCodes#cgm-data-submission-bundle
-  * ^short = "Tag for CGM submission bundle"
 * timestamp 1..1 MS
   * ^short = "Instant the bundle was created"
 * entry
@@ -631,7 +622,7 @@ The data receiver is a software system that receives and stores the CGM data sub
 
 This IG also refers to Data Receivers as "**EHRs**".
 
-Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
+Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/fhir/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
 """
 * status = #active
 * date =  2024-05-09
@@ -640,7 +631,9 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
 * format[0] = #json 
 * rest[+]
   * mode = #server
-  * interaction[+].code = #batch
+  * operation[+]
+    * name = "Submit CGM Bundle"
+    * definition = Canonical(submit-cgm-bundle)
   * resource[+]
     * type = #ServiceRequest
     * supportedProfile[+] = Canonical(cgm-data-submission-standing-order)
@@ -680,3 +673,51 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
     * searchParam[=].type = #token
     * searchParam[+].name = "code"
     * searchParam[=].type = #token
+
+Instance: submit-cgm-bundle
+InstanceOf: OperationDefinition
+Usage: #definition
+Title: "Submit CGM Bundle Operation"
+Description: """
+This operation is used to submit CGM data. The input is a Bundle containing CGM data (summary reports, sensor readings, etc.) 
+and the output is a batch-response Bundle containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
+
+The response Bundle will:
+- Maintain the same order as the submission Bundle
+- Include status and location information for each successfully processed entry
+- Include error details for any entries that could not be processed
+"""
+
+* id = "submit-cgm-bundle"
+* name = "SubmitCGMBundle"
+* title = "Submit CGM Bundle"
+* status = #active
+* kind = #operation
+* code = #submit-cgm-bundle
+* resource = #Bundle
+* system = false
+* type = true
+* instance = false
+* inputProfile = Canonical(CGMDataSubmissionBundle)
+* parameter[0]
+  * name = #resource
+  * use = #in
+  * min = 1
+  * max = "1"
+  * documentation = "A Bundle containing CGM data including summary reports, sensor readings, and related resources."
+  * type = #Bundle
+* parameter[1]
+  * name = #return
+  * use = #out
+  * min = 1
+  * max = "1"
+  * documentation = """
+    A Bundle of type batch-response containing processing results for each submitted resource. Each entry in the response Bundle corresponds 
+    to an entry in the submission Bundle and includes:
+    - HTTP status code indicating success/failure
+    - Location header for successful creations
+    - OperationOutcome for any entry-specific errors
+    
+    If the entire operation fails, a single OperationOutcome resource is returned instead.
+    """
+  * type = #Bundle
