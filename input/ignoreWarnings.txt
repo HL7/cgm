@@ -1,5 +1,8 @@
 == Suppressed Messages ==
 
+# Reviewed; these are not based on content in CGM IG
+The link 'http://hl7.org/fhir/R4/valueset-diagnostic-requests.html' for "here" cannot be resolved
+
 # Re-examine when ready to publish
 WARNING: 1: The HTML fragment 'ip-statements.xhtml' is not included anywhere in the produced implementation guide
 WARNING: 2: An HTML fragment from the set [cross-version-analysis.xhtml, cross-version-analysis-inline.xhtml] is not included anywhere in the produced implementation guide

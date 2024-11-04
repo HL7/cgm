@@ -4,7 +4,7 @@
 # │  see: https://fshschool.org/docs/sushi/configuration/.                                         │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 id: hl7.fhir.uv.cgm
-canonical: http://hl7.org/uv/cgm
+canonical: http://hl7.org/fhir/uv/cgm
 name: ArgoCGM
 title: Argo CGM Write
 description: Communicate Continuous Glucose Monitor (CGM) data using FHIR
@@ -15,10 +15,15 @@ copyrightYear: 2024+
 releaseLabel: ci-build # ci-build | draft | qa-preview | ballot | trial-use | release | update | normative+trial-use
 license: CC0-1.0
 jurisdiction: http://unstats.un.org/unsd/methods/m49/m49.htm#001 "World" # https://www.hl7.org/fhir/valueset-jurisdiction.html
+extension:
+  - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-wg  #<<< must include a http://hl7.org/fhir/StructureDefinition/structuredefinition-wg extension that identifies the workgroup responsible for the IG. This is the authoritative element.
+    valueCode: oo  # <<< The value must be the code for the workgroup
+# ...
 publisher:
-  name: Argonaut
-  url: http://argo.run
-#
+  name: HL7 International / Orders and Observations
+  url: 'https://www.hl7.org/Special/committees/orders/index.cfm'  # <<< the contacts for the resource must include the link to the group found in the definition
+  email: ord@lists.HL7.org
+
 dependencies:
   hl7.fhir.us.core: 6.1.0
 # The pages property corresponds to IG.definition.page. SUSHI can
@@ -52,6 +57,11 @@ dependencies:
 # http://build.fhir.org/ig/FHIR/fhir-tools-ig/branches/master/CodeSystem-ig-parameters.html
 #
 parameters:
+  apply-contact: true
+  apply-jurisdiction: true
+  apply-publisher: true
+  apply-version: true
+
   no-narrative:
     - "Bundle/*"
     - "Observation/*"
@@ -82,14 +92,11 @@ menu:
 # contact directly and follow the format outlined in the ImplementationGuide resource and
 # ContactDetail.
 #
-# contact:
-#   - name: Bob Smith
-#     telecom:
-#       - system: email # phone | fax | email | pager | url | sms | other
-#         value: bobsmith@example.org
-#         use: work
-#
-#
+contact:
+  - name: HL7 International / Orders and Observations
+    telecom:
+      - system: url
+        value: http://www.hl7.org/Special/committees/orders
 # The global property corresponds to the IG.global property, but it
 # uses the type as the YAML key and the profile as its value. Since
 # FHIR does not explicitly disallow more than one profile per type,
