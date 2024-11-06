@@ -137,7 +137,6 @@ Instance: cgmDataSubmissionBundle
 InstanceOf: CGMDataSubmissionBundle
 Title: "CGM Data Submission Bundle Example"
 Usage: #example
-* meta.tag[cgmSubmissionBundle] = CGMCodes#cgm-data-submission-bundle
 * type = #batch
 * timestamp = "2024-05-02T14:30:00Z" 
 * entry[+].resource = cgmSummaryPDFExample

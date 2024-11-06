@@ -123,11 +123,13 @@ menu:
 # The following are simple examples to demonstrate what this might
 # look like:
 #
-# resources:
-#   Patient/my-example-patient:
-#     name: My Example Patient
-#     description: An example Patient
-#     exampleBoolean: true
+#resources:
+#  Bundle/real-world-example:
+#    name: Real-world Example Bundle
+#    description: Real-world example including raw sensor readings, summary values, and PDF DiagnosticReport
+#    exampleBoolean: true
+#    profile: http://hl7.org/uv/cgm/StructureDefinition/cgm-data-submission-bundle
+
 #   Patient/bad-example: omit
 #
 #

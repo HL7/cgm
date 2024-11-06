@@ -292,7 +292,6 @@ Description: "Codes to identify content associated with this IG"
 * ^caseSensitive = true
 * ^experimental = false
 * ^status = #active
-* #cgm-data-submission-bundle "CGM Bundle"
 * #cgm-data-submission-standing-order "CGM Submission Standing Order"
 
 CodeSystem: CGMSummaryCodesTemporary
@@ -465,8 +464,7 @@ Parent: Bundle
 Id: cgm-data-submission-bundle
 Title: "CGM Data Submission Bundle"
 Description: """
-Once a Data Submitter is connected to the EHR, it can write data by submitting a `batch` Bundle to the EHR FHIR sever's `/` submission endpoint.
-The submission bundle includes a `Bundle.meta.tag` value of `cgm-data-submission-bundle` to support ingestion workflows on servers with limited data ingestion capabilities. The tag has no impact on the meaning of the bundle, and can safely be ignored by servers that offer a general-purpose `POST /` endpoint.
+Once a Data Submitter is connected to the EHR, it can POST CGM data as a `transaction` Bundle, either to `[base]/` or to `[base]/$submit-cgm-bundle`, as advertised in  the EHR's `CapabilityStatement`.
 
 The Bundle `entry` array includes any combination of 
 
@@ -484,13 +482,6 @@ The Bundle `entry` array includes any combination of
 * CGM Sensor Readings (Moles per Volume) ([Profile](StructureDefinition-cgm-sensor-reading-moles-per-volume.html#profile), [Example](Observation-cgmSensorReadingMolesPerVolumeExample.json.html#root))
 """
 
-* meta.tag
-  * ^slicing.discriminator.path = "$this"
-  * ^slicing.discriminator.type = #value
-  * ^slicing.rules = #open
-* meta.tag contains cgmSubmissionBundle 1..1 MS
-* meta.tag[cgmSubmissionBundle] = CGMCodes#cgm-data-submission-bundle
-  * ^short = "Tag for CGM submission bundle"
 * timestamp 1..1 MS
   * ^short = "Instant the bundle was created"
 * entry
@@ -622,34 +613,39 @@ Context: ServiceRequest
 * extension[submissionDataProfile].valueCanonical 1..1 MS
   * ^short = "Data profile for submission"
 
+
 Instance: cgm-data-receiver
 InstanceOf: CapabilityStatement
 Usage: #definition
-Title: "CGM Data Receiver Capability Statement"
+Title: "CGM Data Receiver Capability Statement (Transaction)"
 Description: """
 The data receiver is a software system that receives and stores the CGM data submitted by the data submitter.
 
 This IG also refers to Data Receivers as "**EHRs**".
 
-Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
+This capability statement describes a transaction-based approach where the receiver accepts CGM data via FHIR transaction bundles.
+
+Any CGM Data Receiver implementing this approach SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
 """
 * status = #active
-* date =  2024-05-09
-* kind =  #requirements
+* date = 2024-05-09
+* kind = #requirements
 * fhirVersion = #4.0.1
-* format[0] = #json 
+* format[0] = #json
 * rest[+]
   * mode = #server
-  * interaction[+].code = #batch
+  * interaction[+].code = #transaction
   * resource[+]
     * type = #ServiceRequest
     * supportedProfile[+] = Canonical(cgm-data-submission-standing-order)
     * interaction[+].code = #read
     * interaction[+].code = #search-type
-    * searchParam[+].name = "patient"
-    * searchParam[=].type = #reference
-    * searchParam[+].name = "code"
-    * searchParam[=].type = #token
+    * searchParam[+]
+      * name = "patient"
+      * type = #reference
+    * searchParam[+]
+      * name = "code" 
+      * type = #token
   * resource[+]
     * type = #DiagnosticReport
     * supportedProfile[+] = Canonical(CGMSummaryPDF)
@@ -662,21 +658,140 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
     * interaction[+].code = #update
   * resource[+]
     * type = #Observation
-    * supportedProfile[+]  = Canonical(CGMSummaryObservation)
-    * supportedProfile[+]  = Canonical(CGMSummaryMeanGlucoseMassPerVolume)
-    * supportedProfile[+]  = Canonical(CGMSummaryMeanGlucoseMolesPerVolume)
-    * supportedProfile[+]  = Canonical(CGMSummaryTimesInRanges)
-    * supportedProfile[+]  = Canonical(CGMSummaryGMI)
-    * supportedProfile[+]  = Canonical(CGMSummaryCoefficientOfVariation)
-    * supportedProfile[+]  = Canonical(CGMSummaryDaysOfWear)
-    * supportedProfile[+]  = Canonical(CGMSummarySensorActivePercentage)
-    * supportedProfile[+]  = Canonical(CGMSensorReadingMassPerVolume)
-    * supportedProfile[+]  = Canonical(CGMSensorReadingMolesPerVolume)
+    * supportedProfile[+] = Canonical(CGMSummaryObservation)
+    * supportedProfile[+] = Canonical(CGMSummaryMeanGlucoseMassPerVolume)
+    * supportedProfile[+] = Canonical(CGMSummaryMeanGlucoseMolesPerVolume)
+    * supportedProfile[+] = Canonical(CGMSummaryTimesInRanges)
+    * supportedProfile[+] = Canonical(CGMSummaryGMI)
+    * supportedProfile[+] = Canonical(CGMSummaryCoefficientOfVariation)
+    * supportedProfile[+] = Canonical(CGMSummaryDaysOfWear)
+    * supportedProfile[+] = Canonical(CGMSummarySensorActivePercentage)
+    * supportedProfile[+] = Canonical(CGMSensorReadingMassPerVolume)
+    * supportedProfile[+] = Canonical(CGMSensorReadingMolesPerVolume)
     * interaction[+].code = #create
     * interaction[+].code = #update
-    * searchParam[+].name = "patient"
-    * searchParam[=].type = #reference
-    * searchParam[+].name = "category"
-    * searchParam[=].type = #token
-    * searchParam[+].name = "code"
-    * searchParam[=].type = #token
+    * searchParam[+]
+      * name = "patient"
+      * type = #reference
+    * searchParam[+]
+      * name = "category"
+      * type = #token
+    * searchParam[+]
+      * name = "code"
+      * type = #token
+
+Instance: cgm-data-receiver-by-operation
+InstanceOf: CapabilityStatement
+Usage: #definition
+Title: "CGM Data Receiver Capability Statement (Operation)"
+Description: """
+The data receiver is a software system that receives and stores the CGM data submitted by the data submitter.
+
+This IG also refers to Data Receivers as "**EHRs**".
+
+This capability statement describes an operation-based approach where the receiver accepts CGM data via a custom FHIR operation.
+
+Any CGM Data Receiver implementing this approach SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation"`.
+"""
+* status = #active
+* date = 2024-05-09
+* kind = #requirements
+* fhirVersion = #4.0.1
+* format[0] = #json
+* rest[+]
+  * mode = #server
+  * operation[+]
+    * name = "submit-cgm-bundle"
+    * definition = Canonical(submit-cgm-bundle)
+  * resource[+]
+    * type = #ServiceRequest
+    * supportedProfile[+] = Canonical(cgm-data-submission-standing-order)
+    * interaction[+].code = #read
+    * interaction[+].code = #search-type
+    * searchParam[+]
+      * name = "patient"
+      * type = #reference
+    * searchParam[+]
+      * name = "code" 
+      * type = #token
+  * resource[+]
+    * type = #DiagnosticReport
+    * supportedProfile[+] = Canonical(CGMSummaryPDF)
+    * interaction[+].code = #create
+    * interaction[+].code = #update
+  * resource[+]
+    * type = #Device
+    * supportedProfile[+] = Canonical(CGMDevice)
+    * interaction[+].code = #create
+    * interaction[+].code = #update
+  * resource[+]
+    * type = #Observation
+    * supportedProfile[+] = Canonical(CGMSummaryObservation)
+    * supportedProfile[+] = Canonical(CGMSummaryMeanGlucoseMassPerVolume)
+    * supportedProfile[+] = Canonical(CGMSummaryMeanGlucoseMolesPerVolume)
+    * supportedProfile[+] = Canonical(CGMSummaryTimesInRanges)
+    * supportedProfile[+] = Canonical(CGMSummaryGMI)
+    * supportedProfile[+] = Canonical(CGMSummaryCoefficientOfVariation)
+    * supportedProfile[+] = Canonical(CGMSummaryDaysOfWear)
+    * supportedProfile[+] = Canonical(CGMSummarySensorActivePercentage)
+    * supportedProfile[+] = Canonical(CGMSensorReadingMassPerVolume)
+    * supportedProfile[+] = Canonical(CGMSensorReadingMolesPerVolume)
+    * interaction[+].code = #create
+    * interaction[+].code = #update
+    * searchParam[+]
+      * name = "patient"
+      * type = #reference
+    * searchParam[+]
+      * name = "category"
+      * type = #token
+    * searchParam[+]
+      * name = "code"
+      * type = #token
+
+Instance: submit-cgm-bundle
+InstanceOf: OperationDefinition
+Usage: #definition
+Title: "Submit CGM Bundle Operation"
+Description: """
+This operation is used to submit CGM data. The input is a Bundle containing CGM data (summary reports, sensor readings, etc.) 
+and the output is a transaction-response Bundle containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
+
+The response Bundle will:
+- Maintain the same order as the submission Bundle
+- Include status and location information for each successfully processed entry
+- Include error details for any entries that could not be processed
+"""
+
+* id = "submit-cgm-bundle"
+* name = "SubmitCGMBundle"
+* title = "Submit CGM Bundle"
+* status = #active
+* kind = #operation
+* code = #submit-cgm-bundle
+* resource = #Bundle
+* system = false
+* type = true
+* instance = false
+* inputProfile = Canonical(CGMDataSubmissionBundle)
+* parameter[0]
+  * name = #resource
+  * use = #in
+  * min = 1
+  * max = "1"
+  * documentation = "A Bundle containing CGM data including summary reports, sensor readings, and related resources."
+  * type = #Bundle
+* parameter[1]
+  * name = #return
+  * use = #out
+  * min = 1
+  * max = "1"
+  * documentation = """
+    A Bundle of type transaction-response containing processing results for each submitted resource. Each entry in the response Bundle corresponds 
+    to an entry in the submission Bundle and includes:
+    - HTTP status code indicating success/failure
+    - Location header for successful creations
+    - OperationOutcome for any entry-specific errors
+    
+    If the entire operation fails, a single OperationOutcome resource is returned instead.
+    """
+  * type = #Bundle
