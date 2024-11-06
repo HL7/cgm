@@ -619,11 +619,7 @@ InstanceOf: CapabilityStatement
 Usage: #definition
 Title: "CGM Data Receiver Capability Statement (Transaction)"
 Description: """
-The data receiver is a software system that receives and stores the CGM data submitted by the data submitter.
-
-This IG also refers to Data Receivers as "**EHRs**".
-
-This capability statement describes a transaction-based approach where the receiver accepts CGM data via FHIR transaction bundles.
+This capability statement describes a **transaction-based approach** where the receiver accepts CGM data via FHIR transaction bundles POSTed to `[base]/`.
 
 Any CGM Data Receiver implementing this approach SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
 """
@@ -685,11 +681,7 @@ InstanceOf: CapabilityStatement
 Usage: #definition
 Title: "CGM Data Receiver Capability Statement (Operation)"
 Description: """
-The data receiver is a software system that receives and stores the CGM data submitted by the data submitter.
-
-This IG also refers to Data Receivers as "**EHRs**".
-
-This capability statement describes an operation-based approach where the receiver accepts CGM data via a custom FHIR operation.
+This capability statement describes an **operation-based approach** where the receiver accepts CGM data  via FHIR transaction bundles POSTed to `[base]/$submit-cgm-bundle`.
 
 Any CGM Data Receiver implementing this approach SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation"`.
 """

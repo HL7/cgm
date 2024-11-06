@@ -30,8 +30,6 @@ The data receiver is a software system that receives and stores the CGM data sub
 
 This IG also refers to Data Receivers as "**EHRs**".
 
-{{ site.data.resources["CapabilityStatement/cgm-data-receiver"].description }}
-
 ### Nominal Workflow
 
 <div style="max-width: 400px; float: none;">
@@ -117,7 +115,7 @@ Examples include but are not limited to:
 
 * CGM Data Receivers
 
-  * SHALL advertise support CGM by including exactly one of these canonical URLs in their CapabilityStatement.instantiates:
+  * SHALL advertise support for CGM Data Submission by including exactly one of these canonical URLs in their `CapabilityStatement.instantiates`:
     * `http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver` - for transaction-based submission to `[base]/`. With transaction-based submission, CGM Receivers SHALL accept all submitted entries or fail the transaction.
     * `http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation` - for operation-based submission to `[base]/$submit-cgm-bundle`. With operation-baesd submission, CGM Receivers MAY choose to store only a subset of resources in a submitted bundle
 
