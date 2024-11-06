@@ -137,7 +137,7 @@ Instance: cgmDataSubmissionBundle
 InstanceOf: CGMDataSubmissionBundle
 Title: "CGM Data Submission Bundle Example"
 Usage: #example
-* type = #batch
+* type = #transaction
 * timestamp = "2024-05-02T14:30:00Z" 
 * entry[+].resource = cgmSummaryPDFExample
 * entry[=].fullUrl = "https://example.org/DiagnosticReport/cgmSummaryPDFExample"

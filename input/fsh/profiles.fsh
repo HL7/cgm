@@ -481,7 +481,7 @@ The Bundle `entry` array includes any combination of
 * CGM Sensor Readings (Mass per Volume) ([Profile](StructureDefinition-cgm-sensor-reading-mass-per-volume.html#profile), [Example](Observation-cgmSensorReadingMassPerVolumeExample.json.html#root))
 * CGM Sensor Readings (Moles per Volume) ([Profile](StructureDefinition-cgm-sensor-reading-moles-per-volume.html#profile), [Example](Observation-cgmSensorReadingMolesPerVolumeExample.json.html#root))
 """
-
+* type = #transaction
 * timestamp 1..1 MS
   * ^short = "Instant the bundle was created"
 * entry
