@@ -15,9 +15,13 @@ copyrightYear: 2024+
 releaseLabel: ci-build # ci-build | draft | qa-preview | ballot | trial-use | release | update | normative+trial-use
 license: CC0-1.0
 jurisdiction: http://unstats.un.org/unsd/methods/m49/m49.htm#001 "World" # https://www.hl7.org/fhir/valueset-jurisdiction.html
+extension:
+  - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-wg
+    valueCode: oo
 publisher:
-  name: Argonaut
-  url: http://argo.run
+  name: HL7 International / Orders and Observations
+  url: 'https://www.hl7.org/Special/committees/orders/index.cfm'
+  email: ord@lists.HL7.org
 #
 dependencies:
   hl7.fhir.us.core: 6.1.0
@@ -60,6 +64,10 @@ parameters:
     - "Patient/*"
     - "ServiceRequest/*"
   path-data: "input/_data"
+  apply-contact: true
+  apply-jurisdiction: true
+  apply-publisher: true
+  apply-version: true
 #
 # ╭────────────────────────────────────────────menu.xml────────────────────────────────────────────╮
 # │ The menu property will be used to generate the input/menu.xml file. The menu is represented    │
@@ -174,7 +182,7 @@ menu:
 # * packageId
 #
 #
-# ╭──────────────────────────────────────────SUSHI flags───────────��───────────────────────────────╮
+# ╭──────────────────────────────────────────SUSHI flags─────────────────────────────────────────╮
 # │  The flags below configure aspects of how SUSHI processes FSH.                                 │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 # The FSHOnly flag indicates if only FSH resources should be exported.
