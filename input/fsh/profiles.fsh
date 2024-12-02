@@ -617,73 +617,11 @@ Context: ServiceRequest
 Instance: cgm-data-receiver
 InstanceOf: CapabilityStatement
 Usage: #definition
-Title: "CGM Data Receiver Capability Statement (Transaction)"
+Title: "CGM Data Receiver Capability Statement"
 Description: """
-This capability statement describes a **transaction-based approach** where the receiver accepts CGM data via FHIR transaction bundles POSTed to `[base]/`.
+This capability statement describes the requirements for systems receiving CGM data via the `$submit-cgm-bundle` operation.
 
-Any CGM Data Receiver implementing this approach SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
-"""
-* status = #active
-* date = 2024-05-09
-* kind = #requirements
-* fhirVersion = #4.0.1
-* format[0] = #json
-* rest[+]
-  * mode = #server
-  * interaction[+].code = #transaction
-  * resource[+]
-    * type = #ServiceRequest
-    * supportedProfile[+] = Canonical(cgm-data-submission-standing-order)
-    * interaction[+].code = #read
-    * interaction[+].code = #search-type
-    * searchParam[+]
-      * name = "patient"
-      * type = #reference
-    * searchParam[+]
-      * name = "code" 
-      * type = #token
-  * resource[+]
-    * type = #DiagnosticReport
-    * supportedProfile[+] = Canonical(CGMSummaryPDF)
-    * interaction[+].code = #create
-    * interaction[+].code = #update
-  * resource[+]
-    * type = #Device
-    * supportedProfile[+] = Canonical(CGMDevice)
-    * interaction[+].code = #create
-    * interaction[+].code = #update
-  * resource[+]
-    * type = #Observation
-    * supportedProfile[+] = Canonical(CGMSummaryObservation)
-    * supportedProfile[+] = Canonical(CGMSummaryMeanGlucoseMassPerVolume)
-    * supportedProfile[+] = Canonical(CGMSummaryMeanGlucoseMolesPerVolume)
-    * supportedProfile[+] = Canonical(CGMSummaryTimesInRanges)
-    * supportedProfile[+] = Canonical(CGMSummaryGMI)
-    * supportedProfile[+] = Canonical(CGMSummaryCoefficientOfVariation)
-    * supportedProfile[+] = Canonical(CGMSummaryDaysOfWear)
-    * supportedProfile[+] = Canonical(CGMSummarySensorActivePercentage)
-    * supportedProfile[+] = Canonical(CGMSensorReadingMassPerVolume)
-    * supportedProfile[+] = Canonical(CGMSensorReadingMolesPerVolume)
-    * interaction[+].code = #create
-    * interaction[+].code = #update
-    * searchParam[+]
-      * name = "patient"
-      * type = #reference
-    * searchParam[+]
-      * name = "category"
-      * type = #token
-    * searchParam[+]
-      * name = "code"
-      * type = #token
-
-Instance: cgm-data-receiver-by-operation
-InstanceOf: CapabilityStatement
-Usage: #definition
-Title: "CGM Data Receiver Capability Statement (Operation)"
-Description: """
-This capability statement describes an **operation-based approach** where the receiver accepts CGM data  via FHIR transaction bundles POSTed to `[base]/$submit-cgm-bundle`.
-
-Any CGM Data Receiver implementing this approach SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation"`.
+Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
 """
 * status = #active
 * date = 2024-05-09

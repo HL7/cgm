@@ -113,21 +113,17 @@ Examples include but are not limited to:
 
 **Technical Details**
 
-* CGM Data Receivers
-
-  * SHALL advertise support for CGM Data Submission by including exactly one of these canonical URLs in their `CapabilityStatement.instantiates`:
-    * `http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver` - for transaction-based submission to `[base]/`. With transaction-based submission, CGM Receivers SHALL accept all submitted entries or fail the transaction.
-    * `http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation` - for operation-based submission to `[base]/$submit-cgm-bundle`. With operation-baesd submission, CGM Receivers MAY choose to store only a subset of resources in a submitted bundle
-
-  * SHALL include a status code for each entry in the response bundle, indicating whether the entry was accepted 
-
+* CGM Data Receivers SHALL:
+  * Advertise support for CGM Data Submission by including `http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation` in their `CapabilityStatement.instantiates`
+  * Include a status code for each entry in the response bundle, indicating whether the entry was accepted 
+  * Support the `$submit-cgm-bundle` operation at the server level
+  * MAY choose to store only a subset of resources in a submitted bundle
   * SHOULD ensure that accepted submissions are available for read/search immediately after submission, but MAY subject these submissions to additional ingestion workflow steps
-
   * MAY respond with HTTP status code 429 (Too Many Requests) if a client is submitting data too frequently. When using this response, Receivers MAY include a `Retry-After` header specifying a time duration in seconds. For example: `Retry-After: 3600` suggests waiting one hour before the next submission attempt. This approach is complementary to, not a replacement for, pre-arranged submission schedules.
 
 * CGM Data Submitters SHALL:
-  1. Query the server's /metadata endpoint to determine which submission method is supported
-  2. POST a CGM Data Submission Bundle to the appropriate endpoint
+  1. Query the server's /metadata endpoint to confirm support for the `$submit-cgm-bundle` operation
+  2. POST a CGM Data Submission Bundle to `[base]/$submit-cgm-bundle`
 
 ### CGM Data Submission: Standing Orders
 
