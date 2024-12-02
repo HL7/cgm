@@ -4,7 +4,7 @@
 # │  see: https://fshschool.org/docs/sushi/configuration/.                                         │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 id: hl7.fhir.uv.cgm
-canonical: http://hl7.org/uv/cgm
+canonical: http://hl7.org/fhir/uv/cgm
 name: ArgoCGM
 title: Argo CGM Write
 description: Communicate Continuous Glucose Monitor (CGM) data using FHIR
@@ -174,7 +174,7 @@ menu:
 # * packageId
 #
 #
-# ╭──────────────────────────────────────────SUSHI flags───────────────────────────────────────────╮
+# ╭──────────────────────────────────────────SUSHI flags───────────��───────────────────────────────╮
 # │  The flags below configure aspects of how SUSHI processes FSH.                                 │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 # The FSHOnly flag indicates if only FSH resources should be exported.

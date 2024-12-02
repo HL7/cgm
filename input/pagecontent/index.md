@@ -114,7 +114,7 @@ Examples include but are not limited to:
 **Technical Details**
 
 * CGM Data Receivers SHALL:
-  * Advertise support for CGM Data Submission by including `http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation` in their `CapabilityStatement.instantiates`
+  * Advertise support for CGM Data Submission by including `http://hl7.org/fhir/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation` in their `CapabilityStatement.instantiates`
   * Include a status code for each entry in the response bundle, indicating whether the entry was accepted 
   * Support the `$submit-cgm-bundle` operation at the server level
   * MAY choose to store only a subset of resources in a submitted bundle

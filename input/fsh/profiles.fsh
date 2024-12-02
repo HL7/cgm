@@ -621,7 +621,7 @@ Title: "CGM Data Receiver Capability Statement"
 Description: """
 This capability statement describes the requirements for systems receiving CGM data via the `$submit-cgm-bundle` operation.
 
-Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
+Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/fhir/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
 """
 * status = #active
 * date = 2024-05-09
