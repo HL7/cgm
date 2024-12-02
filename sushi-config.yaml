@@ -20,7 +20,7 @@ extension:
     valueCode: oo
 publisher:
   name: HL7 International / Orders and Observations
-  url: 'https://www.hl7.org/Special/committees/orders/index.cfm'
+  url: http://www.hl7.org/Special/committees/orders
   email: ord@lists.HL7.org
 #
 dependencies:
