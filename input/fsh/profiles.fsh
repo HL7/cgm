@@ -2,33 +2,15 @@ Alias: $UCUM = http://unitsofmeasure.org
 Alias: $LNC = http://loinc.org
 Alias: $compliesWithProfile = http://hl7.org/fhir/StructureDefinition/structuredefinition-compliesWithProfile
 
-RuleSet: ObservationLabBase
+RuleSet: ObservationBase
 * ^extension[$compliesWithProfile].valueCanonical = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization"
 * subject 1..1 MS
   * ^short = "Patient for the report" 
-* category
-  * ^slicing.discriminator.type = #value
-  * ^slicing.discriminator.path = "$this"
-  * ^slicing.rules = #open
-* category contains
-    labCategory 1..1 MS
-* category[labCategory] = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
-  * ^short = "Lab category"
 
-RuleSet: DiagnosticReportLabBase
+RuleSet: DiagnosticReportBase
 * ^extension[$compliesWithProfile].valueCanonical = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-diagnosticreport-lab"
 * subject 1..1 MS
-* subject 1..1 MS
   * ^short = "Patient for the report" 
-* category
-  * ^slicing.discriminator.type = #value
-  * ^slicing.discriminator.path = "$this"
-  * ^slicing.rules = #open
-* category contains
-    labCategory 1..1 MS
-* category[labCategory] = http://terminology.hl7.org/CodeSystem/v2-0074#LAB
-  * ^short = "Lab category"
-
 
 RuleSet: GlucoseMassPerVolume
 * value[x] only Quantity
@@ -47,7 +29,7 @@ Parent: Observation
 Id: cgm-sensor-reading-mass-per-volume
 Title: "CGM Sensor Reading (Mass)"
 Description: "A continuous glucose monitoring (CGM) sensor reading represented in mass units."
-* insert ObservationLabBase
+* insert ObservationBase
 * insert GlucoseMassPerVolume
 * code = $LNC#99504-3
 * effectiveDateTime 1..1 MS
@@ -58,14 +40,14 @@ Parent: Observation
 Id: cgm-sensor-reading-moles-per-volume
 Title: "CGM Sensor Reading (Molar)"
 Description: "A continuous glucose monitoring (CGM) sensor reading represented in molar units."
-* insert ObservationLabBase
+* insert ObservationBase
 * insert GlucoseMolesPerVolume
-* code = $LNC#14745-4
+* code = $LNC#105272-9
 * effectiveDateTime 1..1 MS
   * ^short = "Time the measurement was taken"
 
 RuleSet: CGMSummaryBase
-* insert ObservationLabBase
+* insert ObservationBase
 * code
   * ^short = "Type of CGM summary observation"
 * effectivePeriod 1..1 MS
@@ -81,7 +63,7 @@ Parent: Observation
 Id: cgm-summary  
 Title: "CGM Summary Observation"
 Description: "An observation representing a summary of continuous glucose monitoring (CGM) data."
-* insert ObservationLabBase
+* insert ObservationBase
 * code = CGMSummaryWithLoinc
 * effectivePeriod 1..1 MS
   * ^short = "Reporting period for the CGM summary"
@@ -125,7 +107,7 @@ Parent: DiagnosticReport
 Id: cgm-summary-pdf
 Title: "CGM Summary PDF Report"
 Description: "A PDF report containing a summary of continuous glucose monitoring (CGM) data."
-* insert DiagnosticReportLabBase
+* insert DiagnosticReportBase
 * subject 1..1 MS
   * ^short = "Patient for the report" 
 * code = CGMSummaryCodesTemporary#cgm-summary
@@ -464,7 +446,7 @@ Parent: Bundle
 Id: cgm-data-submission-bundle
 Title: "CGM Data Submission Bundle"
 Description: """
-Once a Data Submitter is connected to the EHR, it can POST CGM data as a `transaction` Bundle, either to `[base]/` or to `[base]/$submit-cgm-bundle`, as advertised in  the EHR's `CapabilityStatement`.
+Once a Data Submitter is connected to the EHR, it can POST CGM data as a `transaction` Bundle to `[base]/$submit-cgm-bundle`.
 
 The Bundle `entry` array includes any combination of 
 

@@ -16,6 +16,7 @@ Title: "CGM Sensor Reading (Mass) Example"
 Usage: #example
 * status = #final 
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectiveDateTime = "2024-05-02T10:15:00Z"
 * valueQuantity.value = 120 
 
@@ -25,6 +26,7 @@ Title: "CGM Sensor Reading (Molar) Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectiveDateTime = "2024-05-02T10:30:00Z"
 * valueQuantity.value = 6.7
 
@@ -34,6 +36,7 @@ Title: "Mean Glucose (Mass) Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-31"
 * valueQuantity.value = 145
@@ -45,6 +48,7 @@ Title: "Mean Glucose (Molar) Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectivePeriod.start = "2024-05-01" 
 * effectivePeriod.end = "2024-05-31"
 * valueQuantity.value = 8.1
@@ -55,6 +59,7 @@ Title: "CGM Summary Times in Ranges Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-31"  
 * component[timeInVeryLow].valueQuantity.value = 3 
@@ -69,6 +74,7 @@ Title: "GMI Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-31" 
 * valueQuantity.value = 6.8
@@ -79,6 +85,7 @@ Title: "Coefficient of Variation Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-31"
 * valueQuantity.value = 34
@@ -90,6 +97,7 @@ Title: "Days of Wear Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-31" 
 * valueQuantity.value = 28
@@ -100,6 +108,7 @@ Title: "Sensor Active Percentage Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-31"
 * valueQuantity.value = 95
@@ -110,6 +119,7 @@ Title: "CGM Summary Example"
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-31"
 * hasMember[meanGlucoseMassPerVolume] = Reference(cgmSummaryMeanGlucoseMassPerVolumeExample)
@@ -126,6 +136,7 @@ Usage: #example
 * status = #final
 * issued = "2024-05-15T14:30:00Z"
 * subject = Reference(patientExample)
+* category = http://terminology.hl7.org/CodeSystem/v2-0074#LAB
 * effectivePeriod.start = "2024-05-01"
 * effectivePeriod.end = "2024-05-14"
 * presentedForm[cgmSummaryPDF]

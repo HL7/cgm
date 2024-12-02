@@ -119,11 +119,32 @@ Examples include but are not limited to:
   * Support the `$submit-cgm-bundle` operation at the server level
   * MAY choose to store only a subset of resources in a submitted bundle
   * SHOULD ensure that accepted submissions are available for read/search immediately after submission, but MAY subject these submissions to additional ingestion workflow steps
-  * MAY respond with HTTP status code 429 (Too Many Requests) if a client is submitting data too frequently. When using this response, Receivers MAY include a `Retry-After` header specifying a time duration in seconds. For example: `Retry-After: 3600` suggests waiting one hour before the next submission attempt. This approach is complementary to, not a replacement for, pre-arranged submission schedules.
+  * MAY respond with HTTP status code 429 (Too Many Requests) if a client is submitting data too frequently
 
 * CGM Data Submitters SHALL:
-  1. Query the server's /metadata endpoint to confirm support for the `$submit-cgm-bundle` operation
-  2. POST a CGM Data Submission Bundle to `[base]/$submit-cgm-bundle`
+  1. POST a CGM Data Submission Bundle to `[base]/$submit-cgm-bundle`
+
+**Handling Duplicate Submissions**
+
+When submitting CGM data, there are two complementary approaches for handling potential duplicates:
+
+1. **Client-Controlled Deduplication With Conditional Create**
+   - Clients MAY include `ifNoneExist` elements in Bundle.entry.request
+   - Servers SHOULD honor these conditional create requests when present
+   - Servers SHOULD persist client-supplied identifiers to support this pattern
+   - Example of Bundle.entry.request.ifNoneExists: `Observation?identifier=https://client.example.org|123`
+   - When honoring conditional creates, servers SHALL respond according to the [FHIR Conditional Create](https://hl7.org/fhir/http.html#ccreate) specification:
+     - 201 (Created) if the resource was created
+     - 200 (OK) if there was one match that prevented creation, with location header populated
+     - 412 (Precondition Failed) if multiple matches were found
+   - In the transaction-response Bundle, servers SHALL remove any Bundle.entry.request.ifNoneExists elements for entries that were not processed as conditional requests
+
+2. **Server-Side Deduplication**
+   - Servers MAY implement additional deduplication logic
+   - When duplicates are detected, servers SHOULD either:
+     - Return a 200 OK status indicating the submission was processed but not stored
+     - Return a 201 Created status with a location header pointing to the existing resource
+   - Servers SHALL document their deduplication strategy, including any support for client-supplied identifiers and conditional creates.
 
 ### CGM Data Submission: Standing Orders
 
@@ -240,6 +261,10 @@ WHERE
 |days-of-wear|104636-6|February 2025|
 |sensor-active-percentage|104637-4|February 2025|
 {:.grid}
+
+### Note on Categories
+
+This guide does not mandate specific `Observation.category` and `DiagnosticReport.category` values for CGM data. The appropriate categorization of CGM data will be addressed in future versions of this specification.
 
 ### Package Downloads
 
