@@ -5,9 +5,9 @@
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 id: hl7.fhir.uv.cgm
 canonical: http://hl7.org/fhir/uv/cgm
-name: ArgoCGM
-title: Argo CGM Write
-description: Communicate Continuous Glucose Monitor (CGM) data using FHIR
+name: Continuous Glucose Monitoring
+title: Continuous Glucose Monitoring
+description: Communicate Continuous Glucose Monitoring (CGM) data using FHIR
 status: draft # draft | active | retired | unknown
 version: 0.1.0
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
