@@ -113,16 +113,16 @@ Examples include but are not limited to:
 
 **Technical Details**
 
-* CGM Data Receivers SHALL:
-  * Advertise support for CGM Data Submission by including `http://hl7.org/fhir/uv/cgm/CapabilityStatement/cgm-data-receiver-by-operation` in their `CapabilityStatement.instantiates`
-  * Include a status code for each entry in the response bundle, indicating whether the entry was accepted 
-  * Support the `$submit-cgm-bundle` operation at the server level
+* CGM Data Submitters SHALL:
+  1. POST a CGM Data Submission Bundle to `[base]/$submit-cgm-bundle`
+
+* CGM Data Receivers:
+  * SHALL advertise support for CGM Data Submission by including `http://hl7.org/fhir/uv/cgm/CapabilityStatement/cgm-data-receiver` in their `CapabilityStatement.instantiates`
+  * SHALL Support the `$submit-cgm-bundle` operation at the server level
+  * SHALL Include a status code for each entry in the response Bundle, indicating whether the entry was accepted 
   * MAY choose to store only a subset of resources in a submitted bundle
   * SHOULD ensure that accepted submissions are available for read/search immediately after submission, but MAY subject these submissions to additional ingestion workflow steps
   * MAY respond with HTTP status code 429 (Too Many Requests) if a client is submitting data too frequently
-
-* CGM Data Submitters SHALL:
-  1. POST a CGM Data Submission Bundle to `[base]/$submit-cgm-bundle`
 
 **Handling Duplicate Submissions**
 
