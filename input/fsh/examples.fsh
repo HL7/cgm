@@ -192,19 +192,23 @@ InstanceOf: CGMDataSubmissionStandingOrder
 Usage: #example
 Title: "Example CGM Data Submission Standing Order"
 Description: """
-This example represents a standing order for continuous glucose monitoring (CGM) data submission.
-It specifies an order to submit data about Patient 123 once every two weeks, with each data submission including
-a summary of the CGM data and a PDF report of the CGM summary. This ensures the patient's CGM data is routinely
-available for clinical review.
+This example represents requirements for submitting CGM data. It specifies:
+- Submit data every two weeks
+- Include both CGM summary data and sensor readings
+- Each submission should cover the previous month of data
 """
 * status = #active
 * intent = #order
-* code = CGMCodes#cgm-data-submission-standing-order
+* code = CGMCodes#data-submission-standing-order
 * subject = Reference(Patient/example)
+* orderDetail[cgmSummary].text = "CGM Summary Data"
+* orderDetail[cgmSensorReadings].text = "CGM Sensor Readings"
 * extension[dataSubmissionSchedule].extension[submissionPeriod].valueQuantity.value = 2
 * extension[dataSubmissionSchedule].extension[submissionPeriod].valueQuantity = 'wk' "week"
+* extension[dataSubmissionSchedule].extension[lookbackPeriod].valueQuantity.value = 1 
+* extension[dataSubmissionSchedule].extension[lookbackPeriod].valueQuantity = 'mo' "month"
 * extension[dataSubmissionSchedule].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSummaryObservation)
-* extension[dataSubmissionSchedule].extension[submissionDataProfile][+].valueCanonical = Canonical(CGMSummaryPDF) 
+* extension[dataSubmissionSchedule].extension[submissionDataProfile][+].valueCanonical = Canonical(CGMSummaryPDF)
 
 Instance: cgmDeviceExample
 InstanceOf: CGMDevice

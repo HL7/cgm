@@ -274,7 +274,10 @@ Description: "Codes to identify content associated with this IG"
 * ^caseSensitive = true
 * ^experimental = false
 * ^status = #active
-* #cgm-data-submission-standing-order "CGM Submission Standing Order"
+* #data-submission "Data Submission Requirement" "Indicates a requirement for how data should be submitted"
+* #cgm-summary "CGM Summary Data" "Summary data from continuous glucose monitoring"
+* #cgm-sensor-readings "CGM Sensor Readings" "Individual sensor readings from continuous glucose monitoring"
+* #data-submission-standing-order "Data Submission Standing Order" "Indicates requirements for how data should be submitted"
 
 CodeSystem: CGMSummaryCodesTemporary
 Id: cgm-summary-codes-temporary
@@ -512,30 +515,22 @@ Parent: ServiceRequest
 Id: data-submission-standing-order
 Title: "Data Submission Standing Order"
 Description: """
-A base profile for standing orders that indicate data submission requirements. This profile can be used as-is for general data submissions or inherited by more specific data submission profiles.
+A base profile for standing orders that indicate data submission requirements.
 
 Key aspects of this profile:
-* Specifies what data should be included in each submission
-* Defines how often data should be submitted
-* Indicates the lookback period each submission should cover
-
-This profile uses the DataSubmissionSchedule extension to capture detailed submission requirements.
+* Uses a specific code to identify this as a data submission requirement
+* Specifies what data should be included via orderDetail elements
+* Defines submission schedule and lookback period via extensions
 """
 * intent = #order
-  * ^short = "Intent is #order"
-* code 1..1 MS
-  * ^short = "Code identifying the type of data submission standing order"
-  * ^definition = "A code that specifies the type of data submission this standing order represents. This should be populated with a value that clearly identifies the nature of the data being submitted."
+* code = CGMCodes#data-submission-standing-order
+  * ^short = "Code indicating this is a data submission requirement"
+* orderDetail 1..* MS
+  * ^short = "Types of data to be submitted"
 * subject 1..1 MS
   * ^short = "Patient for the submission order"
-  * ^definition = "Reference to the patient for whom this data submission standing order applies. This is required to ensure that submitted data is associated with the correct patient."
 * extension contains 
     DataSubmissionSchedule named dataSubmissionSchedule 0..*
-  * ^definition = "Contains one or more DataSubmissionSchedule extensions, each defining a specific schedule and type of data to be submitted."
-  * ^short = "DataSubmissionSchedule extensions"
-* extension[dataSubmissionSchedule]
-  * ^short = "Schedules for data submission"
-
 
 Profile: CGMDataSubmissionStandingOrder
 Parent: DataSubmissionStandingOrder
@@ -547,29 +542,17 @@ The Data Receiver can expose a standing order indicating:
 * What data a Data Submitter should include in each CGM Data Submission Bundle
 * How often a Data Submitter should submit CGM data
 * What lookback period should each submission cover
-
-**Guiding Data Submission**
-
-This standing order is modeled as a FHIR `ServiceRequest` resource, which 
-Data Submitters can query to guide their future submissions. The standing order specifyies the patient, the type of data to be submitted, and the desired frequency of submission.
-
-**DataSubmissionSchedule**
-
-The `DataSubmissionSchedule` extension contains:
-
-- `submissionPeriod`: Quantity with unit `d` for days, `wk` for weeks, `mo` for months, or `a` for years. This indicates how often the data should be submitted.
-- `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted according to the specified schedule.
-- `lookbackPeriod` (optional): Quantity with unit `d` for days, `wk` for weeks, `mo` for months, or `a` for years. This indicates the period of time the data submission should cover.
-
-Multiple `DataSubmissionSchedule` extensions can be included in a single `DataSubmissionRequest` resource if the Data Recipient prefers a different schedule for different data types.
-
-It's important to note that submissions can also be **manually triggered by a patient or provider** within an app. For example, if there is an upcoming appointment, the provider can click a button to manually trigger submission of the most up-to-date results. Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.
-
 """
-* intent = #order
-  * ^short = "Intent for CGM is #order"
-* code = CGMCodes#cgm-data-submission-standing-order
-  * ^short = "Code for CGM submission standing order"
+* orderDetail 1..* MS
+  * ^slicing.discriminator.type = #pattern
+  * ^slicing.discriminator.path = "text"
+  * ^slicing.rules = #open
+  * ^short = "Types of CGM data to be submitted"
+* orderDetail contains
+    cgmSummary 0..1 MS and
+    cgmSensorReadings 0..1 MS
+* orderDetail[cgmSummary].text = "CGM Summary Data"
+* orderDetail[cgmSensorReadings].text = "CGM Sensor Readings"
 * subject 1..1
   * ^short = "Patient for the CGM submission order"
 * extension[dataSubmissionSchedule]
