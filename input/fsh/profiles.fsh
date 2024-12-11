@@ -665,13 +665,18 @@ InstanceOf: OperationDefinition
 Usage: #definition
 Title: "Submit CGM Bundle Operation"
 Description: """
-This operation is used to submit CGM data. The input is a Bundle containing CGM data (summary reports, sensor readings, etc.) 
-and the output is a transaction-response Bundle containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
+This operation is used to submit CGM data. The input is a Bundle of type 'transaction' containing CGM data (summary reports, sensor readings, etc.) 
+and the output is a Bundle of type 'transaction-response' containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
 
 The response Bundle will:
 - Maintain the same order as the submission Bundle
 - Include status and location information for each successfully processed entry
 - Include error details for any entries that could not be processed
+
+Servers SHOULD support conditional create requests and persist client-supplied identifiers. Servers SHALL document in their developer documentation:
+- Which search parameters can be used in conditional create requests  
+- How client-supplied identifiers are handled
+- Any deduplication strategies employed
 """
 
 * id = "submit-cgm-bundle"
@@ -690,7 +695,7 @@ The response Bundle will:
   * use = #in
   * min = 1
   * max = "1"
-  * documentation = "A Bundle containing CGM data including summary reports, sensor readings, and related resources."
+  * documentation = "A Bundle of type 'transaction' containing CGM data including summary reports, sensor readings, and related resources."
   * type = #Bundle
 * parameter[1]
   * name = #return
@@ -698,7 +703,7 @@ The response Bundle will:
   * min = 1
   * max = "1"
   * documentation = """
-    A Bundle of type transaction-response containing processing results for each submitted resource. Each entry in the response Bundle corresponds 
+    A Bundle of type 'transaction-response' containing processing results for each submitted resource. Each entry in the response Bundle corresponds 
     to an entry in the submission Bundle and includes:
     - HTTP status code indicating success/failure
     - Location header for successful creations

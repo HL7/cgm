@@ -123,6 +123,11 @@ Examples include but are not limited to:
   * MAY choose to store only a subset of resources in a submitted bundle
   * SHOULD ensure that accepted submissions are available for read/search immediately after submission, but MAY subject these submissions to additional ingestion workflow steps
   * MAY respond with HTTP status code 429 (Too Many Requests) if a client is submitting data too frequently
+  * SHALL document their support for conditional create operations in their developer documentation, including:
+    * Whether conditional create requests are supported
+    * Which search parameters can be used in conditional create requests
+    * How client-supplied identifiers are handled
+    * Any deduplication strategies employed
 
 > **Note:** Unlike standard FHIR transactions where servers must process all entries as a single unit, the `$submit-cgm-bundle` operation allows servers to selectively accept and persist only a subset of the submitted resources.
 
@@ -132,21 +137,23 @@ When submitting CGM data, there are two complementary approaches for handling po
 
 1. **Client-Controlled Deduplication With Conditional Create**
    - Clients MAY include `ifNoneExist` elements in Bundle.entry.request
-   - Servers SHOULD honor these conditional create requests when present
+   - Servers SHOULD support conditional create requests
    - Servers SHOULD persist client-supplied identifiers to support this pattern
    - Example of Bundle.entry.request.ifNoneExists: `Observation?identifier=https://client.example.org|123`
-   - When honoring conditional creates, servers SHALL respond according to the [FHIR Conditional Create](https://hl7.org/fhir/http.html#ccreate) specification:
-     - 201 (Created) if the resource was created
-     - 200 (OK) if there was one match that prevented creation, with location header populated
-     - 412 (Precondition Failed) if multiple matches were found
-   - In the transaction-response Bundle, servers SHALL remove any Bundle.entry.request.ifNoneExists elements for entries that were not processed as conditional requests
+   - When supporting conditional creates, servers:
+     - SHALL document which search parameters can be used
+     - SHALL document how client-supplied identifiers are handled
+     - SHALL respond according to the [FHIR Conditional Create](https://hl7.org/fhir/http.html#ccreate) specification:
+       - 201 (Created) if the resource was created
+       - 200 (OK) if there was one match that prevented creation, with location header populated
+       - 412 (Precondition Failed) if multiple matches were found
 
 2. **Server-Side Deduplication**
    - Servers MAY implement additional deduplication logic
    - When duplicates are detected, servers SHOULD either:
      - Return a 200 OK status indicating the submission was processed but not stored
      - Return a 201 Created status with a location header pointing to the existing resource
-   - Servers SHALL document their deduplication strategy, including any support for client-supplied identifiers and conditional creates.
+   - Servers SHALL document their deduplication strategy in their developer documentation
 
 ### CGM Data Submission: Standing Orders
 
