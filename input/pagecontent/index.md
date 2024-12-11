@@ -137,9 +137,10 @@ When submitting CGM data, there are two complementary approaches for handling po
 
 1. **Client-Controlled Deduplication With Conditional Create**
    - Clients MAY include `ifNoneExist` elements in Bundle.entry.request
+   - Clients MAY adopt any strategy for generating Identifiers, including strategies to deterministically create identifiers based on the instance data
+   - Example of Bundle.entry.request.ifNoneExists: `Observation?identifier=https://client.example.org|123`
    - Servers SHOULD support conditional create requests
    - Servers SHOULD persist client-supplied identifiers to support this pattern
-   - Example of Bundle.entry.request.ifNoneExists: `Observation?identifier=https://client.example.org|123`
    - When supporting conditional creates, servers:
      - SHALL document which search parameters can be used
      - SHALL document how client-supplied identifiers are handled
