@@ -136,18 +136,21 @@ Examples include but are not limited to:
 When submitting CGM data, there are two complementary approaches for handling potential duplicates:
 
 1. **Client-Controlled Deduplication With Conditional Create**
-   - Clients MAY include `ifNoneExist` elements in Bundle.entry.request
+   - Clients MAY include `ifNoneExist` elements in `Bundle.entry.request`
    - Clients MAY adopt any strategy for generating Identifiers, including strategies to deterministically create identifiers based on the instance data
-   - Example of Bundle.entry.request.ifNoneExists: `Observation?identifier=https://client.example.org|123`
+   - Example of `Bundle.entry.request.ifNoneExists`: `Observation?identifier=https://client.example.org|123`
    - Servers SHOULD support conditional create requests
    - Servers SHOULD persist client-supplied identifiers to support this pattern
-   - When supporting conditional creates, servers:
+   - When a server supports conditional creates, it:
      - SHALL document which search parameters can be used
      - SHALL document how client-supplied identifiers are handled
      - SHALL respond according to the [FHIR Conditional Create](https://hl7.org/fhir/http.html#ccreate) specification:
        - 201 (Created) if the resource was created
        - 200 (OK) if there was one match that prevented creation, with location header populated
        - 412 (Precondition Failed) if multiple matches were found
+   - When a server does not support conditional creates, it:
+    - SHOULD not create resources with the `ifNoneExist` element and SHOULD indicate this with response status `400` in the `response.status` for the resources in the response bundle
+    - SHOULD create resources without `ifNoneExist` element according to other applicable rules.
 
 2. **Server-Side Deduplication**
    - Servers MAY implement additional deduplication logic
