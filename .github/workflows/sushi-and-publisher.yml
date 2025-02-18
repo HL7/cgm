@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build Implementation Guide
         run: |
@@ -24,7 +24,7 @@ jobs:
           docker run -v $(pwd):/home/publisher/ig ghcr.io/fhir/ig-publisher-gh java -jar publisher.jar -ig .
 
       - name: Upload Artifacts
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./output
 
