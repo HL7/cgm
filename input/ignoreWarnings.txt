@@ -1,15 +1,24 @@
 == Suppressed Messages ==
 
-# Re-examine when ready to publish
+# 01. Re-examine when ready to publish
 WARNING: 1: The HTML fragment 'ip-statements.xhtml' is not included anywhere in the produced implementation guide
 WARNING: 2: An HTML fragment from the set [cross-version-analysis.xhtml, cross-version-analysis-inline.xhtml] is not included anywhere in the produced implementation guide
 WARNING: 3: An HTML fragment from the set [dependency-table.xhtml, dependency-table-short.xhtml] is not included anywhere in the produced implementation guide
 WARNING: 4: The HTML fragment 'globals-table.xhtml' is not included anywhere in the produced implementation guide
 
-# Reviewed these; they are OK
+# 02. Reviewed these; they are OK
 %ImplementationGuide.definition.resource.description%
 %Reference to draft CodeSystem%
 %narrative for robust management%
 %all observations should have a performer%
 %http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence%
 %not validated for performance reasons%
+
+# 03. After ballot resolution and sufficient testing, the CGM editors will submit this code to THO as suggested.
+
+INFORMATION: CodeSystem/cgm: CodeSystem: Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
+
+# 04  As discussed in the guide's "Note on LOINC Codes" section (index.html#note-on-loinc-codes) This IG will use LOINC codes for all Observations and DiagnosticReports. LOINCs have been submitted, approved, and awaiting publication.
+
+WARNING: CodeSystem/cgm-summary-codes-temporary: CodeSystem.concept[0]: HL7 Defined CodeSystems should ensure that every concept has a definition
+INFORMATION: CodeSystem/cgm-summary-codes-temporary: CodeSystem: Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
