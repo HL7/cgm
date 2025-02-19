@@ -22,3 +22,7 @@ INFORMATION: CodeSystem/cgm: CodeSystem: Most code systems defined in HL7 IGs wi
 
 WARNING: CodeSystem/cgm-summary-codes-temporary: CodeSystem.concept[0]: HL7 Defined CodeSystems should ensure that every concept has a definition
 INFORMATION: CodeSystem/cgm-summary-codes-temporary: CodeSystem: Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
+
+# 05 This message refers to the FHIR F4 Bundle.language element which is not constrained in this IG.
+
+INFORMATION: StructureDefinition/cgm-data-submission-bundle: StructureDefinition.snapshot.element[4].binding.extension[0]: The extension http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet|5.2.0 is deprecated
