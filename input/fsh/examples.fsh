@@ -197,6 +197,8 @@ It specifies an order to submit data about Patient 123 once every two weeks, wit
 a summary of the CGM data and a PDF report of the CGM summary. This ensures the patient's CGM data is routinely
 available for clinical review.
 """
+* meta.profile[0] = "http://hl7.org/fhir/uv/cgm/StructureDefinition/data-submission-schedule"
+* meta.profile[+] = "http://hl7.org/fhir/uv/cgm/StructureDefinition/data-submission-standing-order"
 * status = #active
 * intent = #order
 * code = CGMCodes#cgm-data-submission-standing-order
