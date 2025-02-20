@@ -26,3 +26,7 @@ INFORMATION: CodeSystem/cgm-summary-codes-temporary: CodeSystem: Most code syste
 # 05 This message refers to the FHIR F4 Bundle.language element which is not constrained in this IG.
 
 INFORMATION: StructureDefinition/cgm-data-submission-bundle: StructureDefinition.snapshot.element[4].binding.extension[0]: The extension http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet|5.2.0 is deprecated
+
+# 06  CGM Data Submission Standing Order Profile is derived from the Data Submission Standing Order Resource Profile.  Because of the profile derivation, the example for the former - CGM Data Submission Standing Order - also conforms to and thus is an example of the latter.
+
+WARNING: StructureDefinition.where(url = 'http://hl7.org/fhir/uv/cgm/StructureDefinition/data-submission-standing-order'): The Implementation Guide contains no examples for this profile
