@@ -149,8 +149,9 @@ When submitting CGM data, there are two complementary approaches for handling po
        - 200 (OK) if there was one match that prevented creation, with location header populated
        - 412 (Precondition Failed) if multiple matches were found
    - When a server does not support conditional creates, it:
-    - SHOULD not create resources with the `ifNoneExist` element and SHOULD indicate this with response status `400` in the `response.status` for the resources in the response bundle
-    - SHOULD create resources without `ifNoneExist` element according to other applicable rules.
+     - SHOULD NOT create resources for `Bundle.entry` elements that have the `ifNoneExist` element and, for each of these entries, respond with a status `400` in the response Bundle.
+     - SHOULD create resources for other `Bundle.entry` elements according to other applicable rules.
+
 
 2. **Server-Side Deduplication**
    - Servers MAY implement additional deduplication logic
