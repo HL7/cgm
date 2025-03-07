@@ -284,7 +284,7 @@ WHERE
 
 This guide does not mandate specific `Observation.category` and `DiagnosticReport.category` values for CGM data. The appropriate categorization of CGM data will be addressed in future versions of this specification.
 
-<!-- To Satisfy the QA warning "An HTML fragment from the set [dependency-table.xhtml, dependency-table-short.xhtml, dependency-table-nontech.xhtml] is not included anywhere in the produced implementation guide " -->
+<!-- To Satisfy the QA warnings "An HTML fragment from the set [dependency-table.xhtml, dependency-table-short.xhtml, dependency-table-nontech.xhtml] is not included anywhere in the produced implementation guide", "The HTML fragment 'globals-table.xhtml' is not included anywhere in the produced implementation guide", and "The HTML fragment 'ip-statements.xhtml' is not included anywhere in the produced implementation guide" -->
 
 ### IG Dependencies
 
@@ -293,6 +293,14 @@ This guide is based on the FHIR R4 specification and relies on other implementat
 {% include dependency-table-short.xhtml %} 
 
 See the [Validation Page](qa.html) for the full list of dependencies.
+
+### Global Profiles
+
+{% include globals-table.xhtml %} 
+
+### Copyrights
+
+{% include ip-statements.xhtml %} 
 
 <!-- ==================================== -->
 
