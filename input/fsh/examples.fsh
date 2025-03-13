@@ -1,6 +1,7 @@
 Instance: patientExample
 InstanceOf: Patient
 Title: "Example Patient" 
+Description: "This example represents a female patient named Amy Peters, born on June 20, 1964."
 Usage: #example
 * identifier[0].use = #official
 * identifier[0].system = "http://example.org"
@@ -13,6 +14,7 @@ Usage: #example
 Instance: cgmSensorReadingMassPerVolumeExample
 InstanceOf: CGMSensorReadingMassPerVolume
 Title: "CGM Sensor Reading (Mass) Example"
+Description: "This example is an instance of the CGM Sensor Reading (Mass) profile. It represents a Continuous Glucose Monitoring (CGM) sensor reading for a patient, recording a final observation of a glucose level of 120 mg/dL (mass per volume)."
 Usage: #example
 * status = #final 
 * subject = Reference(patientExample)
@@ -23,6 +25,7 @@ Usage: #example
 Instance: cgmSensorReadingMolesPerVolumeExample
 InstanceOf: CGMSensorReadingMolesPerVolume
 Title: "CGM Sensor Reading (Molar) Example" 
+Description: "This example is an instance of the CGM Sensor Reading (Molar) profile. It represents a Continuous Glucose Monitoring (CGM) sensor reading for a patient, recording a final observation of a glucose level of 6.7 mmol/L (moles per volume) for the patient."
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -33,6 +36,7 @@ Usage: #example
 Instance: cgmSummaryMeanGlucoseMassPerVolumeExample
 InstanceOf: CGMSummaryMeanGlucoseMassPerVolume
 Title: "Mean Glucose (Mass) Example"
+Description: "This example is an instance of the Mean Glucose (Mass) profile. It represents a summary observation of the mean glucose level for a patient over the period from May 1, 2024, to May 31, 2024, with a final recorded value of 145 mg/dL (mass per volume)."
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -45,6 +49,7 @@ Usage: #example
 Instance: cgmSummaryMeanGlucoseMolesPerVolumeExample
 InstanceOf: CGMSummaryMeanGlucoseMolesPerVolume
 Title: "Mean Glucose (Molar) Example"
+Description: "This example is an instance of the Mean Glucose (Molar) profile. It represents a summary observation of the mean glucose level for a patient over the period from May 1, 2024, to May 31, 2024, with a final recorded value of 8.1 mmol/L (moles per volume)."
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -57,6 +62,7 @@ Instance: cgmSummaryTimesInRangesExample
 InstanceOf: CGMSummaryTimesInRanges
 Title: "CGM Summary Times in Ranges Example" 
 Usage: #example
+Description: "This example is an instance of the CGM Summary Times in Ranges profile. It represents a summary observation of the time a patient spent in different glucose ranges over the period from May 1, 2024, to May 31, 2024. The recorded values are 3% in very low range, 8% in low range, 65% in target range, 20% in high range, and 4% in very high range."
 * status = #final
 * subject = Reference(patientExample)
 * category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
@@ -71,6 +77,7 @@ Usage: #example
 Instance: cgmSummaryGMIExample
 InstanceOf: CGMSummaryGMI  
 Title: "GMI Example"
+Description: "This example is an instance of the Glucose Management Indicator (GMI) profile. It represents a summary observation of the estimated A1C-like value (GMI) for a patient over the period from May 1, 2024, to May 31, 2024, with a final recorded value of 6.8%."
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -82,6 +89,7 @@ Usage: #example
 Instance: cgmSummaryCoefficientOfVariationExample
 InstanceOf: CGMSummaryCoefficientOfVariation
 Title: "Coefficient of Variation Example"
+Description: "This example is an instance of the Coefficient of Variation (CV) profile. It represents a summary observation of the glucose variability for a patient over the period from May 1, 2024, to May 31, 2024, with a final recorded coefficient of variation value of 34%."
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -94,6 +102,7 @@ Usage: #example
 Instance: cgmSummaryDaysOfWearExample
 InstanceOf: CGMSummaryDaysOfWear
 Title: "Days of Wear Example"
+Description: "This example is an instance of the Days of Wear profile. It represents a summary observation of the number of days a Continuous Glucose Monitoring (CGM) device was worn by the patient over the period from May 1, 2024, to May 31, 2024, with a final recorded value of 28 days."
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -105,6 +114,7 @@ Usage: #example
 Instance: cgmSummarySensorActivePercentageExample  
 InstanceOf: CGMSummarySensorActivePercentage
 Title: "Sensor Active Percentage Example" 
+Description: "This example is an instance of the Sensor Active Percentage profile. It represents a summary observation of the percentage of time a Continuous Glucose Monitoring (CGM) sensor was active for the patient over the period from May 1, 2024, to May 31, 2024, with a final recorded value of 95%." 
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -116,6 +126,7 @@ Usage: #example
 Instance: cgmSummaryExample
 InstanceOf: CGMSummaryObservation
 Title: "CGM Summary Example"
+Description: "This example is an instance of the CGM Summary profile. It provides a consolidated summary of a patient's CGM data over a one-month period, linking to more detailed observations for specific metrics."
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -132,6 +143,7 @@ Usage: #example
 Instance: cgmSummaryPDFExample
 InstanceOf: CGMSummaryPDF
 Title: "CGM Summary PDF Report Example"
+Description: "This example is an instance of the CGM Summary PDF Report profile. It represents a PDF report summarizing Continuous Glucose Monitoring (CGM) data for the patient referenced as patientExample, covering the period from May 1, 2024, to May 14, 2024. The report was issued on May 15, 2024, at 2:30 PM UTC, and includes a (base64-encoded) PDF attachment."
 Usage: #example
 * status = #final
 * issued = "2024-05-15T14:30:00Z"
@@ -147,6 +159,7 @@ Usage: #example
 Instance: cgmDataSubmissionBundle
 InstanceOf: CGMDataSubmissionBundle
 Title: "CGM Data Submission Bundle Example"
+Description: "This example is an instance of the CGM Data Submission Bundle profile. It represents a transaction bundle submitted on May 2, 2024, at 2:30 PM UTC, containing multiple resources related to Continuous Glucose Monitoring (CGM) data. The bundle includes a CGM summary PDF report, summary observations (e.g., mean glucose, times in ranges, GMI, coefficient of variation, days of wear, sensor active percentage), and individual sensor readings."
 Usage: #example
 * type = #transaction
 * timestamp = "2024-05-02T14:30:00Z" 
@@ -209,6 +222,7 @@ available for clinical review.
 Instance: cgmDeviceExample
 InstanceOf: CGMDevice
 Title: "CGM Device Example"
+Description: "This example is an instance of the CGM Device profile. It represents a Continuous Glucose Monitoring (CGM) device named *Acme CGM System*."
 Usage: #example
 * deviceName[cgmDeviceName].name = "Acme CGM System"
 * serialNumber = "ABC123"  
