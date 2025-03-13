@@ -66,7 +66,7 @@ In this workflow, a patient-facing app connects directly to the EHR using the au
 {% assign launch_patient = "patient app will already know who the patient is, and only requires a corresponding ID from the EHR" %}
 {% assign offline_access = "establish persistent access for long-term submissions" %}
 
-* SMART on FHIR scopes that enable this scenario include:
+* If SMART on FHIR is being used, relevant scopes include:
   * `launch/patient`: {{ launch_patient }}
   * `offline_access`: {{ offline_access }}
   * Data Scopes:
