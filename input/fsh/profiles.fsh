@@ -476,6 +476,8 @@ The Bundle `entry` array includes any combination of
     observation 0..* MS and
     diagnosticReport 0..* MS and
     device 0..* MS
+* entry[patient].resource only Patient
+  * ^short = "Patient entry"
 * entry[device].resource only CGMDevice
   * ^short = "CGM device entry must conform to CGMDevice profile"
 * entry[diagnosticReport].resource only CGMSummaryPDF
