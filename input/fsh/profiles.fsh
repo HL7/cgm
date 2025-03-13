@@ -3,12 +3,10 @@ Alias: $LNC = http://loinc.org
 Alias: $compliesWithProfile = http://hl7.org/fhir/StructureDefinition/structuredefinition-compliesWithProfile
 
 RuleSet: ObservationBase
-* ^extension[$compliesWithProfile].valueCanonical = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization"
 * subject 1..1 MS
   * ^short = "Patient for the report" 
 
 RuleSet: DiagnosticReportBase
-* ^extension[$compliesWithProfile].valueCanonical = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-diagnosticreport-lab"
 * subject 1..1 MS
   * ^short = "Patient for the report" 
 

@@ -6,7 +6,7 @@ The Continuous Glucose Monitoring Implementation Guide provides a standardized a
 
 #### Patient connects a CGM app to her EHR (from home)
 
-Sarah, a type 1 diabetes patient, is switching to a new doctor. She has been using a CGM device and a patient app that stores her CGM data on her phone or in an app backend server. The app supports SMART on FHIR and is compatible with the CGM IG. Sarah authorizes the app to connect with her new provider's EHR, using her patient portal credentials to grant access to the phone app. The app then sends Sarah's CGM reports from the past 3 months to the new provider's EHR using FHIR, ensuring her new doctor has access to her recent CGM history for informed decision-making.
+Sarah, a type 1 diabetes patient, is switching to a new doctor. She has been using a CGM device and a patient app that stores her CGM data on her phone or in an app backend server. The app supports secure health data exchange standards compatible with the CGM IG. Sarah authorizes the app to connect with her new provider's EHR, using her patient portal credentials to grant access to the phone app. The app then sends Sarah's CGM reports from the past 3 months to the new provider's EHR using FHIR, ensuring her new doctor has access to her recent CGM history for informed decision-making.
 
 #### Provider connects a patient's CGM (during a patient encounter)
 
@@ -36,9 +36,9 @@ This IG also refers to Data Receivers as "**EHRs**".
 {% include flow.svg %}
 </div>
 
-1. **App Authorization (SMART on FHIR)**: The Data Submitter completes a [SMART App Launch](https://www.hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization) or [SMART Backend Services Authorization](https://www.hl7.org/fhir/smart-app-launch/backend-services.html) to securely access the EHR system.
+1. **App Authorization**: The Data Submitter completes an authorization process (e.g., [SMART App Launch](https://www.hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization) or [SMART Backend Services Authorization](https://www.hl7.org/fhir/smart-app-launch/backend-services.html)) to securely access the EHR system.
 
-2. **Establish EHR Patient ID**: After successful authorization, the Data Submitter determines the patient's `id`  within the EHR's FHIR Server. This can be done through the SMART's `launch/patient` context, through FHIR patient search, or using an out-of-band (OOB) process.
+2. **Establish EHR Patient ID**: After successful authorization, the Data Submitter determines the patient's `id`  within the EHR's FHIR Server. This can be done through authorization context (e.g., SMART's `launch/patient` context), through FHIR patient search, or using an out-of-band (OOB) process.
 
 3. **Learn Submission Preferences**: The Data Submitter determines the EHR's CGM data submission preferences by:
    a. Querying the EHR FHIR server for a specific `ServiceRequest` resource that contains the CGM data submission standing order, or
@@ -59,14 +59,14 @@ This workflow ensures that the Data Submitter is properly authorized, respects t
 
 #### Patient App to EHR
 
-In this workflow, a patient-facing app connects directly to the EHR using the SMART on FHIR capabilities of the EHR. The app acts as a SMART on FHIR client and goes through an OAuth process where the patient approves the app to access their EHR, granting write scopes. This ensures that both the patient and the source EHR system agree to allow the app to write data using an appropriate access token.
+In this workflow, a patient-facing app connects directly to the EHR using the authorization capabilities of the EHR (e.g., SMART on FHIR). The app acts as a client and goes through an authorization process where the patient approves the app to access their EHR, granting write scopes. This ensures that both the patient and the source EHR system agree to allow the app to write data using an appropriate access token.
 
 **Technical Details**
 
 {% assign launch_patient = "patient app will already know who the patient is, and only requires a corresponding ID from the EHR" %}
 {% assign offline_access = "establish persistent access for long-term submissions" %}
 
-* SMART on FHIR scopes that enable this scenario include:
+* If SMART on FHIR is being used, relevant scopes include:
   * `launch/patient`: {{ launch_patient }}
   * `offline_access`: {{ offline_access }}
   * Data Scopes:
@@ -78,7 +78,7 @@ In this workflow, a patient-facing app connects directly to the EHR using the SM
 
 #### Provider App to EHR
 
-For provider-facing apps, the app can be integrated directly into the EHR's user interface using the SMART on FHIR EHR launch workflow. This workflow is widely supported by EHRs and allows apps to run within the EHR's screen real estate. The EHR-integrated app might represent a device manufacturer or an independent diabetes management platform. The app can retrieve the patient's ID and demographics from the EHR in real-time using the FHIR US Core Patient API.
+For provider-facing apps, the app can be integrated directly into the EHR's user interface using the SMART on FHIR EHR launch workflow. This workflow is widely supported by EHRs and allows apps to run within the EHR's screen real estate. The EHR-integrated app might represent a device manufacturer or an independent diabetes management platform. The app can retrieve the patient's ID and demographics from the EHR in real-time using the FHIR Patient API.
 
 To correlate the patient with a data record in the app's backend system, an in-brand or out-of-band process can be employed.
 
