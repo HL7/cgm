@@ -4,14 +4,20 @@ start
 scale 500 width
 
 
-partition "App Authorization (SMART on FHIR)" {
-    :Obtain OAuth token;
+partition "App Authorization" {
+    :Obtain authorization token;
+    note right
+        e.g., SMART on FHIR OAuth
+    end note
 }
 
 partition "Establish EHR Patient ID" {
-    if (SMART context?) then (yes)
+    if (Authorization context?) then (yes)
         :Read patient ID
-         from SMART context;
+         from authorization context;
+        note right
+            e.g., SMART's launch/patient
+        end note
     else (no)
         :Obtain patient ID
          out-of-band;
@@ -51,7 +57,8 @@ partition "Submission Triggers" {
 :POST Bundle
  to EHR;
 note right 
-    Using SMART on FHIR Access Token
+    Using authorization token
+    (e.g., SMART on FHIR Access Token)
 end note
 
 stop

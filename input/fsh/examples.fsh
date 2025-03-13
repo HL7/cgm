@@ -1,5 +1,5 @@
 Instance: patientExample
-InstanceOf: http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+InstanceOf: Patient
 Title: "Example Patient" 
 Usage: #example
 * identifier[0].use = #official
@@ -200,7 +200,7 @@ available for clinical review.
 * status = #active
 * intent = #order
 * code = CGMCodes#cgm-data-submission-standing-order
-* subject = Reference(Patient/example)
+* subject = Reference(Patient/patientExample)
 * extension[dataSubmissionSchedule].extension[submissionPeriod].valueQuantity.value = 2
 * extension[dataSubmissionSchedule].extension[submissionPeriod].valueQuantity = 'wk' "week"
 * extension[dataSubmissionSchedule].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSummaryObservation)

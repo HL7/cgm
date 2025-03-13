@@ -6,7 +6,7 @@ The Continuous Glucose Monitoring Implementation Guide provides a standardized a
 
 #### Patient Connects a CGM App to a Provider's Electronic Health Record (EHR)
 
-Sarah, a type 1 diabetes patient, is switching to a new doctor. She has been using a CGM device and a patient app that stores her CGM data on her phone or in an app backend server. The app supports SMART on FHIR and is compatible with the CGM IG. Sarah authorizes the app to connect with her new provider's EHR, using her patient portal credentials to grant access to the phone app. The app then sends Sarah's CGM reports from the past 3 months to the new provider's EHR using FHIR, ensuring her new doctor can access her recent CGM history for informed decision-making.
+Sarah, a type 1 diabetes patient, is switching to a new doctor. She has been using a CGM device and a patient app that stores her CGM data on her phone or in an app backend server. The app supports secure health data exchange standards compatible with the CGM IG. Sarah authorizes the app to connect with her new provider's EHR, using her patient portal credentials to grant access to the phone app. The app then sends Sarah's CGM reports from the past 3 months to the new provider's EHR using FHIR, ensuring her new doctor can access her recent CGM history for informed decision-making.
 
 #### Provider Connects to a Patient's CGM Data During a Patient Encounter
 Dr. Johnson treats Michael, a type 2 diabetes patient struggling with glucose management. Dr. Johnson's practice uses "CloudCGM", a (fictional) cloud-based diabetes management platform that supports the CGM IG. Michael has a patient account in the CloudCGM platform, and a "Sharing Code" appears in his account settings. During a clinic visit, Dr. Johnson launches the CloudCGM SMART on FHIR app inside of the EHR, entering the sharing code that Michael reads aloud. This process establishes a linkage between Michael's records in the two systems. CloudCGM is now able to submit data every week into Dr. Johnson's EHR, with results appearing in the native interface and easily incorporated into visit notes.
@@ -35,9 +35,9 @@ This IG also refers to Data Receivers as "**EHRs**".
 {% include flow.svg %}
 </div>
 
-1. **App Authorization (SMART on FHIR)**: The Data Submitter completes a [SMART App Launch](https://www.hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization) or [SMART Backend Services Authorization](https://www.hl7.org/fhir/smart-app-launch/backend-services.html) to securely access the EHR system.
+1. **App Authorization**: The Data Submitter completes an authorization process (e.g., [SMART App Launch](https://www.hl7.org/fhir/smart-app-launch/app-launch.html#app-launch-launch-and-authorization) or [SMART Backend Services Authorization](https://www.hl7.org/fhir/smart-app-launch/backend-services.html)) to securely access the EHR system.
 
-2. **Establish EHR Patient ID**: After successful authorization, the Data Submitter determines the "logical id" of the patient's `Patient` resource within the EHR's FHIR Server. The logical id can be discovered through SMART's `launch/patient` context, FHIR patient search, or an out-of-band process.
+2. **Establish EHR Patient ID**: After successful authorization, the Data Submitter determines the "logical id" of the patient's `Patient` resource within the EHR's FHIR Server. The logical id can be discovered through authorization context (e.g., SMART's `launch/patient` context), through FHIR patient search, or using an out-of-band (OOB) process.
 
 3. **Learn Submission Preferences**: The Data Submitter determines the EHR's CGM data submission preferences by:
    
@@ -62,14 +62,14 @@ This workflow ensures that the Data Submitter is authorized, respects the EHR's 
 
 #### Patient App to EHR
 
-In this workflow, a patient-facing app connects directly to the EHR using the SMART on FHIR capabilities of the EHR. The app acts as a SMART on FHIR client and goes through an OAuth process where the patient approves the app to access their EHR, granting write scopes. This process ensures that both the patient and the source EHR system agree to allow the app to write data using an appropriate access token.
+In this workflow, a patient-facing app connects directly to the EHR using the authorization capabilities of the EHR (e.g., SMART on FHIR). The app acts as a client and goes through an authorization process where the patient approves the app to access their EHR, granting write scopes. This process ensures that both the patient and the source EHR system agree to allow the app to write data using an appropriate access token.
 
 **Technical Details**
 
 {% assign launch_patient = "patient app will already know who the patient is, and only requires a corresponding ID from the EHR" %}
 {% assign offline_access = "establish persistent access for long-term submissions" %}
 
-* SMART on FHIR scopes that enable this scenario include:
+* If SMART on FHIR is being used, relevant scopes include:
   * `launch/patient`: {{ launch_patient }}
   * `offline_access`: {{ offline_access }}
   * Data Scopes:
@@ -81,7 +81,7 @@ In this workflow, a patient-facing app connects directly to the EHR using the SM
 
 #### Provider App to EHR
 
-For provider-facing apps, the app can be integrated directly into the EHR's user interface using the SMART on FHIR EHR launch workflow. EHRs widely support this workflow, allowing apps to run within the EHR's screen real estate. The EHR-integrated app might represent a device manufacturer or an independent diabetes management platform. The app can retrieve the patient's ID and demographics from the EHR in real time using the FHIR US Core Patient API.
+For provider-facing apps, the app can be integrated directly into the EHR's user interface using the SMART on FHIR EHR launch workflow. EHRs widely support this workflow, allowing apps to run within the EHR's screen real estate. The EHR-integrated app might represent a device manufacturer or an independent diabetes management platform. The app can retrieve the patient's ID and demographics from the EHR in real-time using the FHIR Patient API.
 
 In-band or out-of-band processes can correlate the patient with a data record in the app's backend system.
 
@@ -141,28 +141,28 @@ Examples include but are not limited to:
 When submitting CGM data, there are two complementary approaches for handling potential duplicates:
 
 1. **Client-Controlled Deduplication With Conditional Create**
-   - Clients MAY include [`ifNoneExist`]({{site.data.fhir.path}}bundle-definitions.html#Bundle.entry.request.ifNoneExist) elements in `Bundle.entry.request`
-   - Clients MAY adopt any strategy for generating Identifiers, including strategies to deterministically create identifiers based on the instance data
-   - Example of `Bundle.entry.request.ifNoneExist`: `identifier=https://client.example.org|123`
-   - Servers SHOULD support conditional create requests
-   - Servers SHOULD persist client-supplied identifiers to support this pattern
-   - When a server supports conditional creates, it:
-     - SHALL document which search parameters can be used
-     - SHALL document how client-supplied identifiers are handled
-     - SHALL respond according to the [FHIR Conditional Create](https://hl7.org/fhir/http.html#ccreate) specification:
-       - 201 (Created) if the resource was created
-       - 200 (OK) if there was one match that prevented creation, with the location header populated
-       - 412 (Precondition Failed) if multiple matches were found
-   - When a server does not support conditional creates, it:
-    - SHOULD not create resources with the `ifNoneExist` element and SHOULD indicate this with response status `400` in the `response.status` for the resources in the response bundle
-    - SHOULD create resources without the `ifNoneExist` element according to other applicable rules.
+  * Clients MAY include [`ifNoneExist`]({{site.data.fhir.path}}bundle-definitions.html#Bundle.entry.request.ifNoneExist) elements in `Bundle.entry.request`
+  * Clients MAY adopt any strategy for generating Identifiers, including strategies to deterministically create identifiers based on the instance data
+  * Example of `Bundle.entry.request.ifNoneExist`: `?identifier=https://client.example.org|123`
+  * Servers SHOULD support conditional create requests
+  * Servers SHOULD persist client-supplied identifiers to support this pattern
+  * When a server supports conditional creates, it:
+    * SHALL document which search parameters can be used
+    * SHALL document how client-supplied identifiers are handled
+    * SHALL respond according to the [FHIR Conditional Create](https://hl7.org/fhir/http.html#ccreate) specification:
+      * 201 (Created) if the resource was created
+      * 200 (OK) if there was one match that prevented creation, with the location header populated
+      * 412 (Precondition Failed) if multiple matches were found
+  * When a server does not support conditional creates, it:
+    * SHOULD not create resources with the `ifNoneExist` element and SHOULD indicate this with response status `400` in the `response.status` for the resources in the response bundle
+    * SHOULD create resources without the `ifNoneExist` element according to other applicable rules.
 
 2. **Server-Side Deduplication**
-   - Servers MAY implement additional deduplication logic
-   - When duplicates are detected, servers SHOULD either:
-     - Return a 200 OK status indicating the submission was processed but not stored
-     - Return a 201 Created status with a location header pointing to the existing resource
-   - Servers SHALL document their deduplication strategy in their developer documentation
+  * Servers MAY implement additional deduplication logic
+  * When duplicates are detected, servers SHOULD either:
+    * Return a 200 OK status indicating the submission was processed but not stored
+    * Return a 201 Created status with a location header pointing to the existing resource
+  * Servers SHALL document their deduplication strategy in their developer documentation
 
 ### CGM Data Submission: Standing Orders
 
@@ -183,10 +183,10 @@ When submitting CGM data, there are two complementary approaches for handling po
 
 The Data Submission protocol defined above enables standardized integration between CGM data sources and receiving systems like EHRs. However, there are situations where tight integration is not feasible or desired. [SMART Health Links](https://docs.smarthealthit.org/smart-health-links/) (SHLinks) provide a complementary method for sharing CGM data and reports among patients, caregivers, clinicians, and other authorized parties. SHLinks allow users to easily share selected subsets of CGM data as needed, offering an always up-to-date data feed without the need for direct system integration between the sharing parties. Specific scenarios where SHLinks provide value include:
 
-- Sharing with parties that cannot or do not integrate with the Data Submission protocol, such as schools, camps, temporary caregivers during travel, etc.
-- Allowing patients granular control over what specific data is shared and with whom, beyond just provider-patient contexts.
-- Providing a simple, accessible sharing method for non-technical users like patients and caregivers.
-- Enabling temporary data sharing for finite needs like referrals, research studies, or consultations.
+* Sharing with parties that cannot or do not integrate with the Data Submission protocol, such as schools, camps, temporary caregivers during travel, etc.
+* Allowing patients granular control over what specific data is shared and with whom, beyond just provider-patient contexts.
+* Providing a simple, accessible sharing method for non-technical users like patients and caregivers.
+* Enabling temporary data sharing for finite needs like referrals, research studies, or consultations.
 
 This IG ensures comprehensive interoperability that accommodates diverse real-world requirements across the CGM data-sharing landscape by defining a tightly orchestrated Data Submission API and a more loosely coupled SHLinks capability.
 
@@ -199,9 +199,9 @@ This IG ensures comprehensive interoperability that accommodates diverse real-wo
 #### Workflow
 
 1. The SHLink Creator allows the user to select the desired CGM data and reports to share and the time period to include. Options include:
-   - Data to include: CGM Summary, CGM Sensor Readings, CGM Devices
-   - Time period: Past 2 weeks, 1 month, 3 months, etc.
-   - Link expiration time, if any
+    * Data to include: CGM Summary, CGM Sensor Readings, CGM Devices
+    * Time period: Past 2 weeks, 1 month, 3 months, etc.
+    * Link expiration time, if any
 
 2. The SHLink Creator generates a SHLink containing the user-selected content, encrypted with a unique key.
 
