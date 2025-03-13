@@ -1,4 +1,5 @@
 Instance: patientExample
+InstanceOf: Patient
 Title: "Example Patient" 
 Usage: #example
 * identifier[0].use = #official
