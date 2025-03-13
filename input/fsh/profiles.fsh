@@ -272,7 +272,7 @@ Description: "Codes to identify content associated with this IG"
 * ^caseSensitive = true
 * ^experimental = false
 * ^status = #active
-* #cgm-data-submission-standing-order "CGM Submission Standing Order"
+* #cgm-data-submission-standing-order "CGM Submission Standing Order" "A ServiceRequest code that identifies a \"standing order\" for CGM data."
 
 CodeSystem: CGMSummaryCodesTemporary
 Id: cgm-summary-codes-temporary
