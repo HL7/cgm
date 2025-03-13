@@ -302,7 +302,7 @@ Title: "Mapping from CGM Temporary Codes to LOINC"
 Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
 * name  = "CGMSummaryToLoinc"
 * experimental = false
-* status = #draft
+* status = #active
 * group[+].source = Canonical(CGMSummaryCodesTemporary)
 * group[=].target = $LNC
 * group[=].element[+]
