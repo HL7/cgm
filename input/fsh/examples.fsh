@@ -1,5 +1,5 @@
 Instance: patientExample
-InstanceOf: http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+InstanceOf: Patient
 Title: "Example Patient" 
 Usage: #example
 * identifier[0].use = #official

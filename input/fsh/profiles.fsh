@@ -3,12 +3,10 @@ Alias: $LNC = http://loinc.org
 Alias: $compliesWithProfile = http://hl7.org/fhir/StructureDefinition/structuredefinition-compliesWithProfile
 
 RuleSet: ObservationBase
-* ^extension[$compliesWithProfile].valueCanonical = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization"
 * subject 1..1 MS
   * ^short = "Patient for the report" 
 
 RuleSet: DiagnosticReportBase
-* ^extension[$compliesWithProfile].valueCanonical = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-diagnosticreport-lab"
 * subject 1..1 MS
   * ^short = "Patient for the report" 
 
@@ -478,8 +476,6 @@ The Bundle `entry` array includes any combination of
     observation 0..* MS and
     diagnosticReport 0..* MS and
     device 0..* MS
-* entry[patient].resource only us-core-patient
-  * ^short = "Patient entry is a US Core Patient"
 * entry[device].resource only CGMDevice
   * ^short = "CGM device entry must conform to CGMDevice profile"
 * entry[diagnosticReport].resource only CGMSummaryPDF
