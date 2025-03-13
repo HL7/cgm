@@ -9,10 +9,10 @@ name: Continuous Glucose Monitoring
 title: Continuous Glucose Monitoring
 description: Communicate Continuous Glucose Monitoring (CGM) data using FHIR
 status: active # draft | active | retired | unknown
-version: 0.1.0
+version: 1.0.0-ballot
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
-copyrightYear: 2024+
-releaseLabel: ci-build # ci-build | draft | qa-preview | ballot | trial-use | release | update | normative+trial-use
+copyrightYear: 2025+
+releaseLabel: STU 1 Ballot # ci-build | draft | qa-preview | ballot | trial-use | release | update | normative+trial-use
 license: CC0-1.0
 jurisdiction: http://unstats.un.org/unsd/methods/m49/m49.htm#001 "World" # https://www.hl7.org/fhir/valueset-jurisdiction.html
 extension:
