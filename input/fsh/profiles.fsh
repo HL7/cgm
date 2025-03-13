@@ -444,7 +444,7 @@ Parent: Bundle
 Id: cgm-data-submission-bundle
 Title: "CGM Data Submission Bundle"
 Description: """
-Once a Data Submitter is connected to the EHR, it can POST CGM data as a `transaction` Bundle to `[base]/$submit-cgm-bundle`.
+Once a Data Submitter is connected to the EHR, it can POST CGM data as a [`transaction` Bundle](https://hl7.org/fhir/R4/http.html#transaction)  to `[base]/$submit-cgm-bundle`.
 
 The Bundle `entry` array includes any combination of 
 
@@ -454,7 +454,7 @@ The Bundle `entry` array includes any combination of
   * Mean Glucose (Moles per Volume) ([Profile](StructureDefinition-cgm-summary-mean-glucose-moles-per-volume.html#profile), [Example](Observation-cgmSummaryMeanGlucoseMolesPerVolumeExample.json.html#root))
   * Times in Ranges ([Profile](StructureDefinition-cgm-summary-times-in-ranges.html#profile), [Example](Observation-cgmSummaryTimesInRangesExample.json.html#root))
   * Glucose Management Index ([Profile](StructureDefinition-cgm-summary-gmi.html#profile), [Example](Observation-cgmSummaryGMIExample.json.html#root))
-  * Coefficient of Variations ([Profile](StructureDefinition-cgm-summary-coefficient-of-variation.html#profile), [Example](Observation-cgmSummaryCoefficientOfVariationExample.json.html#root))
+  * Coefficient of Variation ([Profile](StructureDefinition-cgm-summary-coefficient-of-variation.html#profile), [Example](Observation-cgmSummaryCoefficientOfVariationExample.json.html#root))
   * Sensor Days of Wear ([Profile](StructureDefinition-cgm-summary-days-of-wear.html#profile), [Example](Observation-cgmSummaryDaysOfWearExample.json.html#root))
   * Sensor Active Percentage ([Profile](StructureDefinition-cgm-summary-sensor-active-percentage.html#profile), [Example](Observation-cgmSummarySensorActivePercentageExample.json.html#root))
 * CGM Devices ([Profile](StructureDefinition-cgm-device.html#profile), [Example](Device-cgmDeviceExample.json.html#root))
@@ -548,12 +548,12 @@ The Data Receiver can expose a standing order indicating:
 
 **Guiding Data Submission**
 
-This standing order is modeled as a FHIR `ServiceRequest` resource, which 
-Data Submitters can query to guide their future submissions. The standing order specifyies the patient, the type of data to be submitted, and the desired frequency of submission.
+This standing order is modeled as a FHIR [`ServiceRequest`](https://hl7.org/fhir/R4/servicerequest.html) resource, which 
+Data Submitters can query to guide their future submissions. The standing order specifies the patient, the type of data to be submitted, and the frequency of submission.
 
 **DataSubmissionSchedule**
 
-The `DataSubmissionSchedule` extension contains:
+The [`DataSubmissionSchedule`](StructureDefinition-data-submission-schedule.html) extension contains:
 
 - `submissionPeriod`: Quantity with unit `d` for days, `wk` for weeks, `mo` for months, or `a` for years. This indicates how often the data should be submitted.
 - `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted according to the specified schedule.
@@ -561,7 +561,7 @@ The `DataSubmissionSchedule` extension contains:
 
 Multiple `DataSubmissionSchedule` extensions can be included in a single `DataSubmissionRequest` resource if the Data Recipient prefers a different schedule for different data types.
 
-It's important to note that submissions can also be **manually triggered by a patient or provider** within an app. For example, if there is an upcoming appointment, the provider can click a button to manually trigger submission of the most up-to-date results. Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.
+It's important to note that a patient or provider can also **manually trigger** a submission within an app. For example, if there is an upcoming appointment, the provider can click a button to fetch the most up-to-date results. Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.
 
 """
 * intent = #order
