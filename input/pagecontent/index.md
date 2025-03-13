@@ -136,28 +136,28 @@ Examples include but are not limited to:
 When submitting CGM data, there are two complementary approaches for handling potential duplicates:
 
 1. **Client-Controlled Deduplication With Conditional Create**
-   - Clients MAY include `ifNoneExist` elements in `Bundle.entry.request`
-   - Clients MAY adopt any strategy for generating Identifiers, including strategies to deterministically create identifiers based on the instance data
-   - Example of `Bundle.entry.request.ifNoneExist`: `identifier=https://client.example.org|123`
-   - Servers SHOULD support conditional create requests
-   - Servers SHOULD persist client-supplied identifiers to support this pattern
-   - When a server supports conditional creates, it:
-     - SHALL document which search parameters can be used
-     - SHALL document how client-supplied identifiers are handled
-     - SHALL respond according to the [FHIR Conditional Create](https://hl7.org/fhir/http.html#ccreate) specification:
-       - 201 (Created) if the resource was created
-       - 200 (OK) if there was one match that prevented creation, with location header populated
-       - 412 (Precondition Failed) if multiple matches were found
-   - When a server does not support conditional creates, it:
-    - SHOULD not create resources with the `ifNoneExist` element and SHOULD indicate this with response status `400` in the `response.status` for the resources in the response bundle
-    - SHOULD create resources without `ifNoneExist` element according to other applicable rules.
+  * Clients MAY include `ifNoneExist` elements in `Bundle.entry.request`
+  * Clients MAY adopt any strategy for generating Identifiers, including strategies to deterministically create identifiers based on the instance data
+  * Example of `Bundle.entry.request.ifNoneExist`: `?identifier=https://client.example.org|123`
+  * Servers SHOULD support conditional create requests
+  * Servers SHOULD persist client-supplied identifiers to support this pattern
+  * When a server supports conditional creates, it:
+    * SHALL document which search parameters can be used
+    * SHALL document how client-supplied identifiers are handled
+    * SHALL respond according to the [FHIR Conditional Create](https://hl7.org/fhir/http.html#ccreate) specification:
+      * 201 (Created) if the resource was created
+      * 200 (OK) if there was one match that prevented creation, with location header populated
+      * 412 (Precondition Failed) if multiple matches were found
+  * When a server does not support conditional creates, it:
+    * SHOULD not create resources with the `ifNoneExist` element and SHOULD indicate this with response status `400` in the `response.status` for the resources in the response bundle
+    * SHOULD create resources without `ifNoneExist` element according to other applicable rules.
 
 2. **Server-Side Deduplication**
-   - Servers MAY implement additional deduplication logic
-   - When duplicates are detected, servers SHOULD either:
-     - Return a 200 OK status indicating the submission was processed but not stored
-     - Return a 201 Created status with a location header pointing to the existing resource
-   - Servers SHALL document their deduplication strategy in their developer documentation
+  * Servers MAY implement additional deduplication logic
+  * When duplicates are detected, servers SHOULD either:
+    * Return a 200 OK status indicating the submission was processed but not stored
+    * Return a 201 Created status with a location header pointing to the existing resource
+  * Servers SHALL document their deduplication strategy in their developer documentation
 
 ### CGM Data Submission: Standing Orders
 
@@ -178,10 +178,10 @@ When submitting CGM data, there are two complementary approaches for handling po
 
 The Data Submission protocol defined above enables standardized integration between CGM data sources and receiving systems like EHRs. However, there are situations where tight integration is not feasible or desired. [SMART Health Links](https://docs.smarthealthit.org/smart-health-links/) (SHLinks) provide a complementary method for sharing CGM data and reports among patients, caregivers, clinicians, and other authorized parties. SHLinks allow users to easily share selected subsets of CGM data as needed, offering an always up-to-date data feed without the need for direct system integration between the sharing parties. Specific scenarios where SHLinks provide value include:
 
-- Sharing with parties that cannot or do not integrate with the Data Submission protocol, such as schools, camps, temporary caregivers during travel, etc.
-- Allowing patients granular control over what specific data is shared and with whom, beyond just provider-patient contexts.
-- Providing a simple, accessible sharing method for non-technical users like patients and caregivers.
-- Enabling temporary data sharing for finite needs like referrals, research studies, or consultations.
+* Sharing with parties that cannot or do not integrate with the Data Submission protocol, such as schools, camps, temporary caregivers during travel, etc.
+* Allowing patients granular control over what specific data is shared and with whom, beyond just provider-patient contexts.
+* Providing a simple, accessible sharing method for non-technical users like patients and caregivers.
+* Enabling temporary data sharing for finite needs like referrals, research studies, or consultations.
 
 By defining a tightly-orchestrated Data Submission API as well as a more loosely-coupled SHLinks capability, this IG ensures comprehensive interoperability that accommodates diverse real-world requirements across the CGM data sharing landscape.
 
@@ -194,9 +194,9 @@ By defining a tightly-orchestrated Data Submission API as well as a more loosely
 #### Workflow
 
 1. The SHLink Creator allows the user to select the desired CGM data and reports to share, as well as the time period to include. Options include:
-   - Data to include: CGM Summary, CGM Sensor Readings, CGM Devices
-   - Time period: Past 2 weeks, 1 month, 3 months, etc.
-   - Link expiration time, if any
+    * Data to include: CGM Summary, CGM Sensor Readings, CGM Devices
+    * Time period: Past 2 weeks, 1 month, 3 months, etc.
+    * Link expiration time, if any
 
 2. The SHLink Creator generates a SHLink containing the user-selected content, encrypted with a unique key.
 
@@ -215,7 +215,7 @@ This IG aims to use LOINC codes for all Observations and DiagnosticReports. Howe
 
 #### Overview of LOINC Mappings
 <!-- {% raw %} 
-Since the comment field does not exist in ConceptMappings this SQL cannot be used right now so just manuaully construct the table
+Since the comment field does not exist in ConceptMappings this SQL cannot be used right now so just manually construct the table
 
 {% sqlToData mappingCodes SELECT
   c.code as "Temporary Code",
