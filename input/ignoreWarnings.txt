@@ -33,4 +33,4 @@ Constraint failed: dom-6: 'A resource should have narrative for robust managemen
 
 # 08 This message refers to the FHIR F4 ServiceRequest.locationCode element which is not constrained in this IG.
 
-WARNING: StructureDefinition/data-submission-standing-order: StructureDefinition.snapshot.element[32].binding.valueSet: There are multiple different potential matches for the url 'http://terminology.hl7.org/ValueSet/v3-ServiceDeliveryLocationRoleType'. It might be a good idea to fix to the correct version to reduce the likelihood of a wrong version being selected by an implementation/implementer. Using version '3.0.0', found versions: 2.0.0, 2014-03-26, 3.0.0
+There are multiple different potential matches for the url 'http://terminology.hl7.org/ValueSet/v3-ServiceDeliveryLocationRoleType'. It might be a good idea to fix to the correct version to reduce the likelihood of a wrong version being selected by an implementation/implementer. Using version '3.0.0', found versions: 2014-03-26, 3.0.0
