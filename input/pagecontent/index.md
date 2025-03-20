@@ -1,6 +1,6 @@
 ### Introduction
 
-The Continuous Glucose Monitoring Implementation Guide provides a standardized approach for sharing Continuous Glucose Monitoring (CGM) data between actors. This Implementation Guide (IG) focuses on enabling the exchange of CGM data, including high-level reports and raw glucose observations, to support collaborative glucose management.
+The Continuous Glucose Monitoring Implementation Guide provides a standardized approach for sharing Continuous Glucose Monitoring (CGM) data between actors. This Implementation Guide (IG) focuses on enabling the exchange of CGM data, including high-level reports and raw glucose observations, to support collaborative glucose management. The requirements for this guide were initially developed in the [Argonaut Project](https://confluence.hl7.org/spaces/AP/pages/86969961/Argonaut+Project+Home) with the input from patients, providers, CGM device vendors, app developers, and EHR systems and later in collaboration with the HL7 Orders and Observation Work Group.
 
 ### User Stories
 
