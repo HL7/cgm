@@ -10,7 +10,7 @@
     "descmd" : "This is the first balloted version of the Continuous Glucose Monitoring Implementation Guide.",
     "title": "Continuous Glucose Monitoring",
     "introduction": "The Continuous Glucose Monitoring Implementation Guide provides a standardized approach for sharing CGM data between actors. This IG focuses on enabling the exchange of CGM data, including high-level reports and raw glucose observations, to support collaborative glucose management.",
-    "ci-build": "http://build.fhir.org/ig/HL7/cgm/",
+    "ci-build": "http://build.fhir.org/ig/HL7/cgm",
     "category": "Diagnostics"
 }
 
