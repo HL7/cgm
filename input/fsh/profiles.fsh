@@ -514,6 +514,7 @@ Context: ServiceRequest
 * extension contains
     submissionPeriod 1..1 MS and
     lookbackPeriod 0..1 MS and
+    lookbackAll 0..1 MS and
     submissionDataProfile 1..*  MS
   * ^short = "Submission schedule"
 * extension[submissionPeriod].value[x] only Quantity
@@ -522,10 +523,11 @@ Context: ServiceRequest
 * extension[lookbackPeriod].value[x] only Quantity
 * extension[lookbackPeriod].valueQuantity from http://hl7.org/fhir/ValueSet/units-of-time (required)
   * ^short = "How far back the data submission should cover."
+* extension[lookbackAll].value[x] only boolean
+  * ^short = "If true, indicates all available data should be submitted, ignoring lookbackPeriod."
 * extension[submissionDataProfile].value[x] only canonical
 * extension[submissionDataProfile].valueCanonical 1..1 MS
   * ^short = "Data profile for submission"
-
 
 Instance: cgm-data-receiver
 InstanceOf: CapabilityStatement
