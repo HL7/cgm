@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ballot reconciliation file
+ballot-reconciliation.md
