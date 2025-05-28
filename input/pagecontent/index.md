@@ -265,3 +265,20 @@ See the [Validation Page](qa.html) for the full list of dependencies.
 ### Package Downloads
 
 {% include cross-version-analysis.xhtml %}
+
+---
+
+### Acknowledgments
+
+This Implementation Guide was developed with the input and collaboration of numerous individuals and organizations. The project's initial collaboration space can be found on [Confluence: FHIR Write - CGM](https://confluence.hl7.org/spaces/AP/pages/234784555/FHIR+Write+-+CGM).
+
+**Primary Editors:**
+
+*   Josh Mandel (SMART Health IT, Microsoft)
+*   Eric Haas (Health eData Inc)
+
+**Key Contributors:**
+
+*   Mikael Rinnetmäki (Sensotrend)
+
+This guide benefited greatly from the foundational work and diverse perspectives brought forth during the Argonaut Project, including contributions from CGM device vendors, application developers, Electronic Health Record (EHR) system providers, patient advocates, and clinicians. Their collective insights were invaluable in shaping the requirements and solutions presented in this guide.
