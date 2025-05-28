@@ -212,72 +212,30 @@ This IG ensures comprehensive interoperability that accommodates diverse real-wo
 
 ### Note on LOINC Codes
 
-This IG aims to use LOINC codes for all Observations and DiagnosticReports. However, LOINC does not currently define codes for all required concepts. We have therefore established the following approach:
+This IG aims to use LOINC codes for all Observations and DiagnosticReports. With the February 2025 LOINC 2.80 release, most temporary codes previously used in this IG have been replaced with official LOINC codes.
 
-* **Temporary CodeSystem:** [CodeSystem/cgm-summary-codes-temporary](CodeSystem-cgm-summary-codes-temporary.html#root) represents all concepts used by our resources.  Resource instances include these temporary codes + (whenever possible) equivalent LOINC codes.
-* **ConceptMap:** [ConceptMap/CGMSummaryToLoinc](ConceptMap-CGMSummaryToLoinc.html#root) provides mappings between the temporary CodeSystem and existing LOINC codes (for the concepts with available codes).
-* **Deprecation Planning:** We will deprecate this CodeSystem when LOINC support exists for the required concepts.
+* **Temporary CodeSystem:** The [CodeSystem/cgm-summary-codes-temporary](CodeSystem-cgm-summary-codes-temporary.html#root) now only contains the single concept (`cgm-summary`) for which an official LOINC code is still pending.
+* **ConceptMap:** The [ConceptMap/CGMSummaryToLoinc](ConceptMap-CGMSummaryToLoinc.html#root) has been updated accordingly to map only the remaining temporary code.
+* **Deprecation Planning:** The temporary code `cgm-summary` will be fully deprecated once its corresponding LOINC code is published and active.
 
-#### Overview of LOINC Mappings
-<!-- {% raw %} 
-Since the comment field does not exist in ConceptMappings, this SQL cannot be used right now, so manually construct the table
-
-{% sqlToData mappingCodes SELECT
-  c.code as "Temporary Code",
-  CASE
-    WHEN cm.TargetCode IS NOT NULL THEN cm.TargetCode
-    ELSE 'No LOINC Available'
-  END as "LOINC Code"
-FROM
-  Concepts c
-JOIN Resources r ON c.ResourceKey = r.key
-LEFT JOIN ConceptMappings cm ON c.code = cm.SourceCode AND cm.SourceSystem LIKE '%cgm-summary-codes-temporary'
-WHERE
-  r.json->>'$.url' LIKE '%temporary'
-%}
-
-{% assign mappedCodes = 0 %}
-{% assign unmappedCodes = 0 %}
-{% for row in mappingCodes %}
-  {% if row["LOINC Code"] == "No LOINC Available" %}
-    {% assign unmappedCodes = unmappedCodes | plus: 1 %}
-  {% else %}
-    {% assign mappedCodes = mappedCodes | plus: 1 %}
-  {% endif %}
-{% endfor %}
-
-##### Mapping Overview
-
-- Total Concepts Required: {{ mappingCodes.size }}
-  - **Mapped**: {{ mappedCodes }}
-  - **Unmapped**: {{ unmappedCodes }}
-
-##### Mapping Table
-
-| Temporary Code | LOINC Code |
-|----------------|------------|
-{% for row in mappingCodes -%}
-| {{ row["Temporary Code"] }} | {{ row["LOINC Code"] }} | {{ row["LOINC Comment"] }} |
-{% endfor %}
-
-{% endraw %} -->
+#### Overview of LOINC Mappings and Status
 
 
-|Temporary Code|LOINC Code|Expected LOINC Publication Date
+|Concept|LOINC Code|Status / Notes
 |---|---|---|
-|cgm-summary|104643-2|February 2025|
-|mean-glucose-mass-per-volume|97507-8|Published|
-|mean-glucose-moles-per-volume|105273-7|February 2025|
-|times-in-ranges|No LOINC Available|LOINC submission pending. Expected publication date unknown
-|time-in-very-low|104642-4|February 2025|
-|time-in-low|104641-6|February 2025|
-|time-in-target|97510-2|Published|
-|time-in-high|104640-8|February 2025|
-|time-in-very-high|104639-0|February 2025|
-|gmi|97506-0|Published|
-|cv|104638-2|Published|
-|days-of-wear|104636-6|February 2025|
-|sensor-active-percentage|104637-4|February 2025|
+|CGM Summary Report (overall)|104643-2|Pending LOINC Publication (was temporary `cgm-summary`)|
+|Mean Glucose (Mass per Volume)|97507-8|Published (was temporary `mean-glucose-mass-per-volume`)|
+|Mean Glucose (Moles per Volume)|105273-7|Published (was temporary `mean-glucose-moles-per-volume`)|
+|Times in Glucose Ranges (Panel)|106793-3|Published (replaces temporary `times-in-ranges`)|
+|Time in Very Low Range (%)|104642-4|Published (was temporary `time-in-very-low`)|
+|Time in Low Range (%)|104641-6|Published (was temporary `time-in-low`)|
+|Time in Target Range (%)|97510-2|Published (was temporary `time-in-target`)|
+|Time in High Range (%)|104640-8|Published (was temporary `time-in-high`)|
+|Time in Very High Range (%)|104639-0|Published (was temporary `time-in-very-high`)|
+|Glucose Management Indicator (GMI)|97506-0|Published (was temporary `gmi`)|
+|Coefficient of Variation (CV)|104638-2|Published (was temporary `cv`)|
+|Days of Wear|104636-6|Published (was temporary `days-of-wear`)|
+|Sensor Active Percentage|104637-4|Published (was temporary `sensor-active-percentage`)|
 {:.grid}
 
 ### Note on Categories

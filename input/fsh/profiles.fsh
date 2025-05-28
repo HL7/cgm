@@ -145,8 +145,8 @@ Id: cgm-summary-times-in-ranges
 Title: "CGM Summary Times in Ranges"
 Description: "An observation representing the times in various ranges from a continuous glucose monitoring (CGM) summary. Value: Percent of time, with at least two decimal places of precision."
 * insert CGMSummaryBase
-* code = CGMSummaryCodesTemporary#times-in-ranges
-  * ^short = "Code for Times in Ranges observation"
+* code = TimesInRangesLoinc
+  * ^short = "Code for Times in Ranges observation (LOINC: 106793-3)"
 * component
   * ^slicing.discriminator.type = #value
   * ^slicing.discriminator.path = "code"
@@ -277,29 +277,17 @@ Description: "Codes to identify content associated with this IG"
 CodeSystem: CGMSummaryCodesTemporary
 Id: cgm-summary-codes-temporary
 Title: "CGM Summary Code System"
-Description: "Temporary code system for CGM summary observations."
+Description: "Temporary code system for CGM summary observations. NOTE: Most codes have been retired and replaced by LOINC. This CodeSystem is maintained for the single remaining temporary concept."
 * ^caseSensitive = true
 * ^experimental = false
 * ^status = #active
 * #cgm-summary "CGM Summary Report"
-* #mean-glucose-mass-per-volume "Mean Glucose (Mass per Volume)"
-* #mean-glucose-moles-per-volume "Mean Glucose (Moles per Volume)"
-* #times-in-ranges "Times in Glucose Ranges"
-* #time-in-very-low "Time in Very Low Range (%)"
-* #time-in-low "Time in Low Range (%)"
-* #time-in-target "Time in Target Range (%)"
-* #time-in-high "Time in High Range (%)"
-* #time-in-very-high "Time in Very High Range (%)" 
-* #gmi "Glucose Management Indicator (GMI)"
-* #cv "Coefficient of Variation (CV)"
-* #days-of-wear "Days of Wear"
-* #sensor-active-percentage "Sensor Active Percentage"
 
 Instance: CGMSummaryToLoinc
 InstanceOf: ConceptMap
 Usage: #definition
 Title: "Mapping from CGM Temporary Codes to LOINC"
-Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
+Description: "Mapping concepts from the CGM Summary code system to LOINC codes. NOTE: Most temporary codes have been retired; this map reflects the single remaining temporary concept."
 * name  = "CGMSummaryToLoinc"
 * experimental = false
 * status = #active
@@ -310,61 +298,6 @@ Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
   * target[+].code = #104643-2
   * target[=].equivalence = #equivalent
   * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #mean-glucose-mass-per-volume
-  * target[+].code = #97507-8
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "published"
-* group[=].element[+]
-  * code = #mean-glucose-moles-per-volume
-  * target[+].code = #105273-7
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #time-in-very-low
-  * target[+].code = #104642-4
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #time-in-low
-  * target[+].code = #104641-6
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #time-in-target
-  * target[+].code = #97510-2
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "published"
-* group[=].element[+]
-  * code = #time-in-high
-  * target[+].code = #104640-8
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #time-in-very-high
-  * target[+].code = #104639-0
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #gmi
-  * target[+].code = #97506-0
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "published"
-* group[=].element[+]
-  * code = #cv
-  * target[+].code = #104638-2
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "published"
-* group[=].element[+]
-  * code = #days-of-wear
-  * target[+].code = #104636-6
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #sensor-active-percentage
-  * target[+].code = #104637-4
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
 
 Instance: CGMSummaryWithLoinc
 InstanceOf: CodeableConcept
@@ -372,71 +305,65 @@ Usage: #inline
 * coding[+] = CGMSummaryCodesTemporary#cgm-summary
 // * coding[+] =  $LNC#104643-2
 
+Instance: TimesInRangesLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = $LNC#106793-3 // "Continuous glucose monitoring time in ranges panel"
+
 Instance: MeanGlucoseMassPerVolumeWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#mean-glucose-mass-per-volume
-* coding[+] =  $LNC#97507-8
+* coding[+] = $LNC#97507-8 // "Glucose [Mass/volume] in Serum or Plasma by Continuous glucose monitoring"
 
 Instance: GMIWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#gmi
-* coding[+] = $LNC#97506-0
+* coding[+] = $LNC#97506-0 // "Glucose management indicator by Continuous glucose monitoring"
 
 Instance: TimeInVeryLowWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-very-low
-// * coding[+] = $LNC#104642-4
+* coding[+] = $LNC#104642-4 // "Continuous glucose monitoring time below glucose threshold level 1"
 
 Instance: TimeInLowWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-low
-// * coding[+] = $LNC#104641-6
+* coding[+] = $LNC#104641-6 // "Continuous glucose monitoring time below glucose threshold level 2"
 
 Instance: TimeInTargetWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-target
-* coding[+] = $LNC#97510-2
+* coding[+] = $LNC#97510-2 // "Continuous glucose monitoring time in range"
 
 Instance: MeanGlucoseMolar
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#mean-glucose-moles-per-volume
-// * coding[+] = $LNC#105273-7
+* coding[+] = $LNC#105273-7 // "Glucose [Moles/volume] in Capillary blood by Continuous glucose monitoring"
 
 Instance: TimeInHighWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-high
-// * coding[+] = $LNC#104640-8
+* coding[+] = $LNC#104640-8 // "Continuous glucose monitoring time above glucose threshold level 1"
 
 Instance: TimeInVeryHighWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-very-high
-// * coding[+] = $LNC#104639-0
+* coding[+] = $LNC#104639-0 // "Continuous glucose monitoring time above glucose threshold level 2"
 
 Instance: CVWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#cv
-* coding[+] = $LNC#104638-2
+* coding[+] = $LNC#104638-2 // "Coefficient of variation of glucose by Continuous glucose monitoring"
 
 Instance: DaysOfWearWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#days-of-wear
-// * coding[+] = $LNC#104636-6
+* coding[+] = $LNC#104636-6 // "Continuous glucose monitoring duration of use"
 
 Instance: SensorActivePercentageWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#sensor-active-percentage
-// * coding[+] = $LNC#104637-4
+* coding[+] = $LNC#104637-4 // "Continuous glucose monitoring sensor wear time active"
 
 
 Profile: CGMDataSubmissionBundle
