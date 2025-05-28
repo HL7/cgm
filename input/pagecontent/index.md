@@ -286,5 +286,7 @@ This Implementation Guide was developed with the input and collaboration of nume
 **Key Contributors:**
 
 *   Mikael Rinnetmäki (Sensotrend)
+*   Brett Marquard (WaveOne Associates)
+*   Marti Velezis
 
 This guide benefited greatly from the foundational work and diverse perspectives brought forth during the Argonaut Project, including contributions from CGM device vendors, application developers, Electronic Health Record (EHR) system providers, patient advocates, and clinicians. Their collective insights were invaluable in shaping the requirements and solutions presented in this guide.
