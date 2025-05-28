@@ -75,6 +75,8 @@ The section includes:
     *   Eric Haas (Health eData Inc)
 *   **Key Contributors:**
     *   Specific acknowledgment for Mikael Rinnetmäki (Sensotrend Oy).
+    *   Specific acknowledgment for Brett Marquard (WaveOne Associates).
+    *   Specific acknowledgment for Marti Velezis.
     *   A general statement recognizing contributions from various organization types involved in the Argonaut Project (CGM device vendors, app developers, EHRs, patient advocates, clinicians).
 
 **Files Changed:**
@@ -82,10 +84,10 @@ The section includes:
 
 **Commit Message Suggestion:**
 ```
-Fixes FHIR-50742: Add Acknowledgments section to IG
+Fixes FHIR-50742: Update Acknowledgments section in IG
 
-- Adds a new "Acknowledgments" section to the end of index.md.
-- Includes primary editors, key contributors, and a link to the Confluence project page.
+- Adds Brett Marquard and Marti Velezis to Key Contributors.
+- Updates index.md and ballot-reconciliation.md.
 ```
 
 ---
