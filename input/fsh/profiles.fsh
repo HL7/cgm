@@ -12,13 +12,13 @@ RuleSet: DiagnosticReportBase
 
 RuleSet: GlucoseMassPerVolume
 * value[x] only Quantity
-* valueQuantity 1..1 MS
+* valueQuantity 0..1 MS
 * valueQuantity = 'mg/dL' "mg/dl"
   * ^short = "Glucose value in mg/dL"
 
 RuleSet: GlucoseMolesPerVolume
 * value[x] only Quantity
-* valueQuantity 1..1 MS
+* valueQuantity 0..1 MS
 * valueQuantity = 'mmol/L' "mmol/l"
   * ^short = "Glucose value in mmol/L"
 
@@ -29,6 +29,7 @@ Title: "CGM Sensor Reading (Mass)"
 Description: "A continuous glucose monitoring (CGM) sensor reading represented in mass units."
 * insert ObservationBase
 * insert GlucoseMassPerVolume
+* obeys cgm-sensor-value-or-dar
 * code = $LNC#99504-3
 * effectiveDateTime 1..1 MS
   * ^short = "Time the measurement was taken"
@@ -40,6 +41,7 @@ Title: "CGM Sensor Reading (Molar)"
 Description: "A continuous glucose monitoring (CGM) sensor reading represented in molar units."
 * insert ObservationBase
 * insert GlucoseMolesPerVolume
+* obeys cgm-sensor-value-or-dar
 * code = $LNC#105272-9
 * effectiveDateTime 1..1 MS
   * ^short = "Time the measurement was taken"
@@ -55,6 +57,10 @@ RuleSet: CGMSummaryBase
   * end 1..1 MS
     * ^short = "End date of the reporting period (YYYY-MM-DD)"
 
+Invariant: cgm-sensor-value-or-dar
+Description: "A sensor reading must have a valueQuantity or a dataAbsentReason."
+Expression: "value.exists() or dataAbsentReason.exists()"
+Severity: #error
  
 Profile: CGMSummaryObservation
 Parent: Observation
