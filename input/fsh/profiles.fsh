@@ -418,7 +418,6 @@ The Bundle `entry` array includes any combination of
     cgmSummaryCoefficientOfVariation 0..* MS and
     cgmSummaryDaysOfWear 0..* MS and
     cgmSummarySensorActivePercentage 0..* MS and
-    device 0..* MS and
     cgmSensorReadingMassPerVolume 0..* MS and
     cgmSensorReadingMolesPerVolume 0..* MS
 * entry[observation][cgmSummary].resource only CGMSummaryObservation
