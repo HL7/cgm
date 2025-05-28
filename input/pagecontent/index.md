@@ -135,6 +135,12 @@ Examples include but are not limited to:
     * Which search parameters can be used in conditional create requests
     * How client-supplied identifiers are handled
     * Any deduplication strategies employed
+  * SHOULD implement strict validation and whitelisting rules for incoming `$submit-cgm-bundle` transaction Bundles. This includes, but is not limited to:
+    * Permitting only `POST` operations for resources.
+    * Allowing only CGM-relevant resource types (e.g., `Observation`, `Device`, `Patient`, `DiagnosticReport`, `ServiceRequest`).
+    * Ensuring that all submitted resources pertain to the patient context established during authorization.
+    * Rejecting bundles that contain disallowed operations or resource types.
+  * > **Warning:** Accepting and processing arbitrary transaction Bundles without appropriate validation presents a security risk. Implementers must carefully consider the operations and resource types they will accept.
 
 **Handling Duplicate Submissions**
 
