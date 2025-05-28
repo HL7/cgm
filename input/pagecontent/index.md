@@ -164,11 +164,11 @@ When submitting CGM data, there are two complementary approaches for handling po
      * SHOULD create resources for other `Bundle.entry` elements according to other applicable rules.
 
 2. **Server-Side Deduplication**
-  * Servers MAY implement additional deduplication logic
-  * When duplicates are detected, servers SHOULD either:
-    * Return a 200 OK status indicating the submission was processed but not stored
-    * Return a 201 Created status with a location header pointing to the existing resource
-  * Servers SHALL document their deduplication strategy in their developer documentation
+   * Servers MAY implement additional deduplication logic
+   * When duplicates are detected, servers SHOULD either:
+      * Return a 200 OK status indicating the submission was processed but not stored
+      * Return a 201 Created status with a location header pointing to the existing resource
+   * Servers SHALL document their deduplication strategy in their developer documentation
 
 ### CGM Data Submission: Standing Orders
 
