@@ -20,7 +20,7 @@ partition "Establish EHR Patient ID" {
         end note
     else (no)
         :Obtain patient ID
-         out-of-band;
+         (e.g., FHIR Patient Search);
     endif
 }
 
