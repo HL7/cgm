@@ -187,7 +187,9 @@ When submitting CGM data, there are two complementary approaches for handling po
 
 ### CGM Data Submission: One-Time Orders
 
-**☛ See [Example Order ("Request data for March 1-15, 2024")](ServiceRequest-cgmDataSubmissionOneTimeOrderExample.json.html#root)**
+**☛ See [Example Order ("Request data for all of 2024")](ServiceRequest-cgmDataSubmissionOneTimeOrderExample.json.html#root)**
+
+**☛ See [Example Order ("Request data for last 30 days")](ServiceRequest-cgmDataSubmissionOneTimeOrder30DayExample.json.html#root)**
 
 **☛ See [Full Data Profile](StructureDefinition-cgm-data-submission-one-time-order.html#profile)**
 

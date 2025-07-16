@@ -49,11 +49,13 @@ We are looking at a scenario where we (EHRs) want to push the ServiceRequest to 
 Instead of implementing a complex push mechanism, a new One-Time Order profile was created to address the underlying need for on-demand data requests. This approach provides:
 
 1. **New Profile:** `CGMDataSubmissionOneTimeOrder` - A ServiceRequest profile for one-time data requests
-2. **New Extension:** `DataSubmissionOneTimeRequest` - Contains absolute time period (FHIR Period) and data profiles
+2. **New Extension:** `DataSubmissionOneTimeSpec` - Contains absolute time period (FHIR Period) and data profiles
 3. **New Code:** `cgm-data-submission-one-time-order` - Code system entry for one-time orders
 4. **Documentation:** Added comprehensive documentation section explaining one-time orders
-5. **Example:** Created example showing request for March 1-15, 2024 data
-6. **OOB Transmission:** Documented that transmission mechanism is out-of-band, may include direct API calls triggered by automated logic or explicit user actions
+5. **Examples:** Created examples showing request for all of 2024 raw sensor data and 30-day summary data
+6. **Data Chunking:** Added guidance for breaking large time period requests into meaningful chunks
+7. **Required Period Fields:** Made Period start and end dates required (1..1 MS) for precise time specification
+8. **OOB Transmission:** Documented that transmission mechanism is out-of-band, may include direct API calls triggered by automated logic or explicit user actions
 
 This solution provides a standardized way to request CGM data for specific time periods without the complexity of real-time push mechanisms, while leaving transmission methods flexible for implementers.
 
@@ -67,7 +69,7 @@ This solution provides a standardized way to request CGM data for specific time 
 Fixes FHIR-49857: Add One-Time Order profile for on-demand CGM data requests
 
 - Adds CGMDataSubmissionOneTimeOrder profile on ServiceRequest.
-- Adds DataSubmissionOneTimeRequest extension with Period and data profiles.
+- Adds DataSubmissionOneTimeSpec extension with Period and data profiles.
 - Adds cgm-data-submission-one-time-order code to CGM CodeSystem.
 - Adds comprehensive documentation and example.
 - Documents OOB transmission mechanism for one-time orders.

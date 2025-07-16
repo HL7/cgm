@@ -523,8 +523,12 @@ Key aspects of this profile:
 
 The [`DataSubmissionOneTimeSpec`](StructureDefinition-data-submission-one-time-spec.html) extension contains:
 
-- `timePeriod`: A FHIR Period data type specifying the absolute start and end dates/times for data collection
+- `timePeriod`: A FHIR Period data type specifying the absolute start and end dates/times for data submission
 - `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted
+
+**Data Chunking for Large Time Periods**
+
+While one-time orders can specify any time period (including a patient's entire history), it's usually better to break large requests into meaningful chunks. Chunking makes data size manageable and summary statistics more relevant. Receivers can control chunking by sending individual requests for yearly or monthly periods where the analysis period is more meaningful.
 
 The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band (OOB) in this version of the specification. Future versions may provide an in-band option based on implementation experience.
 """
@@ -551,9 +555,13 @@ Context: ServiceRequest
     submissionDataProfile 1..*  MS
   * ^short = "One-time submission request"
 * extension[timePeriod].value[x] only Period
-  * ^short = "Absolute time period for data collection (start and end dates)"
+  * ^short = "Absolute time period for data submission (start and end dates)"
 * extension[timePeriod].valuePeriod 1..1 MS
   * ^short = "Time period with start and end dates"
+* extension[timePeriod].valuePeriod.start 1..1 MS
+  * ^short = "Start date/time for data submission"
+* extension[timePeriod].valuePeriod.end 1..1 MS
+  * ^short = "End date/time for data submission"
 * extension[submissionDataProfile].value[x] only canonical
 * extension[submissionDataProfile].valueCanonical 1..1 MS
   * ^short = "Data profile for submission"

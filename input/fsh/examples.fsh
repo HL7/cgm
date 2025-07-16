@@ -238,6 +238,24 @@ data is needed.
 * extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.end = "2024-12-31"
 * extension[dataSubmissionOneTimeSpec].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSensorReadingMassPerVolume)
 
+Instance: cgmDataSubmissionOneTimeOrder30DayExample
+InstanceOf: CGMDataSubmissionOneTimeOrder
+Usage: #example
+Title: "Example CGM Data Submission One-Time Order (30 Days)"
+Description: """
+This example represents a one-time order for continuous glucose monitoring (CGM) data submission.
+It specifies an order to submit summary data about Patient 123 for the last 30 days (December 17, 2024
+to January 16, 2025). This type of order is typically used for upcoming appointments where recent CGM
+summary data is needed for clinical review and decision-making.
+"""
+* status = #active
+* intent = #order
+* code = CGMCodes#cgm-data-submission-one-time-order
+* subject = Reference(Patient/patientExample)
+* extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.start = "2024-12-17"
+* extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.end = "2025-01-16"
+* extension[dataSubmissionOneTimeSpec].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSummaryObservation)
+
 Instance: cgmDeviceExample
 InstanceOf: CGMDevice
 Title: "CGM Device Example"
