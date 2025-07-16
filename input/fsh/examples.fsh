@@ -219,6 +219,25 @@ available for clinical review.
 * extension[dataSubmissionSchedule].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSummaryObservation)
 * extension[dataSubmissionSchedule].extension[submissionDataProfile][+].valueCanonical = Canonical(CGMSummaryPDF) 
 
+Instance: cgmDataSubmissionOneTimeOrderExample
+InstanceOf: CGMDataSubmissionOneTimeOrder
+Usage: #example
+Title: "Example CGM Data Submission One-Time Order"
+Description: """
+This example represents a one-time order for continuous glucose monitoring (CGM) data submission.
+It specifies an order to submit data about Patient 123 for the entire year 2024, requesting all
+raw sensor readings in mg/dL. This type of order is typically used for comprehensive data requests,
+such as when a patient is transferring care or for research purposes where all available sensor
+data is needed.
+"""
+* status = #active
+* intent = #order
+* code = CGMCodes#cgm-data-submission-one-time-order
+* subject = Reference(Patient/patientExample)
+* extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.start = "2024-01-01"
+* extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.end = "2024-12-31"
+* extension[dataSubmissionOneTimeSpec].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSensorReadingMassPerVolume)
+
 Instance: cgmDeviceExample
 InstanceOf: CGMDevice
 Title: "CGM Device Example"

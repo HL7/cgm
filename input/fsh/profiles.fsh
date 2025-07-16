@@ -279,6 +279,7 @@ Description: "Codes to identify content associated with this IG"
 * ^experimental = false
 * ^status = #active
 * #cgm-data-submission-standing-order "CGM Submission Standing Order" "A ServiceRequest code that identifies a \"standing order\" for CGM data."
+* #cgm-data-submission-one-time-order "CGM Submission One-Time Order" "A ServiceRequest code that identifies a \"one-time order\" for CGM data."
 
 CodeSystem: CGMSummaryCodesTemporary
 Id: cgm-summary-codes-temporary
@@ -506,6 +507,57 @@ It's important to note that a patient or provider can also **manually trigger** 
 * extension[dataSubmissionSchedule]
   * ^short = "Schedules for CGM data submission"
 
+Profile: CGMDataSubmissionOneTimeOrder
+Parent: ServiceRequest
+Id: cgm-data-submission-one-time-order
+Title: "CGM Data Submission One-Time Order"
+Description: """
+A one-time order for CGM data submission that specifies an absolute time period for data collection. This profile is used to request CGM data for a specific time range, typically for on-demand data requests rather than ongoing scheduled submissions.
+
+Key aspects of this profile:
+* Specifies what data should be included in the submission
+* Defines an absolute time period (using FHIR Period data type) for data collection
+* Intended for one-time, on-demand data requests
+
+**DataSubmissionOneTimeSpec Extension**
+
+The [`DataSubmissionOneTimeSpec`](StructureDefinition-data-submission-one-time-spec.html) extension contains:
+
+- `timePeriod`: A FHIR Period data type specifying the absolute start and end dates/times for data collection
+- `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted
+
+The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band (OOB) in this version of the specification. Future versions may provide an in-band option based on implementation experience.
+"""
+* intent = #order
+  * ^short = "Intent is #order"
+* code = CGMCodes#cgm-data-submission-one-time-order
+  * ^short = "Code for CGM one-time submission order"
+* subject 1..1 MS
+  * ^short = "Patient for the one-time CGM submission order"
+* extension contains 
+    DataSubmissionOneTimeSpec named dataSubmissionOneTimeSpec 1..1 MS
+  * ^definition = "Contains a DataSubmissionOneTimeSpec extension defining the specific time period and type of data to be submitted."
+  * ^short = "DataSubmissionOneTimeSpec extension"
+* extension[dataSubmissionOneTimeSpec]
+  * ^short = "One-time specification for CGM data submission"
+
+Extension: DataSubmissionOneTimeSpec
+Id: data-submission-one-time-spec
+Title: "Data Submission One-Time Specification"
+Description: "Defines a one-time specification for data submission with an absolute time period"
+Context: ServiceRequest
+* extension contains
+    timePeriod 1..1 MS and
+    submissionDataProfile 1..*  MS
+  * ^short = "One-time submission request"
+* extension[timePeriod].value[x] only Period
+  * ^short = "Absolute time period for data collection (start and end dates)"
+* extension[timePeriod].valuePeriod 1..1 MS
+  * ^short = "Time period with start and end dates"
+* extension[submissionDataProfile].value[x] only canonical
+* extension[submissionDataProfile].valueCanonical 1..1 MS
+  * ^short = "Data profile for submission"
+
 Extension: DataSubmissionSchedule
 Id: data-submission-schedule
 Title: "Data Submission Schedule"
@@ -514,7 +566,6 @@ Context: ServiceRequest
 * extension contains
     submissionPeriod 1..1 MS and
     lookbackPeriod 0..1 MS and
-    lookbackAll 0..1 MS and
     submissionDataProfile 1..*  MS
   * ^short = "Submission schedule"
 * extension[submissionPeriod].value[x] only Quantity
@@ -523,8 +574,6 @@ Context: ServiceRequest
 * extension[lookbackPeriod].value[x] only Quantity
 * extension[lookbackPeriod].valueQuantity from http://hl7.org/fhir/ValueSet/units-of-time (required)
   * ^short = "How far back the data submission should cover."
-* extension[lookbackAll].value[x] only boolean
-  * ^short = "If true, indicates all available data should be submitted, ignoring lookbackPeriod."
 * extension[submissionDataProfile].value[x] only canonical
 * extension[submissionDataProfile].valueCanonical 1..1 MS
   * ^short = "Data profile for submission"

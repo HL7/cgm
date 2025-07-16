@@ -1,5 +1,80 @@
 # Ballot Reconciliation - CGM IG
 
+## [FHIR-49858](https://jira.hl7.org/browse/FHIR-49858): Add lookback option for "all" - REVERTED
+
+**Project:** FHIR Specification Feedback
+**Type:** Change Request
+**Priority:** Medium
+**Reporter:** Cooper Thompson
+**Status:** Reverted (was previously Applied)
+**Resolution:** Reverted in favor of One-Time Order approach
+
+**Description:**
+We are looking a way to get relevant CGM data "on demand" rather than on a schedule. The SR currently has a lookbackPeriod. We'd like a clear way to ask for "all" data for the patient. One option is to just say to use the patient's birthday as the lookback start period. But I wanted to get a ticket in to formalize that if it makes sense. Another option is to just add another child extension that directly represents "lookback=forever".
+
+**Rationale & Actions Taken:**
+The previously implemented `lookbackAll` boolean extension was removed from the `DataSubmissionSchedule` extension. Instead, a new approach using a One-Time Order profile was implemented to address both FHIR-49858 and FHIR-49857 requirements in a unified solution.
+
+The `lookbackAll` element was removed from:
+- `Extension: DataSubmissionSchedule` definition in `input/fsh/profiles.fsh`
+- All related documentation and examples
+
+**Files Changed:**
+*   `input/fsh/profiles.fsh` (removed lookbackAll extension)
+*   `ballot-reconciliation.md` (removed original FHIR-49858 entry)
+
+**Commit Message Suggestion:**
+```
+Revert FHIR-49858: Remove lookbackAll from Standing Order
+
+- Removes lookbackAll boolean element from DataSubmissionSchedule extension.
+- Unified solution implemented via One-Time Order profile instead.
+```
+
+---
+
+## [FHIR-49857](https://jira.hl7.org/browse/FHIR-49857): Describe option to push ServiceRequest - ADDRESSED via One-Time Order Profile
+
+**Project:** FHIR Specification Feedback
+**Type:** Change Request
+**Priority:** Medium
+**Reporter:** Cooper Thompson
+**Status:** Resolved - Applied via One-Time Order Profile
+**Resolution:** Addressed through new One-Time Order profile
+
+**Description:**
+We are looking at a scenario where we (EHRs) want to push the ServiceRequest to the CGM data store, telling the CGM vendor to start sending us data. For example, if we have a standing order to get data every two weeks, but the patient is coming in 10 days into that two week window, we want to trigger the CGM vendor to send us the data they have "now".
+
+**Rationale & Actions Taken:**
+Instead of implementing a complex push mechanism, a new One-Time Order profile was created to address the underlying need for on-demand data requests. This approach provides:
+
+1. **New Profile:** `CGMDataSubmissionOneTimeOrder` - A ServiceRequest profile for one-time data requests
+2. **New Extension:** `DataSubmissionOneTimeRequest` - Contains absolute time period (FHIR Period) and data profiles
+3. **New Code:** `cgm-data-submission-one-time-order` - Code system entry for one-time orders
+4. **Documentation:** Added comprehensive documentation section explaining one-time orders
+5. **Example:** Created example showing request for March 1-15, 2024 data
+6. **OOB Transmission:** Documented that transmission mechanism is out-of-band, may include direct API calls triggered by automated logic or explicit user actions
+
+This solution provides a standardized way to request CGM data for specific time periods without the complexity of real-time push mechanisms, while leaving transmission methods flexible for implementers.
+
+**Files Changed:**
+*   `input/fsh/profiles.fsh` (new profiles and extensions)
+*   `input/fsh/examples.fsh` (new example)
+*   `input/pagecontent/index.md` (new documentation section)
+
+**Commit Message Suggestion:**
+```
+Fixes FHIR-49857: Add One-Time Order profile for on-demand CGM data requests
+
+- Adds CGMDataSubmissionOneTimeOrder profile on ServiceRequest.
+- Adds DataSubmissionOneTimeRequest extension with Period and data profiles.
+- Adds cgm-data-submission-one-time-order code to CGM CodeSystem.
+- Adds comprehensive documentation and example.
+- Documents OOB transmission mechanism for one-time orders.
+```
+
+---
+
 ## [FHIR-50743](https://jira.hl7.org/browse/FHIR-50743): Replace temporary code system codes with the approved LOINC codes as requested.
 
 **Project:** FHIR Specification Feedback
@@ -471,40 +546,6 @@ Fixes FHIR-50196: Correct indentation in Server-Side Deduplication section
 
 - Adjusts indentation for list items under "Server-Side Deduplication"
   in input/pagecontent/index.md for improved clarity.
-```
-
----
-
-## [FHIR-49858](https://jira.hl7.org/browse/FHIR-49858): Add lookback option for "all"
-
-**Project:** FHIR Specification Feedback
-**Type:** Change Request
-**Priority:** Medium
-**Reporter:** Cooper Thompson
-**Status:** Triaged (Proposing: Persuasive with Modification)
-**Resolution:** Unresolved (Proposing: Resolved - Applied)
-
-**Description:**
-We are looking a way to get relevant CGM data "on demand" rather than on a schedule. The SR currently has a lookbackPeriod. We'd like a clear way to ask for "all" data for the patient. One option is to just say to use the patient's birthday as the lookback start period. But I wanted to get a ticket in to formalize that if it makes sense. Another option is to just add another child extension that directly represents "lookback=forever".
-
-**Proposed Disposition:** Persuasive with Modification.
-
-**Rationale & Actions Taken:**
-To address the need for requesting "all" data, the `Extension: DataSubmissionSchedule` in `input/fsh/profiles.fsh` was modified:
-1.  A new optional element `lookbackAll` of type `boolean` (cardinality `0..1`) was added to the extension. Its description is "If true, indicates all available data should be submitted, ignoring lookbackPeriod."
-    Initially, an invariant (`dss-lookback-choice`) was added to enforce mutual exclusivity between `lookbackAll` and `lookbackPeriod`. However, this invariant was subsequently removed as per feedback, simplifying the immediate change. The expectation is that if `lookbackAll` is true, `lookbackPeriod` would typically not be populated by a sender, and receivers should prioritize `lookbackAll` if present and true.
-
-These changes provide a clear, structured way to request all available data by setting `lookbackAll` to `true`.
-
-**Files Changed:**
-*   `input/fsh/profiles.fsh`
-
-**Commit Message Suggestion:**
-```
-Fixes FHIR-49858: Add 'lookbackAll' option to DataSubmissionSchedule
-
-- Adds 'lookbackAll' boolean element to DataSubmissionSchedule extension.
-- This allows requesters to explicitly ask for all available data.
 ```
 
 ---

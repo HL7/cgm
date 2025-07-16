@@ -185,6 +185,24 @@ When submitting CGM data, there are two complementary approaches for handling po
   * An entire submission Bundle (e.g., if the frequency of submissions is too high)
   * Any subset of a submission Bundle (as documented above)
 
+### CGM Data Submission: One-Time Orders
+
+**☛ See [Example Order ("Request data for March 1-15, 2024")](ServiceRequest-cgmDataSubmissionOneTimeOrderExample.json.html#root)**
+
+**☛ See [Full Data Profile](StructureDefinition-cgm-data-submission-one-time-order.html#profile)**
+
+{{ site.data.resources["StructureDefinition/cgm-data-submission-one-time-order"].description }}
+
+**Transmission Mechanism**
+
+The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left **out-of-band (OOB)** in this version of the specification. Implementation approaches may include direct API calls triggered by automated logic or explicit user actions.
+
+Future versions of this specification may provide an in-band option based on implementation experience and community feedback.
+
+**Technical Details**
+
+* CGM Data Receivers and Submitters SHOULD document their supported OOB transmission mechanisms in their developer documentation
+
 ### SMART Health Links for CGM Data Sharing
 
 The Data Submission protocol defined above enables standardized integration between CGM data sources and receiving systems like EHRs. However, there are situations where tight integration is not feasible or desired. [SMART Health Links](https://docs.smarthealthit.org/smart-health-links/) (SHLinks) provide a complementary method for sharing CGM data and reports among patients, caregivers, clinicians, and other authorized parties. SHLinks allow users to easily share selected subsets of CGM data as needed, offering an always up-to-date data feed without the need for direct system integration between the sharing parties. Specific scenarios where SHLinks provide value include:
