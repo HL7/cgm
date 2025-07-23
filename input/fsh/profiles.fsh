@@ -83,8 +83,8 @@ Description: "An observation representing a summary of continuous glucose monito
   * ^short = "Open slicing allowing additional slices"  
 * hasMember 6..*
 * hasMember contains
-    meanGlucoseMassPerVolume 0..1 MS and
-    meanGlucoseMolesPerVolume 0..1 MS and
+    meanGlucoseMassPerVolume 0..1 and
+    meanGlucoseMolesPerVolume 0..1 and
     timesInRanges 1..1 MS and 
     gmi 1..1 MS and
     cv 1..1 MS and
@@ -418,15 +418,15 @@ The Bundle `entry` array includes any combination of
   * ^short = "CGM summary PDF entry must conform to CGMSummaryPDF profile"
 * entry[observation] contains
     cgmSummary 0..* MS and
-    cgmSummaryMeanGlucoseMassPerVolume 0..* MS  and
-    cgmSummaryMeanGlucoseMolesPerVolume 0..* MS and
+    cgmSummaryMeanGlucoseMassPerVolume 0..* and
+    cgmSummaryMeanGlucoseMolesPerVolume 0..* and
     cgmSummaryTimesInRanges 0..* MS and
     cgmSummaryGMI 0..* MS and
     cgmSummaryCoefficientOfVariation 0..* MS and
     cgmSummaryDaysOfWear 0..* MS and
     cgmSummarySensorActivePercentage 0..* MS and
-    cgmSensorReadingMassPerVolume 0..* MS and
-    cgmSensorReadingMolesPerVolume 0..* MS
+    cgmSensorReadingMassPerVolume 0..* and
+    cgmSensorReadingMolesPerVolume 0..*
 * entry[observation][cgmSummary].resource only CGMSummaryObservation
 * entry[observation][cgmSummaryMeanGlucoseMassPerVolume].resource only CGMSummaryMeanGlucoseMassPerVolume
 * entry[observation][cgmSummaryMeanGlucoseMolesPerVolume].resource only CGMSummaryMeanGlucoseMolesPerVolume

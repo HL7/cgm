@@ -29,6 +29,14 @@ The data receiver is a software system that receives and stores the CGM data sub
 
 This IG also refers to Data Receivers as "**EHRs**".
 
+### Must Support
+
+The Must Support (MS) flag requires that data submitters must be capable of sending the element, and data receivers must be able to parse it without error. While receivers must process the element, they may choose to ignore the data if it is not applicable to their system's use case, and must not reject a resource solely for containing it. For supported profiles, MS elements indicate which resource types and elements a submitter needs to be capable of submitting. MS on the CGM Data Submission Bundle indicates which types of resources a submitter needs to be capable of submitting.
+
+This is an initial draft of MS to guide early implementations. The spec recognizes that actor-based MS may be needed in a future release.
+
+While we have not labeled molar or mass units as MS, any conformant implementation must support at least one of these options.
+
 ### Nominal Workflow
 
 <div style="max-width: 400px; float: none;">

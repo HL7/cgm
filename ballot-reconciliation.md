@@ -65,6 +65,26 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ---
 
+## [FHIR-51515](https://jira.hl7.org/browse/FHIR-51515): Add Must Support definition and clarify molar/mass units - IMPLEMENTED
+
+**Description:**
+Add Must Support (MS) definition to the specification and clarify that while molar and mass units are not labeled as MS, conformant implementations must support at least one of these options.
+
+**Rationale & Actions Taken:**
+Added a comprehensive Must Support section to the main specification page that defines MS requirements for data submitters and receivers. Clarified the specific application of MS to the CGM Data Submission Bundle and removed MS flags from molar vs mass unit alternatives while maintaining the requirement that implementations support at least one option.
+
+**Changes Made:**
+1. **Added Must Support Section:** New section in main page defining MS requirements for submitters and receivers
+2. **Clarified Bundle MS Usage:** Explained that MS on CGM Data Submission Bundle indicates which resource types submitters need to be capable of submitting
+3. **Molar/Mass Units:** Removed MS flags from both molar and mass glucose unit alternatives in CGMDataSubmissionBundle and CGMSummaryObservation profiles
+4. **Implementation Guidance:** Added note that conformant implementations must support at least one of the molar or mass unit options
+
+**Files Changed:**
+*   `input/pagecontent/index.md` (added Must Support section)
+*   `input/fsh/profiles.fsh` (removed MS from molar/mass unit alternatives)
+
+---
+
 ## [FHIR-49857](https://jira.hl7.org/browse/FHIR-49857): Describe option to push ServiceRequest - ADDRESSED via One-Time Order Profile
 
 **Project:** FHIR Specification Feedback
