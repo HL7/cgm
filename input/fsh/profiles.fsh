@@ -507,8 +507,38 @@ It's important to note that a patient or provider can also **manually trigger** 
 * extension[dataSubmissionSchedule]
   * ^short = "Schedules for CGM data submission"
 
-Profile: CGMDataSubmissionOneTimeOrder
+Profile: DataSubmissionOneTimeOrder
 Parent: ServiceRequest
+Id: data-submission-one-time-order
+Title: "Data Submission One-Time Order"
+Description: """
+A base profile for one-time orders that specify an absolute time period for data collection. This profile can be used as-is for general one-time data submissions or inherited by more specific data submission profiles.
+
+Key aspects of this profile:
+* Specifies what data should be included in the submission
+* Defines an absolute time period (using FHIR Period data type) for data collection
+* Intended for one-time, on-demand data requests
+
+This profile uses the DataSubmissionOneTimeSpec extension to capture detailed submission requirements.
+"""
+* intent = #order
+  * ^short = "Intent is #order"
+* code 1..1 MS
+  * ^short = "Code identifying the type of data submission one-time order"
+  * ^definition = "A code that specifies the type of data submission this one-time order represents. This should be populated with a value that clearly identifies the nature of the data being submitted."
+* subject 1..1 MS
+  * ^short = "Patient for the one-time submission order"
+  * ^definition = "Reference to the patient for whom this data submission one-time order applies. This is required to ensure that submitted data is associated with the correct patient."
+* extension contains 
+    DataSubmissionOneTimeSpec named dataSubmissionOneTimeSpec 1..1 MS
+  * ^definition = "Contains a DataSubmissionOneTimeSpec extension defining the specific time period and type of data to be submitted."
+  * ^short = "DataSubmissionOneTimeSpec extension"
+* extension[dataSubmissionOneTimeSpec]
+  * ^short = "One-time specification for data submission"
+
+
+Profile: CGMDataSubmissionOneTimeOrder
+Parent: DataSubmissionOneTimeOrder
 Id: cgm-data-submission-one-time-order
 Title: "CGM Data Submission One-Time Order"
 Description: """

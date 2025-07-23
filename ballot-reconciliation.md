@@ -33,6 +33,38 @@ Revert FHIR-49858: Remove lookbackAll from Standing Order
 
 ---
 
+## TODO(Josh Mandel): Add a generic profile for one-time order - IMPLEMENTED
+
+**Description:**
+Add a generic profile for one-time order, and have the CGM one-time order inherit from it, just as we do with the standing order profiles.
+
+**Rationale & Actions Taken:**
+Created a generic `DataSubmissionOneTimeOrder` profile that serves as the base for `CGMDataSubmissionOneTimeOrder`, mirroring the existing pattern where `DataSubmissionStandingOrder` serves as the base for `CGMDataSubmissionStandingOrder`.
+
+**Changes Made:**
+1. **New Generic Profile:** `DataSubmissionOneTimeOrder` - A base profile for one-time orders that specify an absolute time period for data collection
+2. **Updated CGM Profile:** Modified `CGMDataSubmissionOneTimeOrder` to inherit from the new generic profile instead of directly from `ServiceRequest`
+3. **Maintained Field Descriptions:** Ensured the CGM profile retains all field descriptions and documentation for proper rendering in the viewer
+
+**Files Changed:**
+*   `input/fsh/profiles.fsh` (added generic profile, updated CGM profile)
+
+**Commit Message:**
+```
+Add generic DataSubmissionOneTimeOrder profile
+
+- Creates DataSubmissionOneTimeOrder as base profile for one-time orders
+- Updates CGMDataSubmissionOneTimeOrder to inherit from generic profile
+- Maintains existing pattern used by standing order profiles
+- Retains full field descriptions for proper viewer rendering
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+---
+
 ## [FHIR-49857](https://jira.hl7.org/browse/FHIR-49857): Describe option to push ServiceRequest - ADDRESSED via One-Time Order Profile
 
 **Project:** FHIR Specification Feedback
