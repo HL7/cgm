@@ -243,6 +243,11 @@ This IG ensures comprehensive interoperability that accommodates diverse real-wo
 
 4. The shared data conforms to the CGM Data Submission profiles, promoting interoperability and accessibility across different systems and platforms.
 
+### Relationship with the PHD Implementation Guide
+
+This Implementation Guide is designed to be complementary to the [Personal Health Device Implementation Guide (PHD)](https://hl7.org/fhir/uv/phd/2025Sep/). PHD provides a foundational framework for mapping device-level data into FHIR, focusing on information flows into and through a Personal Health Gateway. It intentionally specifies no interpretations of the data or assumptions about what data is important. It provides no interpretation of the mapped data or guidance on actions to be taken with the data once it has passed beyond the Gateway. In contrast, CGM focuses on a downstream clinical workflow: the submission of summary reports, key statistical metrics, and underlying measurements to a clinical system like an EHR.
+
+A system can therefore use PHD as a guide for ingesting discrete sensor data. CGM provides guidance to share discrete results, generate summary observations, and produce clinical reports. For systems that originate data from a PHD-compliant gateway, it is possible to construct glucose Observations that conform to the profiles in both guides. The mapping between the PHD and CGM CodeSystem requirements is a point of further study.
 
 ### Note on LOINC Codes
 
