@@ -1,10 +1,5 @@
 == Suppressed Messages ==
 
-# 01. We manually reviewed these codes
-
-INFORMATION: ConceptMap/CGMSummaryToLoinc: ConceptMap.group[0].target: Target Code System http://loinc.org is only supported on the terminology server, so the target codes are not validated for performance reasons
-
-
 # 02. Data Submitters POST CGM data as transaction Bundles to EHRs [base]/$submit-cgm-bundle. The Observation.performer element may be omitted in CGM profiles (i.e., Bundle entries) because the data is typically device-generated and the device is implicitly the performer. If needed, device information is captured through the Device resource and submitted as an entry in the CGM Data Submission Bundle.
 
 Best Practice Recommendation: In general, all observations should have a performer
@@ -14,10 +9,6 @@ Best Practice Recommendation: In general, all observations should have a perform
 
 INFORMATION: CodeSystem/cgm: CodeSystem: Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
 
-# 04  As discussed in the guide's "Note on LOINC Codes" section (index.html#note-on-loinc-codes), this IG will use LOINC codes for all Observations and DiagnosticReports. LOINCs have been submitted and approved and are awaiting publication.
-
-WARNING: CodeSystem/cgm-summary-codes-temporary: CodeSystem.concept[0]: HL7 Defined CodeSystems should ensure that every concept has a definition
-INFORMATION: CodeSystem/cgm-summary-codes-temporary: CodeSystem: Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
 
 # 05 This message refers to the FHIR F4 Bundle.language element which is not constrained in this IG.
 

@@ -114,7 +114,7 @@ Description: "A PDF report containing a summary of continuous glucose monitoring
 * insert DiagnosticReportBase
 * subject 1..1 MS
   * ^short = "Patient for the report" 
-* code = CGMSummaryCodesTemporary#cgm-summary
+* code = $LNC#107931-8 // "Continuous glucose monitoring summary panel - Reporting Period"
   * ^short = "Code for CGM Summary report"
 * effectivePeriod 1..1 MS
   * start 1..1 MS
@@ -281,35 +281,10 @@ Description: "Codes to identify content associated with this IG"
 * #cgm-data-submission-standing-order "CGM Submission Standing Order" "A ServiceRequest code that identifies a \"standing order\" for CGM data."
 * #cgm-data-submission-one-time-order "CGM Submission One-Time Order" "A ServiceRequest code that identifies a \"one-time order\" for CGM data."
 
-CodeSystem: CGMSummaryCodesTemporary
-Id: cgm-summary-codes-temporary
-Title: "CGM Summary Code System"
-Description: "Temporary code system for CGM summary observations. NOTE: Most codes have been retired and replaced by LOINC. This CodeSystem is maintained for the single remaining temporary concept."
-* ^caseSensitive = true
-* ^experimental = false
-* ^status = #active
-* #cgm-summary "CGM Summary Report"
-
-Instance: CGMSummaryToLoinc
-InstanceOf: ConceptMap
-Usage: #definition
-Title: "Mapping from CGM Temporary Codes to LOINC"
-Description: "Mapping concepts from the CGM Summary code system to LOINC codes. NOTE: Most temporary codes have been retired; this map reflects the single remaining temporary concept."
-* name  = "CGMSummaryToLoinc"
-* experimental = false
-* status = #active
-* group[+].source = Canonical(CGMSummaryCodesTemporary)
-* group[=].target = $LNC
-* group[=].element[+]
-  * code = #cgm-summary
-  * target[+].code = #104643-2
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-
 Instance: CGMSummaryWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#cgm-summary
+* coding[+] = $LNC#107931-8 // "Continuous glucose monitoring summary panel - Reporting Period"
 // * coding[+] =  $LNC#104643-2
 
 Instance: TimesInRangesLoinc

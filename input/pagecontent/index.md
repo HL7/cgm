@@ -249,34 +249,6 @@ This Implementation Guide is designed to be complementary to the [Personal Healt
 
 A system can therefore use PHD as a guide for ingesting discrete sensor data. CGM provides guidance to share discrete results, generate summary observations, and produce clinical reports. For systems that originate data from a PHD-compliant gateway, it is possible to construct glucose Observations that conform to the profiles in both guides. The mapping between the PHD and CGM CodeSystem requirements is a point of further study.
 
-### Note on LOINC Codes
-
-This IG aims to use LOINC codes for all Observations and DiagnosticReports. With the February 2025 LOINC 2.80 release, most temporary codes previously used in this IG have been replaced with official LOINC codes.
-
-* **Temporary CodeSystem:** The [CodeSystem/cgm-summary-codes-temporary](CodeSystem-cgm-summary-codes-temporary.html#root) now only contains the single concept (`cgm-summary`) for which an official LOINC code is still pending.
-* **ConceptMap:** The [ConceptMap/CGMSummaryToLoinc](ConceptMap-CGMSummaryToLoinc.html#root) has been updated accordingly to map only the remaining temporary code.
-* **Deprecation Planning:** The temporary code `cgm-summary` will be fully deprecated once its corresponding LOINC code is published and active.
-
-#### Overview of LOINC Mappings and Status
-
-
-|Concept|LOINC Code|Status / Notes
-|---|---|---|
-|CGM Summary Report (overall)|104643-2|Pending LOINC Publication (was temporary `cgm-summary`)|
-|Mean Glucose (Mass per Volume)|97507-8|Published (was temporary `mean-glucose-mass-per-volume`)|
-|Mean Glucose (Moles per Volume)|105273-7|Published (was temporary `mean-glucose-moles-per-volume`)|
-|Times in Glucose Ranges (Panel)|106793-3|Published (replaces temporary `times-in-ranges`)|
-|Time in Very Low Range (%)|104642-4|Published (was temporary `time-in-very-low`)|
-|Time in Low Range (%)|104641-6|Published (was temporary `time-in-low`)|
-|Time in Target Range (%)|97510-2|Published (was temporary `time-in-target`)|
-|Time in High Range (%)|104640-8|Published (was temporary `time-in-high`)|
-|Time in Very High Range (%)|104639-0|Published (was temporary `time-in-very-high`)|
-|Glucose Management Indicator (GMI)|97506-0|Published (was temporary `gmi`)|
-|Coefficient of Variation (CV)|104638-2|Published (was temporary `cv`)|
-|Days of Wear|104636-6|Published (was temporary `days-of-wear`)|
-|Sensor Active Percentage|104637-4|Published (was temporary `sensor-active-percentage`)|
-{:.grid}
-
 ### Note on Categories
 
 This guide does not mandate specific `Observation.category` and `DiagnosticReport.category` values for CGM data. The appropriate categorization of CGM data will be addressed in future versions of this specification.
