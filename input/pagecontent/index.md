@@ -57,7 +57,7 @@ While we have not labeled molar or mass units as MS, any conformant implementati
    
    a. Scheduled Submission Interval: Based on the standing order obtained from the submission preferences, the Submitter initiates scheduled submissions of CGM data at the specified intervals.
 
-   b. Manual Trigger: The Submitter may also support manual triggers, such as an in-app button, allowing users to initiate on-demand submissions of CGM data.
+   b. One-Time Orders: The Submitter may also support manual triggers, such as an in-app button, allowing users to initiate on-demand submissions of CGM data.
 
 5. **Prepare FHIR Bundle**: When a submission is triggered (either scheduled or manual), the Data Submitter prepares a FHIR Bundle containing the relevant CGM data, conforming to the specified profiles and requirements.
 
