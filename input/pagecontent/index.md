@@ -205,13 +205,13 @@ When submitting CGM data, there are two complementary approaches for handling po
 
 **Transmission Mechanism**
 
-The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left **out-of-band (OOB)** in this version of the specification. Implementation approaches may include direct API calls triggered by automated logic or explicit user actions.
+The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band in this version of the specification. Implementation approaches may include direct API calls triggered by automated logic or explicit user actions.
 
 Future versions of this specification may provide an in-band option based on implementation experience and community feedback.
 
 **Technical Details**
 
-* CGM Data Receivers and Submitters SHOULD document their supported OOB transmission mechanisms in their developer documentation
+* CGM Data Receivers and Submitters SHOULD document their supported out-of-band mechanisms in their developer documentation
 
 ### SMART Health Links for CGM Data Sharing
 

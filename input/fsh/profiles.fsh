@@ -535,7 +535,7 @@ The [`DataSubmissionOneTimeSpec`](StructureDefinition-data-submission-one-time-s
 
 While one-time orders can specify any time period (including a patient's entire history), it's usually better to break large requests into meaningful chunks. Chunking makes data size manageable and summary statistics more relevant. Receivers can control chunking by sending individual requests for yearly or monthly periods where the analysis period is more meaningful.
 
-The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band (OOB) in this version of the specification. Future versions may provide an in-band option based on implementation experience.
+The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band in this version of the specification. Future versions may provide an in-band option based on implementation experience.
 """
 * intent = #order
   * ^short = "Intent is #order"
