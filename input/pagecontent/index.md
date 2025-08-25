@@ -31,11 +31,14 @@ This IG also refers to Data Receivers as "**EHRs**".
 
 ### Must Support
 
-The Must Support (MS) flag requires that data submitters must be capable of sending the element, and data receivers must be able to parse it without error. While receivers must process the element, they may choose to ignore the data if it is not applicable to their system's use case, and must not reject a resource solely for containing it. For supported profiles, MS elements indicate which resource types and elements a submitter needs to be capable of submitting. MS on the CGM Data Submission Bundle indicates which types of resources a submitter needs to be capable of submitting.
+The following [Must Support (MS)](https://hl7.org/fhir/R4/profiling.html#mustsupport) expectations for system capabilities are an initial draft to guide early implementations. The spec recognizes that actor-based MS may be needed in a future release.
+{:.stu-note}
 
-This is an initial draft of MS to guide early implementations. The spec recognizes that actor-based MS may be needed in a future release.
+The MS flag requires that data submitters must be capable of sending the element, and data receivers must be able to parse it without error. While receivers must process the element, they may choose to ignore the data if it does not apply to their use case, and must not reject a resource solely for containing it. For supported profiles, MS elements indicate which resource types and elements a submitter needs to be capable of submitting. 
 
-While we have not labeled molar or mass units as MS, any conformant implementation must support at least one of these options.
+#### Must Support Expectations for the CGM Data Submission Bundle
+
+The CGM Data Submission Bundle profile defines resource type and Observation profile entries. They are all labeled as MS except for two pairs of Observation profiles that have molar and mass units options. However, any conformant implementation must support at least one of these options for each pair.
 
 ### Nominal Workflow
 
