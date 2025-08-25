@@ -203,6 +203,10 @@ When submitting CGM data, there are two complementary approaches for handling po
 
 {{ site.data.resources["StructureDefinition/cgm-data-submission-one-time-order"].description }}
 
+**Technical Details**
+
+- CGM Data Receivers and Submitters SHOULD document their supported out-of-band mechanisms in their developer documentation
+
 **Transmission Mechanism**
 
 The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band in this version of the specification. Implementation approaches may include direct API calls triggered by automated logic or explicit user actions.

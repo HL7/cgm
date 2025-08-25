@@ -470,7 +470,7 @@ The [`DataSubmissionSchedule`](StructureDefinition-data-submission-schedule.html
 While the value set supports granular units like seconds, minutes, and hours, CGM data submission schedules typically involve longer durations such as days, weeks, or months.
 Multiple `DataSubmissionSchedule` extensions can be included in a single `DataSubmissionRequest` resource if the Data Recipient prefers a different schedule for different data types.
 
-It's important to note that a patient or provider can also **manually trigger** a submission within an app. For example, if there is an upcoming appointment, the provider can click a button to fetch the most up-to-date results. Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.
+ Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.  Note that a patient or provider can also manually trigger a one-time submission within an app, and the CGM Data Submission One-Time Order profile be used for these on-demand data requests.
 
 """
 * intent = #order
@@ -517,25 +517,30 @@ Parent: DataSubmissionOneTimeOrder
 Id: cgm-data-submission-one-time-order
 Title: "CGM Data Submission One-Time Order"
 Description: """
-A one-time order for CGM data submission that specifies an absolute time period for data collection. This profile is used to request CGM data for a specific time range, typically for on-demand data requests rather than ongoing scheduled submissions.
+The Data Receiver can expose a one-time order indicating:  
 
-Key aspects of this profile:
-* Specifies what data should be included in the submission
-* Defines an absolute time period (using FHIR Period data type) for data collection
-* Intended for one-time, on-demand data requests
+- What data a Data Submitter should include in the CGM Data Submission Bundle  
+- The absolute time period for data collection 
 
-**DataSubmissionOneTimeSpec Extension**
+**Guiding Data Submission**
+
+Like the CGM Data Submission Standing Order, this one-time order is modeled as a FHIR [`ServiceRequest`](https://hl7.org/fhir/R4/servicerequest.html) resource. This profile is used to request CGM data for on-demand data requests rather than ongoing scheduled submissions. For example, a provider can fetch the most up-to-date results for an upcoming appointment.
+
+The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band in this version of the specification. Future versions may provide an in-band option based on implementation experience.
+
+**DataSubmissionOneTimeSpec**
 
 The [`DataSubmissionOneTimeSpec`](StructureDefinition-data-submission-one-time-spec.html) extension contains:
 
-- `timePeriod`: A FHIR Period data type specifying the absolute start and end dates/times for data submission
-- `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted
+- `timePeriod`: A FHIR Period data type specifying the absolute start and end dates/times for data submission (e.g., January 1, 2024, to December 31, 2024).
+- `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted.
+
+While the value set supports granular units like seconds, minutes, and hours, CGM data submission schedules typically involve longer durations such as days, weeks, or months.
 
 **Data Chunking for Large Time Periods**
 
 While one-time orders can specify any time period (including a patient's entire history), it's usually better to break large requests into meaningful chunks. Chunking makes data size manageable and summary statistics more relevant. Receivers can control chunking by sending individual requests for yearly or monthly periods where the analysis period is more meaningful.
 
-The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band in this version of the specification. Future versions may provide an in-band option based on implementation experience.
 """
 * intent = #order
   * ^short = "Intent is #order"
