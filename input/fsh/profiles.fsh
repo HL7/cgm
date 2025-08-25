@@ -463,11 +463,11 @@ Data Submitters can query to guide their future submissions. The standing order 
 
 The [`DataSubmissionSchedule`](StructureDefinition-data-submission-schedule.html) extension contains:
 
-- `submissionPeriod`: Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`). This indicates how often the data should be submitted (e.g., every 2 weeks, every month).
+- `submissionPeriod`: Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`) indicating how often the data should be submitted (e.g., every 2 weeks, every month).
 - `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted according to the specified schedule.
-- `lookbackPeriod` (optional): Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`). This indicates the period of time the data submission should cover (e.g., past 30 days, past 3 months).
+- `lookbackPeriod` (optional): Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`) indicating the period of time the data submission should cover (e.g., past 30 days, past 3 months).
 
-While the value set supports granular units like seconds, minutes, and hours, common practice for CGM data submission schedules typically involves longer durations such as days, weeks, or months.
+While the value set supports granular units like seconds, minutes, and hours, CGM data submission schedules typically involve longer durations such as days, weeks, or months.
 Multiple `DataSubmissionSchedule` extensions can be included in a single `DataSubmissionRequest` resource if the Data Recipient prefers a different schedule for different data types.
 
 It's important to note that a patient or provider can also **manually trigger** a submission within an app. For example, if there is an upcoming appointment, the provider can click a button to fetch the most up-to-date results. Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.
