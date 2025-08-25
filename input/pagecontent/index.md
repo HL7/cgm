@@ -148,7 +148,9 @@ Examples include but are not limited to:
     * Allowing only CGM-relevant resource types (e.g., `Observation`, `Device`, `Patient`, `DiagnosticReport`, `ServiceRequest`).
     * Ensuring that all submitted resources pertain to the patient context established during authorization.
     * Rejecting bundles that contain disallowed operations or resource types.
-  * > **Warning:** Accepting and processing arbitrary transaction Bundles without appropriate validation presents a security risk. Implementers must carefully consider the operations and resource types they will accept.
+
+    **Warning:** Accepting and processing arbitrary transaction Bundles without appropriate validation presents a security risk. Implementers must carefully consider the operations and resource types they will accept.
+    {:.bg-warning}
 
 **Handling Duplicate Submissions**
 
