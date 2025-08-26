@@ -382,16 +382,6 @@ The Bundle `entry` array includes any combination of
 * entry 1..* MS
 * entry contains
     patient 0..1 MS and
-    observation 0..* MS and
-    diagnosticReport 0..* MS and
-    device 0..* MS
-* entry[patient].resource only Patient
-  * ^short = "Patient entry"
-* entry[device].resource only CGMDevice
-  * ^short = "CGM device entry must conform to CGMDevice profile"
-* entry[diagnosticReport].resource only CGMSummaryPDF
-  * ^short = "CGM summary PDF entry must conform to CGMSummaryPDF profile"
-* entry[observation] contains
     cgmSummary 0..* MS and
     cgmSummaryMeanGlucoseMassPerVolume 0..* and
     cgmSummaryMeanGlucoseMolesPerVolume 0..* and
@@ -401,17 +391,25 @@ The Bundle `entry` array includes any combination of
     cgmSummaryDaysOfWear 0..* MS and
     cgmSummarySensorActivePercentage 0..* MS and
     cgmSensorReadingMassPerVolume 0..* and
-    cgmSensorReadingMolesPerVolume 0..*
-* entry[observation][cgmSummary].resource only CGMSummaryObservation
-* entry[observation][cgmSummaryMeanGlucoseMassPerVolume].resource only CGMSummaryMeanGlucoseMassPerVolume
-* entry[observation][cgmSummaryMeanGlucoseMolesPerVolume].resource only CGMSummaryMeanGlucoseMolesPerVolume
-* entry[observation][cgmSummaryTimesInRanges].resource only CGMSummaryTimesInRanges
-* entry[observation][cgmSummaryGMI].resource only CGMSummaryGMI
-* entry[observation][cgmSummaryCoefficientOfVariation].resource only CGMSummaryCoefficientOfVariation
-* entry[observation][cgmSummaryDaysOfWear].resource only CGMSummaryDaysOfWear
-* entry[observation][cgmSummarySensorActivePercentage].resource only CGMSummarySensorActivePercentage
-* entry[observation][cgmSensorReadingMassPerVolume].resource only CGMSensorReadingMassPerVolume
-* entry[observation][cgmSensorReadingMolesPerVolume].resource only CGMSensorReadingMolesPerVolume
+    cgmSensorReadingMolesPerVolume 0..* and
+    diagnosticReport 0..* MS and
+    device 0..* MS
+* entry[patient].resource only Patient
+  * ^short = "Patient entry"
+* entry[device].resource only CGMDevice
+  * ^short = "CGM device entry must conform to CGMDevice profile"
+* entry[diagnosticReport].resource only CGMSummaryPDF
+  * ^short = "CGM summary PDF entry must conform to CGMSummaryPDF profile"
+* entry[cgmSummary].resource only CGMSummaryObservation
+* entry[cgmSummaryMeanGlucoseMassPerVolume].resource only CGMSummaryMeanGlucoseMassPerVolume
+* entry[cgmSummaryMeanGlucoseMolesPerVolume].resource only CGMSummaryMeanGlucoseMolesPerVolume
+* entry[cgmSummaryTimesInRanges].resource only CGMSummaryTimesInRanges
+* entry[cgmSummaryGMI].resource only CGMSummaryGMI
+* entry[cgmSummaryCoefficientOfVariation].resource only CGMSummaryCoefficientOfVariation
+* entry[cgmSummaryDaysOfWear].resource only CGMSummaryDaysOfWear
+* entry[cgmSummarySensorActivePercentage].resource only CGMSummarySensorActivePercentage
+* entry[cgmSensorReadingMassPerVolume].resource only CGMSensorReadingMassPerVolume
+* entry[cgmSensorReadingMolesPerVolume].resource only CGMSensorReadingMolesPerVolume
 
 Profile: DataSubmissionStandingOrder
 Parent: ServiceRequest
