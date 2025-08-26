@@ -665,8 +665,8 @@ InstanceOf: OperationDefinition
 Usage: #definition
 Title: "Submit CGM Bundle Operation"
 Description: """
-This operation is used to submit CGM data. The input is a Bundle of type 'transaction' containing CGM data (summary reports, sensor readings, etc.) 
-and the output is a Bundle of type 'transaction-response' containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
+This operation is used to submit CGM data. The input is a 'transaction' Bundle that conforms to the [CGM Data Submission Bundle Profile](StructureDefinition-cgm-data-submission-bundle.html) containing CGM data (summary reports, sensor readings, etc.). 
+The output is a 'transaction-response' Bundle containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
 
 The response Bundle will:
 - Maintain the same order as the submission Bundle
@@ -689,14 +689,14 @@ Servers SHOULD support conditional create requests and persist client-supplied i
 * system = false
 * type = true
 * instance = false
-* inputProfile = Canonical(CGMDataSubmissionBundle)
 * parameter[0]
   * name = #resource
   * use = #in
   * min = 1
   * max = "1"
-  * documentation = "A Bundle of type 'transaction' containing CGM data including summary reports, sensor readings, and related resources."
+  * documentation = "A 'transaction' Bundle that conforms to the CGM Data Submission Bundle Profile containing multiple resources related to Continuous Glucose Monitoring (CGM) data"
   * type = #Bundle
+  * targetProfile = Canonical(CGMDataSubmissionBundle)
 * parameter[1]
   * name = #return
   * use = #out
@@ -712,3 +712,22 @@ Servers SHOULD support conditional create requests and persist client-supplied i
     If the entire operation fails, a single OperationOutcome resource is returned instead.
     """
   * type = #Bundle
+
+
+//Profile: CGMInputParametersProfile
+//Id: cgm-input-parameters-profile
+//Parent: Parameters
+//Title: "CGM Input Parameters Profile"
+//Description: "A profile on the Parameters resource to constrain the input parameters for the submit-cgm-bundle operation, specifying the 'in' parameter as a CGM Data Submission Bundle."
+//
+//* parameter ^slicing.discriminator.type = #value
+//* parameter ^slicing.discriminator.path = "name"
+//* parameter ^slicing.rules = #open
+//* parameter ^slicing.description = "Slice parameters based on the name"
+//* parameter contains in 1..1 MS
+//* parameter[in].name ^patternString = "in"
+//* parameter[in].value[x] ^min = 0
+//* parameter[in].value[x] ^max = "0"
+//* parameter[in].resource ^min = 1
+//* parameter[in].resource ^type.code = #Resource
+//* parameter[in].resource ^type.profile[+] = Canonical(CGMDataSubmissionBundle)
