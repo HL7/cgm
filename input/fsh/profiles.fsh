@@ -416,7 +416,7 @@ Parent: ServiceRequest
 Id: data-submission-standing-order
 Title: "Data Submission Standing Order"
 Description: """
-A base profile for standing orders that indicate data submission requirements. This profile can be used as-is for general data submissions or inherited by more specific data submission profiles.
+A base profile for standing orders that indicates data submission requirements. This profile can be used as-is for general data submissions or inherited by more specific data submission profiles.
 
 Key aspects of this profile:
 * Specifies what data should be included in each submission
@@ -449,7 +449,7 @@ Description: """
 The Data Receiver can expose a standing order indicating:
 
 * What data a Data Submitter should include in each CGM Data Submission Bundle
-* How often a Data Submitter should submit CGM data
+* How often should a Data Submitter submit CGM data
 * What lookback period should each submission cover
 
 **Guiding Data Submission**
@@ -468,7 +468,7 @@ The [`DataSubmissionSchedule`](StructureDefinition-data-submission-schedule.html
 While the value set supports granular units like seconds, minutes, and hours, CGM data submission schedules typically involve longer durations such as days, weeks, or months.
 Multiple `DataSubmissionSchedule` extensions can be included in a single `DataSubmissionRequest` resource if the Data Recipient prefers a different schedule for different data types.
 
- Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.  Note that a patient or provider can also manually trigger a one-time submission within an app, and the CGM Data Submission One-Time Order profile be used for these on-demand data requests.
+ Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.  Note that a patient or provider can also manually trigger a one-time submission within an app, and the CGM Data Submission One-Time Order profile can be used for these on-demand data requests.
 
 """
 * intent = #order
@@ -485,7 +485,7 @@ Parent: ServiceRequest
 Id: data-submission-one-time-order
 Title: "Data Submission One-Time Order"
 Description: """
-A base profile for one-time orders that specify an absolute time period for data collection. This profile can be used as-is for general one-time data submissions or inherited by more specific data submission profiles.
+A base profile for one-time orders that specifies an absolute time period for data collection. This profile can be used as-is for general one-time data submissions or inherited by more specific data submission profiles.
 
 Key aspects of this profile:
 * Specifies what data should be included in the submission
@@ -523,8 +523,6 @@ The Data Receiver can expose a one-time order indicating:
 **Guiding Data Submission**
 
 Like the CGM Data Submission Standing Order, this one-time order is modeled as a FHIR [`ServiceRequest`](https://hl7.org/fhir/R4/servicerequest.html) resource. This profile is used to request CGM data for on-demand data requests rather than ongoing scheduled submissions. For example, a provider can fetch the most up-to-date results for an upcoming appointment.
-
-The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band in this version of the specification. Future versions may provide an in-band option based on implementation experience.
 
 **DataSubmissionOneTimeSpec**
 
@@ -663,7 +661,7 @@ InstanceOf: OperationDefinition
 Usage: #definition
 Title: "Submit CGM Bundle Operation"
 Description: """
-This operation is used to submit CGM data. The input is a 'transaction' Bundle that conforms to the [CGM Data Submission Bundle Profile](StructureDefinition-cgm-data-submission-bundle.html) containing CGM data (summary reports, sensor readings, etc.). 
+This operation is used to submit CGM data. The input is a 'transaction' Bundle that conforms to the [CGM Data Submission Bundle Profile](StructureDefinition-cgm-data-submission-bundle.html), containing CGM data (such as summary reports and sensor readings). 
 The output is a 'transaction-response' Bundle containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
 
 The response Bundle will:
