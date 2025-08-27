@@ -602,7 +602,7 @@ This capability statement describes the requirements for systems receiving CGM d
 Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/fhir/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
 """
 * status = #active
-* date = 2024-05-09
+* date = 2025-08-27
 * kind = #requirements
 * fhirVersion = #4.0.1
 * format[0] = #json
@@ -611,9 +611,11 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
   * operation[+]
     * name = "submit-cgm-bundle"
     * definition = Canonical(submit-cgm-bundle)
+    * documentation = "This operation is used to submit CGM data"
   * resource[+]
     * type = #ServiceRequest
     * supportedProfile[+] = Canonical(cgm-data-submission-standing-order)
+    * supportedProfile[+] = Canonical(cgm-data-submission-one-time-order)
     * interaction[+].code = #read
     * interaction[+].code = #search-type
     * searchParam[+]
@@ -623,13 +625,13 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
       * name = "code" 
       * type = #token
   * resource[+]
-    * type = #DiagnosticReport
-    * supportedProfile[+] = Canonical(CGMSummaryPDF)
+    * type = #Device
+    * supportedProfile[+] = Canonical(CGMDevice)
     * interaction[+].code = #create
     * interaction[+].code = #update
   * resource[+]
-    * type = #Device
-    * supportedProfile[+] = Canonical(CGMDevice)
+    * type = #DiagnosticReport
+    * supportedProfile[+] = Canonical(CGMSummaryPDF)
     * interaction[+].code = #create
     * interaction[+].code = #update
   * resource[+]
@@ -656,6 +658,7 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
       * name = "code"
       * type = #token
 
+
 Instance: submit-cgm-bundle
 InstanceOf: OperationDefinition
 Usage: #definition
@@ -681,9 +684,8 @@ Servers SHOULD support conditional create requests and persist client-supplied i
 * status = #active
 * kind = #operation
 * code = #submit-cgm-bundle
-* resource = #Bundle
-* system = false
-* type = true
+* system = true
+* type = false
 * instance = false
 * parameter[0]
   * name = #resource
