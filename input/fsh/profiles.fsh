@@ -114,7 +114,7 @@ Description: "A PDF report containing a summary of continuous glucose monitoring
 * insert DiagnosticReportBase
 * subject 1..1 MS
   * ^short = "Patient for the report" 
-* code = CGMSummaryCodesTemporary#cgm-summary
+* code = $LNC#107931-8 // "Continuous glucose monitoring summary panel - Reporting Period"
   * ^short = "Code for CGM Summary report"
 * effectivePeriod 1..1 MS
   * start 1..1 MS
@@ -281,35 +281,10 @@ Description: "Codes to identify content associated with this IG"
 * #cgm-data-submission-standing-order "CGM Submission Standing Order" "A ServiceRequest code that identifies a \"standing order\" for CGM data."
 * #cgm-data-submission-one-time-order "CGM Submission One-Time Order" "A ServiceRequest code that identifies a \"one-time order\" for CGM data."
 
-CodeSystem: CGMSummaryCodesTemporary
-Id: cgm-summary-codes-temporary
-Title: "CGM Summary Code System"
-Description: "Temporary code system for CGM summary observations. NOTE: Most codes have been retired and replaced by LOINC. This CodeSystem is maintained for the single remaining temporary concept."
-* ^caseSensitive = true
-* ^experimental = false
-* ^status = #active
-* #cgm-summary "CGM Summary Report"
-
-Instance: CGMSummaryToLoinc
-InstanceOf: ConceptMap
-Usage: #definition
-Title: "Mapping from CGM Temporary Codes to LOINC"
-Description: "Mapping concepts from the CGM Summary code system to LOINC codes. NOTE: Most temporary codes have been retired; this map reflects the single remaining temporary concept."
-* name  = "CGMSummaryToLoinc"
-* experimental = false
-* status = #active
-* group[+].source = Canonical(CGMSummaryCodesTemporary)
-* group[=].target = $LNC
-* group[=].element[+]
-  * code = #cgm-summary
-  * target[+].code = #104643-2
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-
 Instance: CGMSummaryWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#cgm-summary
+* coding[+] = $LNC#107931-8 // "Continuous glucose monitoring summary panel - Reporting Period"
 // * coding[+] =  $LNC#104643-2
 
 Instance: TimesInRangesLoinc
@@ -407,16 +382,6 @@ The Bundle `entry` array includes any combination of
 * entry 1..* MS
 * entry contains
     patient 0..1 MS and
-    observation 0..* MS and
-    diagnosticReport 0..* MS and
-    device 0..* MS
-* entry[patient].resource only Patient
-  * ^short = "Patient entry"
-* entry[device].resource only CGMDevice
-  * ^short = "CGM device entry must conform to CGMDevice profile"
-* entry[diagnosticReport].resource only CGMSummaryPDF
-  * ^short = "CGM summary PDF entry must conform to CGMSummaryPDF profile"
-* entry[observation] contains
     cgmSummary 0..* MS and
     cgmSummaryMeanGlucoseMassPerVolume 0..* and
     cgmSummaryMeanGlucoseMolesPerVolume 0..* and
@@ -426,24 +391,32 @@ The Bundle `entry` array includes any combination of
     cgmSummaryDaysOfWear 0..* MS and
     cgmSummarySensorActivePercentage 0..* MS and
     cgmSensorReadingMassPerVolume 0..* and
-    cgmSensorReadingMolesPerVolume 0..*
-* entry[observation][cgmSummary].resource only CGMSummaryObservation
-* entry[observation][cgmSummaryMeanGlucoseMassPerVolume].resource only CGMSummaryMeanGlucoseMassPerVolume
-* entry[observation][cgmSummaryMeanGlucoseMolesPerVolume].resource only CGMSummaryMeanGlucoseMolesPerVolume
-* entry[observation][cgmSummaryTimesInRanges].resource only CGMSummaryTimesInRanges
-* entry[observation][cgmSummaryGMI].resource only CGMSummaryGMI
-* entry[observation][cgmSummaryCoefficientOfVariation].resource only CGMSummaryCoefficientOfVariation
-* entry[observation][cgmSummaryDaysOfWear].resource only CGMSummaryDaysOfWear
-* entry[observation][cgmSummarySensorActivePercentage].resource only CGMSummarySensorActivePercentage
-* entry[observation][cgmSensorReadingMassPerVolume].resource only CGMSensorReadingMassPerVolume
-* entry[observation][cgmSensorReadingMolesPerVolume].resource only CGMSensorReadingMolesPerVolume
+    cgmSensorReadingMolesPerVolume 0..* and
+    diagnosticReport 0..* MS and
+    device 0..* MS
+* entry[patient].resource only Patient
+  * ^short = "Patient entry"
+* entry[device].resource only CGMDevice
+  * ^short = "CGM device entry must conform to CGMDevice profile"
+* entry[diagnosticReport].resource only CGMSummaryPDF
+  * ^short = "CGM summary PDF entry must conform to CGMSummaryPDF profile"
+* entry[cgmSummary].resource only CGMSummaryObservation
+* entry[cgmSummaryMeanGlucoseMassPerVolume].resource only CGMSummaryMeanGlucoseMassPerVolume
+* entry[cgmSummaryMeanGlucoseMolesPerVolume].resource only CGMSummaryMeanGlucoseMolesPerVolume
+* entry[cgmSummaryTimesInRanges].resource only CGMSummaryTimesInRanges
+* entry[cgmSummaryGMI].resource only CGMSummaryGMI
+* entry[cgmSummaryCoefficientOfVariation].resource only CGMSummaryCoefficientOfVariation
+* entry[cgmSummaryDaysOfWear].resource only CGMSummaryDaysOfWear
+* entry[cgmSummarySensorActivePercentage].resource only CGMSummarySensorActivePercentage
+* entry[cgmSensorReadingMassPerVolume].resource only CGMSensorReadingMassPerVolume
+* entry[cgmSensorReadingMolesPerVolume].resource only CGMSensorReadingMolesPerVolume
 
 Profile: DataSubmissionStandingOrder
 Parent: ServiceRequest
 Id: data-submission-standing-order
 Title: "Data Submission Standing Order"
 Description: """
-A base profile for standing orders that indicate data submission requirements. This profile can be used as-is for general data submissions or inherited by more specific data submission profiles.
+A base profile for standing orders that indicates data submission requirements. This profile can be used as-is for general data submissions or inherited by more specific data submission profiles.
 
 Key aspects of this profile:
 * Specifies what data should be included in each submission
@@ -476,7 +449,7 @@ Description: """
 The Data Receiver can expose a standing order indicating:
 
 * What data a Data Submitter should include in each CGM Data Submission Bundle
-* How often a Data Submitter should submit CGM data
+* How often should a Data Submitter submit CGM data
 * What lookback period should each submission cover
 
 **Guiding Data Submission**
@@ -488,14 +461,14 @@ Data Submitters can query to guide their future submissions. The standing order 
 
 The [`DataSubmissionSchedule`](StructureDefinition-data-submission-schedule.html) extension contains:
 
-- `submissionPeriod`: Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`). This indicates how often the data should be submitted (e.g., every 2 weeks, every month).
+- `submissionPeriod`: Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`) indicating how often the data should be submitted (e.g., every 2 weeks, every month).
 - `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted according to the specified schedule.
-- `lookbackPeriod` (optional): Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`). This indicates the period of time the data submission should cover (e.g., past 30 days, past 3 months).
+- `lookbackPeriod` (optional): Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`) indicating the period of time the data submission should cover (e.g., past 30 days, past 3 months).
 
-While the value set supports granular units like seconds, minutes, and hours, common practice for CGM data submission schedules typically involves longer durations such as days, weeks, or months.
+While the value set supports granular units like seconds, minutes, and hours, CGM data submission schedules typically involve longer durations such as days, weeks, or months.
 Multiple `DataSubmissionSchedule` extensions can be included in a single `DataSubmissionRequest` resource if the Data Recipient prefers a different schedule for different data types.
 
-It's important to note that a patient or provider can also **manually trigger** a submission within an app. For example, if there is an upcoming appointment, the provider can click a button to fetch the most up-to-date results. Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.
+ Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.  Note that a patient or provider can also manually trigger a one-time submission within an app, and the CGM Data Submission One-Time Order profile can be used for these on-demand data requests.
 
 """
 * intent = #order
@@ -512,7 +485,7 @@ Parent: ServiceRequest
 Id: data-submission-one-time-order
 Title: "Data Submission One-Time Order"
 Description: """
-A base profile for one-time orders that specify an absolute time period for data collection. This profile can be used as-is for general one-time data submissions or inherited by more specific data submission profiles.
+A base profile for one-time orders that specifies an absolute time period for data collection. This profile can be used as-is for general one-time data submissions or inherited by more specific data submission profiles.
 
 Key aspects of this profile:
 * Specifies what data should be included in the submission
@@ -542,25 +515,28 @@ Parent: DataSubmissionOneTimeOrder
 Id: cgm-data-submission-one-time-order
 Title: "CGM Data Submission One-Time Order"
 Description: """
-A one-time order for CGM data submission that specifies an absolute time period for data collection. This profile is used to request CGM data for a specific time range, typically for on-demand data requests rather than ongoing scheduled submissions.
+The Data Receiver can expose a one-time order indicating:  
 
-Key aspects of this profile:
-* Specifies what data should be included in the submission
-* Defines an absolute time period (using FHIR Period data type) for data collection
-* Intended for one-time, on-demand data requests
+- What data a Data Submitter should include in the CGM Data Submission Bundle  
+- The absolute time period for data collection 
 
-**DataSubmissionOneTimeSpec Extension**
+**Guiding Data Submission**
+
+Like the CGM Data Submission Standing Order, this one-time order is modeled as a FHIR [`ServiceRequest`](https://hl7.org/fhir/R4/servicerequest.html) resource. This profile is used to request CGM data for on-demand data requests rather than ongoing scheduled submissions. For example, a provider can fetch the most up-to-date results for an upcoming appointment.
+
+**DataSubmissionOneTimeSpec**
 
 The [`DataSubmissionOneTimeSpec`](StructureDefinition-data-submission-one-time-spec.html) extension contains:
 
-- `timePeriod`: A FHIR Period data type specifying the absolute start and end dates/times for data submission
-- `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted
+- `timePeriod`: A FHIR Period data type specifying the absolute start and end dates/times for data submission (e.g., January 1, 2024, to December 31, 2024).
+- `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted.
+
+While the value set supports granular units like seconds, minutes, and hours, CGM data submission schedules typically involve longer durations such as days, weeks, or months.
 
 **Data Chunking for Large Time Periods**
 
 While one-time orders can specify any time period (including a patient's entire history), it's usually better to break large requests into meaningful chunks. Chunking makes data size manageable and summary statistics more relevant. Receivers can control chunking by sending individual requests for yearly or monthly periods where the analysis period is more meaningful.
 
-The mechanism for transmitting one-time orders from EHR to CGM Data Submitter is left out-of-band (OOB) in this version of the specification. Future versions may provide an in-band option based on implementation experience.
 """
 * intent = #order
   * ^short = "Intent is #order"
@@ -626,7 +602,7 @@ This capability statement describes the requirements for systems receiving CGM d
 Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/fhir/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
 """
 * status = #active
-* date = 2024-05-09
+* date = 2025-08-27
 * kind = #requirements
 * fhirVersion = #4.0.1
 * format[0] = #json
@@ -635,9 +611,11 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
   * operation[+]
     * name = "submit-cgm-bundle"
     * definition = Canonical(submit-cgm-bundle)
+    * documentation = "This operation is used to submit CGM data"
   * resource[+]
     * type = #ServiceRequest
     * supportedProfile[+] = Canonical(cgm-data-submission-standing-order)
+    * supportedProfile[+] = Canonical(cgm-data-submission-one-time-order)
     * interaction[+].code = #read
     * interaction[+].code = #search-type
     * searchParam[+]
@@ -647,13 +625,13 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
       * name = "code" 
       * type = #token
   * resource[+]
-    * type = #DiagnosticReport
-    * supportedProfile[+] = Canonical(CGMSummaryPDF)
+    * type = #Device
+    * supportedProfile[+] = Canonical(CGMDevice)
     * interaction[+].code = #create
     * interaction[+].code = #update
   * resource[+]
-    * type = #Device
-    * supportedProfile[+] = Canonical(CGMDevice)
+    * type = #DiagnosticReport
+    * supportedProfile[+] = Canonical(CGMSummaryPDF)
     * interaction[+].code = #create
     * interaction[+].code = #update
   * resource[+]
@@ -680,13 +658,14 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
       * name = "code"
       * type = #token
 
+
 Instance: submit-cgm-bundle
 InstanceOf: OperationDefinition
 Usage: #definition
 Title: "Submit CGM Bundle Operation"
 Description: """
-This operation is used to submit CGM data. The input is a Bundle of type 'transaction' containing CGM data (summary reports, sensor readings, etc.) 
-and the output is a Bundle of type 'transaction-response' containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
+This operation is used to submit CGM data. The input is a 'transaction' Bundle that conforms to the [CGM Data Submission Bundle Profile](StructureDefinition-cgm-data-submission-bundle.html), containing CGM data (such as summary reports and sensor readings). 
+The output is a 'transaction-response' Bundle containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
 
 The response Bundle will:
 - Maintain the same order as the submission Bundle
@@ -705,18 +684,17 @@ Servers SHOULD support conditional create requests and persist client-supplied i
 * status = #active
 * kind = #operation
 * code = #submit-cgm-bundle
-* resource = #Bundle
-* system = false
-* type = true
+* system = true
+* type = false
 * instance = false
-* inputProfile = Canonical(CGMDataSubmissionBundle)
 * parameter[0]
   * name = #resource
   * use = #in
   * min = 1
   * max = "1"
-  * documentation = "A Bundle of type 'transaction' containing CGM data including summary reports, sensor readings, and related resources."
+  * documentation = "A 'transaction' Bundle that conforms to the CGM Data Submission Bundle Profile containing multiple resources related to Continuous Glucose Monitoring (CGM) data"
   * type = #Bundle
+  * targetProfile = Canonical(CGMDataSubmissionBundle)
 * parameter[1]
   * name = #return
   * use = #out
@@ -732,3 +710,22 @@ Servers SHOULD support conditional create requests and persist client-supplied i
     If the entire operation fails, a single OperationOutcome resource is returned instead.
     """
   * type = #Bundle
+
+
+//Profile: CGMInputParametersProfile
+//Id: cgm-input-parameters-profile
+//Parent: Parameters
+//Title: "CGM Input Parameters Profile"
+//Description: "A profile on the Parameters resource to constrain the input parameters for the submit-cgm-bundle operation, specifying the 'in' parameter as a CGM Data Submission Bundle."
+//
+//* parameter ^slicing.discriminator.type = #value
+//* parameter ^slicing.discriminator.path = "name"
+//* parameter ^slicing.rules = #open
+//* parameter ^slicing.description = "Slice parameters based on the name"
+//* parameter contains in 1..1 MS
+//* parameter[in].name ^patternString = "in"
+//* parameter[in].value[x] ^min = 0
+//* parameter[in].value[x] ^max = "0"
+//* parameter[in].resource ^min = 1
+//* parameter[in].resource ^type.code = #Resource
+//* parameter[in].resource ^type.profile[+] = Canonical(CGMDataSubmissionBundle)

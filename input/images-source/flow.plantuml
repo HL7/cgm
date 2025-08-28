@@ -43,9 +43,9 @@ partition "Submission Triggers" {
     split
         :Scheduled Submission Interval;
     split again
-        :Manual Trigger;
+        :One-Time Orders;
         note right
-            e.g., User initiated
+            User initiated
             (e.g., in-app button)
         end note
     end split
