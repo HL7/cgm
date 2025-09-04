@@ -1,16 +1,11 @@
 {
     "package-id": "hl7.fhir.uv.cgm",
-    "version": "1.0.0-ballot",
-    "path": "http://hl7.org/fhir/uv/cgm/2025May",
-    "mode": "working",
-    "status" : "ballot",
-    "sequence": "STU 1",
-    "first": true,
-    "desc" : "This is the first balloted version of the Continuous Glucose Monitoring Implementation Guide.",
-    "descmd" : "This is the first balloted version of the Continuous Glucose Monitoring Implementation Guide.",
-    "title": "Continuous Glucose Monitoring",
-    "introduction": "The Continuous Glucose Monitoring Implementation Guide provides a standardized approach for sharing CGM data between actors. This IG focuses on enabling the exchange of CGM data, including high-level reports and raw glucose observations, to support collaborative glucose management.",
-    "ci-build": "http://build.fhir.org/ig/HL7/cgm",
-    "category": "Diagnostics"
+    "version": "1.0.0",
+    "path": "http://hl7.org/fhir/uv/cgm/STU1",
+    "mode": "milestone",
+    "status" : "trial-use",
+    "sequence": "STU1",
+    "desc" : "This is the first version of the Continuous Glucose Monitoring Implementation Guide.",
+    "descmd" : "This is the first version of the Continuous Glucose Monitoring Implementation Guide."
 }
 

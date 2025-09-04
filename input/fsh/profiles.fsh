@@ -12,13 +12,13 @@ RuleSet: DiagnosticReportBase
 
 RuleSet: GlucoseMassPerVolume
 * value[x] only Quantity
-* valueQuantity 1..1 MS
+* valueQuantity 0..1 MS
 * valueQuantity = 'mg/dL' "mg/dl"
   * ^short = "Glucose value in mg/dL"
 
 RuleSet: GlucoseMolesPerVolume
 * value[x] only Quantity
-* valueQuantity 1..1 MS
+* valueQuantity 0..1 MS
 * valueQuantity = 'mmol/L' "mmol/l"
   * ^short = "Glucose value in mmol/L"
 
@@ -29,6 +29,7 @@ Title: "CGM Sensor Reading (Mass)"
 Description: "A continuous glucose monitoring (CGM) sensor reading represented in mass units."
 * insert ObservationBase
 * insert GlucoseMassPerVolume
+* obeys cgm-sensor-value-or-dar
 * code = $LNC#99504-3
 * effectiveDateTime 1..1 MS
   * ^short = "Time the measurement was taken"
@@ -40,6 +41,7 @@ Title: "CGM Sensor Reading (Molar)"
 Description: "A continuous glucose monitoring (CGM) sensor reading represented in molar units."
 * insert ObservationBase
 * insert GlucoseMolesPerVolume
+* obeys cgm-sensor-value-or-dar
 * code = $LNC#105272-9
 * effectiveDateTime 1..1 MS
   * ^short = "Time the measurement was taken"
@@ -55,6 +57,10 @@ RuleSet: CGMSummaryBase
   * end 1..1 MS
     * ^short = "End date of the reporting period (YYYY-MM-DD)"
 
+Invariant: cgm-sensor-value-or-dar
+Description: "A sensor reading must have a valueQuantity or a dataAbsentReason."
+Expression: "value.exists() or dataAbsentReason.exists()"
+Severity: #error
  
 Profile: CGMSummaryObservation
 Parent: Observation
@@ -77,8 +83,8 @@ Description: "An observation representing a summary of continuous glucose monito
   * ^short = "Open slicing allowing additional slices"  
 * hasMember 6..*
 * hasMember contains
-    meanGlucoseMassPerVolume 0..1 MS and
-    meanGlucoseMolesPerVolume 0..1 MS and
+    meanGlucoseMassPerVolume 0..1 and
+    meanGlucoseMolesPerVolume 0..1 and
     timesInRanges 1..1 MS and 
     gmi 1..1 MS and
     cv 1..1 MS and
@@ -108,7 +114,7 @@ Description: "A PDF report containing a summary of continuous glucose monitoring
 * insert DiagnosticReportBase
 * subject 1..1 MS
   * ^short = "Patient for the report" 
-* code = CGMSummaryCodesTemporary#cgm-summary
+* code = $LNC#107931-8 // "Continuous glucose monitoring summary panel - Reporting Period"
   * ^short = "Code for CGM Summary report"
 * effectivePeriod 1..1 MS
   * start 1..1 MS
@@ -142,11 +148,11 @@ Description: "A PDF report containing a summary of continuous glucose monitoring
 Profile: CGMSummaryTimesInRanges
 Parent: Observation
 Id: cgm-summary-times-in-ranges
-Title: "CGM Summary Times in Ranges"
+Title: "CGM Times in Ranges"
 Description: "An observation representing the times in various ranges from a continuous glucose monitoring (CGM) summary. Value: Percent of time, with at least two decimal places of precision."
 * insert CGMSummaryBase
-* code = CGMSummaryCodesTemporary#times-in-ranges
-  * ^short = "Code for Times in Ranges observation"
+* code = TimesInRangesLoinc
+  * ^short = "Code for Times in Ranges observation (LOINC: 106793-3)"
 * component
   * ^slicing.discriminator.type = #value
   * ^slicing.discriminator.path = "code"
@@ -273,170 +279,73 @@ Description: "Codes to identify content associated with this IG"
 * ^experimental = false
 * ^status = #active
 * #cgm-data-submission-standing-order "CGM Submission Standing Order" "A ServiceRequest code that identifies a \"standing order\" for CGM data."
-
-CodeSystem: CGMSummaryCodesTemporary
-Id: cgm-summary-codes-temporary
-Title: "CGM Summary Code System"
-Description: "Temporary code system for CGM summary observations."
-* ^caseSensitive = true
-* ^experimental = false
-* ^status = #active
-* #cgm-summary "CGM Summary Report"
-* #mean-glucose-mass-per-volume "Mean Glucose (Mass per Volume)"
-* #mean-glucose-moles-per-volume "Mean Glucose (Moles per Volume)"
-* #times-in-ranges "Times in Glucose Ranges"
-* #time-in-very-low "Time in Very Low Range (%)"
-* #time-in-low "Time in Low Range (%)"
-* #time-in-target "Time in Target Range (%)"
-* #time-in-high "Time in High Range (%)"
-* #time-in-very-high "Time in Very High Range (%)" 
-* #gmi "Glucose Management Indicator (GMI)"
-* #cv "Coefficient of Variation (CV)"
-* #days-of-wear "Days of Wear"
-* #sensor-active-percentage "Sensor Active Percentage"
-
-Instance: CGMSummaryToLoinc
-InstanceOf: ConceptMap
-Usage: #definition
-Title: "Mapping from CGM Temporary Codes to LOINC"
-Description: "Mapping concepts from the CGM Summary code system to LOINC codes."
-* name  = "CGMSummaryToLoinc"
-* experimental = false
-* status = #active
-* group[+].source = Canonical(CGMSummaryCodesTemporary)
-* group[=].target = $LNC
-* group[=].element[+]
-  * code = #cgm-summary
-  * target[+].code = #104643-2
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #mean-glucose-mass-per-volume
-  * target[+].code = #97507-8
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "published"
-* group[=].element[+]
-  * code = #mean-glucose-moles-per-volume
-  * target[+].code = #105273-7
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #time-in-very-low
-  * target[+].code = #104642-4
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #time-in-low
-  * target[+].code = #104641-6
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #time-in-target
-  * target[+].code = #97510-2
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "published"
-* group[=].element[+]
-  * code = #time-in-high
-  * target[+].code = #104640-8
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #time-in-very-high
-  * target[+].code = #104639-0
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #gmi
-  * target[+].code = #97506-0
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "published"
-* group[=].element[+]
-  * code = #cv
-  * target[+].code = #104638-2
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "published"
-* group[=].element[+]
-  * code = #days-of-wear
-  * target[+].code = #104636-6
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
-* group[=].element[+]
-  * code = #sensor-active-percentage
-  * target[+].code = #104637-4
-  * target[=].equivalence = #equivalent
-  * target[=].comment = "Expected publication date February 2025"
+* #cgm-data-submission-one-time-order "CGM Submission One-Time Order" "A ServiceRequest code that identifies a \"one-time order\" for CGM data."
 
 Instance: CGMSummaryWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#cgm-summary
+* coding[+] = $LNC#107931-8 // "Continuous glucose monitoring summary panel - Reporting Period"
 // * coding[+] =  $LNC#104643-2
+
+Instance: TimesInRangesLoinc
+InstanceOf: CodeableConcept
+Usage: #inline
+* coding[+] = $LNC#106793-3 // "Continuous glucose monitoring time in ranges panel"
 
 Instance: MeanGlucoseMassPerVolumeWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#mean-glucose-mass-per-volume
-* coding[+] =  $LNC#97507-8
+* coding[+] = $LNC#97507-8 // "Glucose [Mass/volume] in Serum or Plasma by Continuous glucose monitoring"
 
 Instance: GMIWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#gmi
-* coding[+] = $LNC#97506-0
+* coding[+] = $LNC#97506-0 // "Glucose management indicator by Continuous glucose monitoring"
 
 Instance: TimeInVeryLowWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-very-low
-// * coding[+] = $LNC#104642-4
+* coding[+] = $LNC#104642-4 // "Continuous glucose monitoring time below glucose threshold level 1"
 
 Instance: TimeInLowWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-low
-// * coding[+] = $LNC#104641-6
+* coding[+] = $LNC#104641-6 // "Continuous glucose monitoring time below glucose threshold level 2"
 
 Instance: TimeInTargetWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-target
-* coding[+] = $LNC#97510-2
+* coding[+] = $LNC#97510-2 // "Continuous glucose monitoring time in range"
 
 Instance: MeanGlucoseMolar
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#mean-glucose-moles-per-volume
-// * coding[+] = $LNC#105273-7
+* coding[+] = $LNC#105273-7 // "Glucose [Moles/volume] in Capillary blood by Continuous glucose monitoring"
 
 Instance: TimeInHighWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-high
-// * coding[+] = $LNC#104640-8
+* coding[+] = $LNC#104640-8 // "Continuous glucose monitoring time above glucose threshold level 1"
 
 Instance: TimeInVeryHighWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#time-in-very-high
-// * coding[+] = $LNC#104639-0
+* coding[+] = $LNC#104639-0 // "Continuous glucose monitoring time above glucose threshold level 2"
 
 Instance: CVWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#cv
-* coding[+] = $LNC#104638-2
+* coding[+] = $LNC#104638-2 // "Coefficient of variation of glucose by Continuous glucose monitoring"
 
 Instance: DaysOfWearWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#days-of-wear
-// * coding[+] = $LNC#104636-6
+* coding[+] = $LNC#104636-6 // "Continuous glucose monitoring duration of use"
 
 Instance: SensorActivePercentageWithLoinc
 InstanceOf: CodeableConcept
 Usage: #inline
-* coding[+] = CGMSummaryCodesTemporary#sensor-active-percentage
-// * coding[+] = $LNC#104637-4
+* coding[+] = $LNC#104637-4 // "Continuous glucose monitoring sensor wear time active"
 
 
 Profile: CGMDataSubmissionBundle
@@ -453,7 +362,7 @@ The Bundle `entry` array includes any combination of
   * Mean Glucose (Mass per Volume) ([Profile](StructureDefinition-cgm-summary-mean-glucose-mass-per-volume.html#profile), [Example](Observation-cgmSummaryMeanGlucoseMassPerVolumeExample.json.html#root))
   * Mean Glucose (Moles per Volume) ([Profile](StructureDefinition-cgm-summary-mean-glucose-moles-per-volume.html#profile), [Example](Observation-cgmSummaryMeanGlucoseMolesPerVolumeExample.json.html#root))
   * Times in Ranges ([Profile](StructureDefinition-cgm-summary-times-in-ranges.html#profile), [Example](Observation-cgmSummaryTimesInRangesExample.json.html#root))
-  * Glucose Management Index ([Profile](StructureDefinition-cgm-summary-gmi.html#profile), [Example](Observation-cgmSummaryGMIExample.json.html#root))
+  * Glucose Management Indicator ([Profile](StructureDefinition-cgm-summary-gmi.html#profile), [Example](Observation-cgmSummaryGMIExample.json.html#root))
   * Coefficient of Variation ([Profile](StructureDefinition-cgm-summary-coefficient-of-variation.html#profile), [Example](Observation-cgmSummaryCoefficientOfVariationExample.json.html#root))
   * Sensor Days of Wear ([Profile](StructureDefinition-cgm-summary-days-of-wear.html#profile), [Example](Observation-cgmSummaryDaysOfWearExample.json.html#root))
   * Sensor Active Percentage ([Profile](StructureDefinition-cgm-summary-sensor-active-percentage.html#profile), [Example](Observation-cgmSummarySensorActivePercentageExample.json.html#root))
@@ -473,7 +382,16 @@ The Bundle `entry` array includes any combination of
 * entry 1..* MS
 * entry contains
     patient 0..1 MS and
-    observation 0..* MS and
+    cgmSummary 0..* MS and
+    cgmSummaryMeanGlucoseMassPerVolume 0..* and
+    cgmSummaryMeanGlucoseMolesPerVolume 0..* and
+    cgmSummaryTimesInRanges 0..* MS and
+    cgmSummaryGMI 0..* MS and
+    cgmSummaryCoefficientOfVariation 0..* MS and
+    cgmSummaryDaysOfWear 0..* MS and
+    cgmSummarySensorActivePercentage 0..* MS and
+    cgmSensorReadingMassPerVolume 0..* and
+    cgmSensorReadingMolesPerVolume 0..* and
     diagnosticReport 0..* MS and
     device 0..* MS
 * entry[patient].resource only Patient
@@ -482,35 +400,23 @@ The Bundle `entry` array includes any combination of
   * ^short = "CGM device entry must conform to CGMDevice profile"
 * entry[diagnosticReport].resource only CGMSummaryPDF
   * ^short = "CGM summary PDF entry must conform to CGMSummaryPDF profile"
-* entry[observation] contains
-    cgmSummary 0..* MS and
-    cgmSummaryMeanGlucoseMassPerVolume 0..* MS  and
-    cgmSummaryMeanGlucoseMolesPerVolume 0..* MS and
-    cgmSummaryTimesInRanges 0..* MS and
-    cgmSummaryGMI 0..* MS and
-    cgmSummaryCoefficientOfVariation 0..* MS and
-    cgmSummaryDaysOfWear 0..* MS and
-    cgmSummarySensorActivePercentage 0..* MS and
-    device 0..* MS and
-    cgmSensorReadingMassPerVolume 0..* MS and
-    cgmSensorReadingMolesPerVolume 0..* MS
-* entry[observation][cgmSummary].resource only CGMSummaryObservation
-* entry[observation][cgmSummaryMeanGlucoseMassPerVolume].resource only CGMSummaryMeanGlucoseMassPerVolume
-* entry[observation][cgmSummaryMeanGlucoseMolesPerVolume].resource only CGMSummaryMeanGlucoseMolesPerVolume
-* entry[observation][cgmSummaryTimesInRanges].resource only CGMSummaryTimesInRanges
-* entry[observation][cgmSummaryGMI].resource only CGMSummaryGMI
-* entry[observation][cgmSummaryCoefficientOfVariation].resource only CGMSummaryCoefficientOfVariation
-* entry[observation][cgmSummaryDaysOfWear].resource only CGMSummaryDaysOfWear
-* entry[observation][cgmSummarySensorActivePercentage].resource only CGMSummarySensorActivePercentage
-* entry[observation][cgmSensorReadingMassPerVolume].resource only CGMSensorReadingMassPerVolume
-* entry[observation][cgmSensorReadingMolesPerVolume].resource only CGMSensorReadingMolesPerVolume
+* entry[cgmSummary].resource only CGMSummaryObservation
+* entry[cgmSummaryMeanGlucoseMassPerVolume].resource only CGMSummaryMeanGlucoseMassPerVolume
+* entry[cgmSummaryMeanGlucoseMolesPerVolume].resource only CGMSummaryMeanGlucoseMolesPerVolume
+* entry[cgmSummaryTimesInRanges].resource only CGMSummaryTimesInRanges
+* entry[cgmSummaryGMI].resource only CGMSummaryGMI
+* entry[cgmSummaryCoefficientOfVariation].resource only CGMSummaryCoefficientOfVariation
+* entry[cgmSummaryDaysOfWear].resource only CGMSummaryDaysOfWear
+* entry[cgmSummarySensorActivePercentage].resource only CGMSummarySensorActivePercentage
+* entry[cgmSensorReadingMassPerVolume].resource only CGMSensorReadingMassPerVolume
+* entry[cgmSensorReadingMolesPerVolume].resource only CGMSensorReadingMolesPerVolume
 
 Profile: DataSubmissionStandingOrder
 Parent: ServiceRequest
 Id: data-submission-standing-order
 Title: "Data Submission Standing Order"
 Description: """
-A base profile for standing orders that indicate data submission requirements. This profile can be used as-is for general data submissions or inherited by more specific data submission profiles.
+A base profile for standing orders that indicates data submission requirements. This profile can be used as-is for general data submissions or inherited by more specific data submission profiles.
 
 Key aspects of this profile:
 * Specifies what data should be included in each submission
@@ -543,7 +449,7 @@ Description: """
 The Data Receiver can expose a standing order indicating:
 
 * What data a Data Submitter should include in each CGM Data Submission Bundle
-* How often a Data Submitter should submit CGM data
+* How often should a Data Submitter submit CGM data
 * What lookback period should each submission cover
 
 **Guiding Data Submission**
@@ -555,13 +461,14 @@ Data Submitters can query to guide their future submissions. The standing order 
 
 The [`DataSubmissionSchedule`](StructureDefinition-data-submission-schedule.html) extension contains:
 
-- `submissionPeriod`: Quantity with unit `d` for days, `wk` for weeks, `mo` for months, or `a` for years. This indicates how often the data should be submitted.
+- `submissionPeriod`: Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`) indicating how often the data should be submitted (e.g., every 2 weeks, every month).
 - `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted according to the specified schedule.
-- `lookbackPeriod` (optional): Quantity with unit `d` for days, `wk` for weeks, `mo` for months, or `a` for years. This indicates the period of time the data submission should cover.
+- `lookbackPeriod` (optional): Quantity, with units bound to the [UnitsOfTime](http://hl7.org/fhir/ValueSet/units-of-time) value set (allowing `s`, `min`, `h`, `d`, `wk`, `mo`, `a`) indicating the period of time the data submission should cover (e.g., past 30 days, past 3 months).
 
+While the value set supports granular units like seconds, minutes, and hours, CGM data submission schedules typically involve longer durations such as days, weeks, or months.
 Multiple `DataSubmissionSchedule` extensions can be included in a single `DataSubmissionRequest` resource if the Data Recipient prefers a different schedule for different data types.
 
-It's important to note that a patient or provider can also **manually trigger** a submission within an app. For example, if there is an upcoming appointment, the provider can click a button to fetch the most up-to-date results. Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.
+ Out-of-band communication between the app developer and the clinical provider system can also be used to establish preferred submission schedules.  Note that a patient or provider can also manually trigger a one-time submission within an app, and the CGM Data Submission One-Time Order profile can be used for these on-demand data requests.
 
 """
 * intent = #order
@@ -572,6 +479,98 @@ It's important to note that a patient or provider can also **manually trigger** 
   * ^short = "Patient for the CGM submission order"
 * extension[dataSubmissionSchedule]
   * ^short = "Schedules for CGM data submission"
+
+Profile: DataSubmissionOneTimeOrder
+Parent: ServiceRequest
+Id: data-submission-one-time-order
+Title: "Data Submission One-Time Order"
+Description: """
+A base profile for one-time orders that specifies an absolute time period for data collection. This profile can be used as-is for general one-time data submissions or inherited by more specific data submission profiles.
+
+Key aspects of this profile:
+* Specifies what data should be included in the submission
+* Defines an absolute time period (using FHIR Period data type) for data collection
+* Intended for one-time, on-demand data requests
+
+This profile uses the DataSubmissionOneTimeSpec extension to capture detailed submission requirements.
+"""
+* intent = #order
+  * ^short = "Intent is #order"
+* code 1..1 MS
+  * ^short = "Code identifying the type of data submission one-time order"
+  * ^definition = "A code that specifies the type of data submission this one-time order represents. This should be populated with a value that clearly identifies the nature of the data being submitted."
+* subject 1..1 MS
+  * ^short = "Patient for the one-time submission order"
+  * ^definition = "Reference to the patient for whom this data submission one-time order applies. This is required to ensure that submitted data is associated with the correct patient."
+* extension contains 
+    DataSubmissionOneTimeSpec named dataSubmissionOneTimeSpec 1..1 MS
+  * ^definition = "Contains a DataSubmissionOneTimeSpec extension defining the specific time period and type of data to be submitted."
+  * ^short = "DataSubmissionOneTimeSpec extension"
+* extension[dataSubmissionOneTimeSpec]
+  * ^short = "One-time specification for data submission"
+
+
+Profile: CGMDataSubmissionOneTimeOrder
+Parent: DataSubmissionOneTimeOrder
+Id: cgm-data-submission-one-time-order
+Title: "CGM Data Submission One-Time Order"
+Description: """
+The Data Receiver can expose a one-time order indicating:  
+
+- What data a Data Submitter should include in the CGM Data Submission Bundle  
+- The absolute time period for data collection 
+
+**Guiding Data Submission**
+
+Like the CGM Data Submission Standing Order, this one-time order is modeled as a FHIR [`ServiceRequest`](https://hl7.org/fhir/R4/servicerequest.html) resource. This profile is used to request CGM data for on-demand data requests rather than ongoing scheduled submissions. For example, a provider can fetch the most up-to-date results for an upcoming appointment.
+
+**DataSubmissionOneTimeSpec**
+
+The [`DataSubmissionOneTimeSpec`](StructureDefinition-data-submission-one-time-spec.html) extension contains:
+
+- `timePeriod`: A FHIR Period data type specifying the absolute start and end dates/times for data submission (e.g., January 1, 2024, to December 31, 2024).
+- `submissionDataProfile` (1..*): `canonical` reference to FHIR profiles that represent the types of data to be submitted.
+
+While the value set supports granular units like seconds, minutes, and hours, CGM data submission schedules typically involve longer durations such as days, weeks, or months.
+
+**Data Chunking for Large Time Periods**
+
+While one-time orders can specify any time period (including a patient's entire history), it's usually better to break large requests into meaningful chunks. Chunking makes data size manageable and summary statistics more relevant. Receivers can control chunking by sending individual requests for yearly or monthly periods where the analysis period is more meaningful.
+
+"""
+* intent = #order
+  * ^short = "Intent is #order"
+* code = CGMCodes#cgm-data-submission-one-time-order
+  * ^short = "Code for CGM one-time submission order"
+* subject 1..1 MS
+  * ^short = "Patient for the one-time CGM submission order"
+* extension contains 
+    DataSubmissionOneTimeSpec named dataSubmissionOneTimeSpec 1..1 MS
+  * ^definition = "Contains a DataSubmissionOneTimeSpec extension defining the specific time period and type of data to be submitted."
+  * ^short = "DataSubmissionOneTimeSpec extension"
+* extension[dataSubmissionOneTimeSpec]
+  * ^short = "One-time specification for CGM data submission"
+
+Extension: DataSubmissionOneTimeSpec
+Id: data-submission-one-time-spec
+Title: "Data Submission One-Time Specification"
+Description: "Defines a one-time specification for data submission with an absolute time period"
+Context: ServiceRequest
+* extension contains
+    timePeriod 1..1 MS and
+    submissionDataProfile 1..*  MS
+  * ^short = "One-time submission request"
+* extension[timePeriod].value[x] only Period
+  * ^short = "Absolute time period for data submission (start and end dates)"
+* extension[timePeriod].valuePeriod 1..1 MS
+  * ^short = "Time period with start and end dates"
+* extension[timePeriod].valuePeriod.start 1..1 MS
+  * ^short = "Start date/time for data submission"
+* extension[timePeriod].valuePeriod.end 1..1 MS
+  * ^short = "End date/time for data submission"
+* extension[submissionDataProfile].value[x] only canonical
+* extension[submissionDataProfile].valueCanonical 1..1 MS
+  * ^short = "Data profile for submission"
 
 Extension: DataSubmissionSchedule
 Id: data-submission-schedule
@@ -593,7 +592,6 @@ Context: ServiceRequest
 * extension[submissionDataProfile].valueCanonical 1..1 MS
   * ^short = "Data profile for submission"
 
-
 Instance: cgm-data-receiver
 InstanceOf: CapabilityStatement
 Usage: #definition
@@ -604,7 +602,7 @@ This capability statement describes the requirements for systems receiving CGM d
 Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `CapabilityStatement.instantiates` includes `"http://hl7.org/fhir/uv/cgm/CapabilityStatement/cgm-data-receiver"`.
 """
 * status = #active
-* date = 2024-05-09
+* date = 2025-08-27
 * kind = #requirements
 * fhirVersion = #4.0.1
 * format[0] = #json
@@ -613,9 +611,11 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
   * operation[+]
     * name = "submit-cgm-bundle"
     * definition = Canonical(submit-cgm-bundle)
+    * documentation = "This operation is used to submit CGM data"
   * resource[+]
     * type = #ServiceRequest
     * supportedProfile[+] = Canonical(cgm-data-submission-standing-order)
+    * supportedProfile[+] = Canonical(cgm-data-submission-one-time-order)
     * interaction[+].code = #read
     * interaction[+].code = #search-type
     * searchParam[+]
@@ -625,13 +625,13 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
       * name = "code" 
       * type = #token
   * resource[+]
-    * type = #DiagnosticReport
-    * supportedProfile[+] = Canonical(CGMSummaryPDF)
+    * type = #Device
+    * supportedProfile[+] = Canonical(CGMDevice)
     * interaction[+].code = #create
     * interaction[+].code = #update
   * resource[+]
-    * type = #Device
-    * supportedProfile[+] = Canonical(CGMDevice)
+    * type = #DiagnosticReport
+    * supportedProfile[+] = Canonical(CGMSummaryPDF)
     * interaction[+].code = #create
     * interaction[+].code = #update
   * resource[+]
@@ -658,13 +658,14 @@ Any CGM Data Receiver SHALL populate its `/metadata` response to ensure that `Ca
       * name = "code"
       * type = #token
 
+
 Instance: submit-cgm-bundle
 InstanceOf: OperationDefinition
 Usage: #definition
 Title: "Submit CGM Bundle Operation"
 Description: """
-This operation is used to submit CGM data. The input is a Bundle of type 'transaction' containing CGM data (summary reports, sensor readings, etc.) 
-and the output is a Bundle of type 'transaction-response' containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
+This operation is used to submit CGM data. The input is a 'transaction' Bundle that conforms to the [CGM Data Submission Bundle Profile](StructureDefinition-cgm-data-submission-bundle.html), containing CGM data (such as summary reports and sensor readings). 
+The output is a 'transaction-response' Bundle containing processing results for each submitted resource, or an OperationOutcome resource for overall failures.
 
 The response Bundle will:
 - Maintain the same order as the submission Bundle
@@ -683,18 +684,17 @@ Servers SHOULD support conditional create requests and persist client-supplied i
 * status = #active
 * kind = #operation
 * code = #submit-cgm-bundle
-* resource = #Bundle
-* system = false
-* type = true
+* system = true
+* type = false
 * instance = false
-* inputProfile = Canonical(CGMDataSubmissionBundle)
 * parameter[0]
   * name = #resource
   * use = #in
   * min = 1
   * max = "1"
-  * documentation = "A Bundle of type 'transaction' containing CGM data including summary reports, sensor readings, and related resources."
+  * documentation = "A 'transaction' Bundle that conforms to the CGM Data Submission Bundle Profile containing multiple resources related to Continuous Glucose Monitoring (CGM) data"
   * type = #Bundle
+  * targetProfile = Canonical(CGMDataSubmissionBundle)
 * parameter[1]
   * name = #return
   * use = #out
@@ -710,3 +710,22 @@ Servers SHOULD support conditional create requests and persist client-supplied i
     If the entire operation fails, a single OperationOutcome resource is returned instead.
     """
   * type = #Bundle
+
+
+//Profile: CGMInputParametersProfile
+//Id: cgm-input-parameters-profile
+//Parent: Parameters
+//Title: "CGM Input Parameters Profile"
+//Description: "A profile on the Parameters resource to constrain the input parameters for the submit-cgm-bundle operation, specifying the 'in' parameter as a CGM Data Submission Bundle."
+//
+//* parameter ^slicing.discriminator.type = #value
+//* parameter ^slicing.discriminator.path = "name"
+//* parameter ^slicing.rules = #open
+//* parameter ^slicing.description = "Slice parameters based on the name"
+//* parameter contains in 1..1 MS
+//* parameter[in].name ^patternString = "in"
+//* parameter[in].value[x] ^min = 0
+//* parameter[in].value[x] ^max = "0"
+//* parameter[in].resource ^min = 1
+//* parameter[in].resource ^type.code = #Resource
+//* parameter[in].resource ^type.profile[+] = Canonical(CGMDataSubmissionBundle)

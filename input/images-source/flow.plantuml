@@ -20,7 +20,7 @@ partition "Establish EHR Patient ID" {
         end note
     else (no)
         :Obtain patient ID
-         out-of-band;
+         (e.g., FHIR Patient Search);
     endif
 }
 
@@ -43,9 +43,9 @@ partition "Submission Triggers" {
     split
         :Scheduled Submission Interval;
     split again
-        :Manual Trigger;
+        :One-Time Orders;
         note right
-            e.g., User initiated
+            User initiated
             (e.g., in-app button)
         end note
     end split

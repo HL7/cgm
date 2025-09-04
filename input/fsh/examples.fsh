@@ -62,7 +62,7 @@ Instance: cgmSummaryTimesInRangesExample
 InstanceOf: CGMSummaryTimesInRanges
 Title: "CGM Summary Times in Ranges Example" 
 Usage: #example
-Description: "This example is an instance of the CGM Summary Times in Ranges profile. It represents a summary observation of the time a patient spent in different glucose ranges over the period from May 1, 2024, to May 31, 2024. The recorded values are 3% in very low range, 8% in low range, 65% in target range, 20% in high range, and 4% in very high range."
+Description: "This example is an instance of the CGM Summary Times in Ranges profile. It represents a summary observation of the time a patient spent in different glucose ranges over the period from May 1, 2024, to May 31, 2024. The recorded values are 3% in the very low range, 8% in the low range, 65% in the target range, 20% in the high range, and 4% in the very high range."
 * status = #final
 * subject = Reference(patientExample)
 * category = http://terminology.hl7.org/CodeSystem/observation-category#laboratory
@@ -126,7 +126,7 @@ Usage: #example
 Instance: cgmSummaryExample
 InstanceOf: CGMSummaryObservation
 Title: "CGM Summary Example"
-Description: "This example is an instance of the CGM Summary profile. It provides a consolidated summary of a patient's CGM data over a one-month period, linking to more detailed observations for specific metrics."
+Description: "This example is an instance of the CGM Summary profile. It provides a consolidated summary of a patient's CGM data over one month, linking to more detailed observations for specific metrics."
 Usage: #example
 * status = #final
 * subject = Reference(patientExample)
@@ -205,10 +205,7 @@ InstanceOf: CGMDataSubmissionStandingOrder
 Usage: #example
 Title: "Example CGM Data Submission Standing Order"
 Description: """
-This example represents a standing order for continuous glucose monitoring (CGM) data submission.
-It specifies an order to submit data about Patient 123 once every two weeks, with each data submission including
-a summary of the CGM data and a PDF report of the CGM summary. This ensures the patient's CGM data is routinely
-available for clinical review.
+This example represents a standing order for continuous glucose monitoring (CGM) data submission. To ensure the patient's CGM data is routinely available for clinical review, it specifies an order to submit data about Patient 123 every two weeks. Each submission includes a summary of the CGM data and a corresponding PDF report. 
 """
 * status = #active
 * intent = #order
@@ -218,6 +215,43 @@ available for clinical review.
 * extension[dataSubmissionSchedule].extension[submissionPeriod].valueQuantity = 'wk' "week"
 * extension[dataSubmissionSchedule].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSummaryObservation)
 * extension[dataSubmissionSchedule].extension[submissionDataProfile][+].valueCanonical = Canonical(CGMSummaryPDF) 
+
+Instance: cgmDataSubmissionOneTimeOrderExample
+InstanceOf: CGMDataSubmissionOneTimeOrder
+Usage: #example
+Title: "Example CGM Data Submission One-Time Order"
+Description: """
+This example represents a one-time order for continuous glucose monitoring (CGM) data submission.
+It specifies an order to submit data about Patient 123 for the entire year 2024, requesting all
+raw sensor readings in mg/dL. This type of order is typically used for comprehensive data requests,
+such as when a patient is transferring care or for research purposes, where all available sensor
+data is needed.
+"""
+* status = #active
+* intent = #order
+* code = CGMCodes#cgm-data-submission-one-time-order
+* subject = Reference(Patient/patientExample)
+* extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.start = "2024-01-01"
+* extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.end = "2024-12-31"
+* extension[dataSubmissionOneTimeSpec].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSensorReadingMassPerVolume)
+
+Instance: cgmDataSubmissionOneTimeOrder30DayExample
+InstanceOf: CGMDataSubmissionOneTimeOrder
+Usage: #example
+Title: "Example CGM Data Submission One-Time Order (30 Days)"
+Description: """
+This example represents a one-time order for continuous glucose monitoring (CGM) data submission.
+It specifies an order to submit summary data about Patient 123 for the last 30 days (December 17, 2024
+to January 16, 2025). This type of order is typically used for upcoming appointments where recent CGM
+summary data is needed for clinical review and decision-making.
+"""
+* status = #active
+* intent = #order
+* code = CGMCodes#cgm-data-submission-one-time-order
+* subject = Reference(Patient/patientExample)
+* extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.start = "2024-12-17"
+* extension[dataSubmissionOneTimeSpec].extension[timePeriod].valuePeriod.end = "2025-01-16"
+* extension[dataSubmissionOneTimeSpec].extension[submissionDataProfile][0].valueCanonical = Canonical(CGMSummaryObservation)
 
 Instance: cgmDeviceExample
 InstanceOf: CGMDevice
